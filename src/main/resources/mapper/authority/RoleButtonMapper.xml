@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.authority.RoleButtonMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.authority.RoleButton" >
+    <id column="role_id" property="roleId" jdbcType="VARCHAR" />
+    <id column="button_id" property="buttonId" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.ecaray.ecms.entity.authority.RoleButton" >
+    delete from sys_role_button
+    where role_id = #{roleId,jdbcType=VARCHAR}
+      and button_id = #{buttonId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.authority.RoleButton" >
+    insert into sys_role_button (role_id, button_id)
+    values (#{roleId,jdbcType=VARCHAR}, #{buttonId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.authority.RoleButton" >
+    insert into sys_role_button
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        role_id,
+      </if>
+      <if test="buttonId != null" >
+        button_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="buttonId != null" >
+        #{buttonId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+
+  <insert id ="insertRoleButtonsBatch" parameterType="java.util.List" >
+    insert into sys_role_button
+    (role_id, button_id)
+    values
+    <foreach collection ="list" item="roleButtons" index= "index" separator =",">
+      (
+      #{roleButtons.roleId}, #{roleButtons.buttonId}
+      )
+    </foreach >
+  </insert>
+
+  <delete id="deleteRoleButtonsBatch" parameterType="java.util.List">
+    delete from sys_role_button where role_id in
+    <foreach item="roleButtons" collection="list" open="(" separator="," close=")">
+      #{roleButtons.roleId}
+    </foreach>
+    AND button_id in
+    <foreach item="roleButtons" collection="list" open="(" separator="," close=")">
+      #{roleButtons.buttonId}
+    </foreach>
+  </delete>
+
+</mapper>

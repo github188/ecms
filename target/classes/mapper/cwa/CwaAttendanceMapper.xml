@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.cwa.CwaAttendanceMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.cwa.CwaAttendance" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="process_type" property="processType" jdbcType="INTEGER" />
+    <result column="date" property="date" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="DOUBLE" />
+    <result column="start_time" property="startTime" jdbcType="BIGINT" />
+    <result column="end_time" property="endTime" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="ref_id" property="refId" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, type, process_type,date, time, start_time, end_time, status, ref_id, remark, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from cwa_attendance
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from cwa_attendance
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteCwaExceptionAtt" parameterType="java.lang.String" >
+    delete from cwa_attendance
+    where user_id = #{userId} and date = #{date} and type in ('-1','-2')
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.cwa.CwaAttendance" >
+    insert into cwa_attendance (id, user_id, type, 
+      date, time, start_time, 
+      end_time, status, ref_id, 
+      remark, update_time)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{date,jdbcType=VARCHAR}, #{time,jdbcType=DOUBLE}, #{startTime,jdbcType=BIGINT}, 
+      #{endTime,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, #{refId,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{updateTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.cwa.CwaAttendance" >
+    insert into cwa_attendance
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="processType != null" >
+        process_type,
+      </if>
+      <if test="date != null" >
+        date,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="refId != null" >
+        ref_id,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="processType!=null" >
+        #{processType,jdbcType=INTEGER},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=DOUBLE},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=BIGINT},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="refId != null" >
+        #{refId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.cwa.CwaAttendance" >
+    update cwa_attendance
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="processType != null" >
+        process_type = #{processType,jdbcType=INTEGER},
+      </if>
+      <if test="date != null" >
+        date = #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=DOUBLE},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=BIGINT},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="refId != null" >
+        ref_id = #{refId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.cwa.CwaAttendance" >
+    update cwa_attendance
+    set user_id = #{userId,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      date = #{date,jdbcType=VARCHAR},
+      time = #{time,jdbcType=DOUBLE},
+      start_time = #{startTime,jdbcType=BIGINT},
+      end_time = #{endTime,jdbcType=BIGINT},
+      status = #{status,jdbcType=INTEGER},
+      ref_id = #{refId,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateCwaAttendanceByUserDateType" parameterType="com.ecaray.ecms.entity.cwa.CwaAttendance" >
+    update cwa_attendance set time = #{time},start_time = #{startTime},end_time = #{endTime} where user_id =#{userId} and date = #{date} and process_type = #{processType}
+  </update>
+  
+ <!--***************************************************************************-->
+ <select id="selectAttendanceList" parameterType = "com.ecaray.ecms.entity.cwa.CwaAttendance" resultMap="BaseResultMap"> 
+  	select <include refid="Base_Column_List" /> from cwa_attendance where 1=1
+  	<if test="type!=null">
+  		and type = #{type}
+  	</if>
+  	<if test="date!=null">
+  		and date = #{date}
+  	</if>
+  	<if test="userId!=null">
+  		and user_id = #{userId}
+  	</if>
+  	<if test="status != null">
+  		and status = #{status}
+  	</if>
+  	<if test="status == null">
+  		and status = 3
+  	</if>
+  </select>
+ <select id="selectAttendanceListLikeMonth" parameterType = "com.ecaray.ecms.entity.cwa.vo.CwaAttendanceVo" resultMap="BaseResultMap"> 
+  	select <include refid="Base_Column_List" /> from cwa_attendance where 1=1
+  	<if test="userId!=null">
+  		and user_id = #{userId}
+  	</if>
+  	<if test="month!=null">
+  		and date like #{month}
+  	</if>
+  	and status = 3
+  	order by date
+  </select>
+  
+   <resultMap id="ReportResultMap" type="com.ecaray.ecms.entity.cwa.CwaAttReport" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="usercode" property="usercode" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="user_realname" property="userRealname" jdbcType="VARCHAR" />
+    <result column="dep_id" property="depId" jdbcType="VARCHAR" />
+    <result column="dep_name" property="depName" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="VARCHAR" />
+    <result column="normal" property="normal" jdbcType="DOUBLE" />
+    <result column="overtime" property="overtime" jdbcType="DOUBLE" />
+    <result column="overtime_holi" property="overtimeHoli" jdbcType="DOUBLE" />
+    <result column="outside" property="outside" jdbcType="DOUBLE" />
+    <result column="travel" property="travel" jdbcType="DOUBLE" />
+    <result column="leave_0" property="leave0" jdbcType="DOUBLE" />
+    <result column="leave_1" property="leave1" jdbcType="DOUBLE" />
+    <result column="leave_2" property="leave2" jdbcType="DOUBLE" />
+    <result column="leave_3" property="leave3" jdbcType="DOUBLE" />
+    <result column="leave_4" property="leave4" jdbcType="DOUBLE" />
+    <result column="early" property="early" jdbcType="DOUBLE" />
+    <result column="absenteeism" property="absenteeism" jdbcType="DOUBLE" />
+  </resultMap>
+  
+  <select id="selectAttendanceReport" parameterType="com.ecaray.ecms.entity.cwa.vo.CwaAttenUserVo" resultMap="ReportResultMap"> 
+  	select u.id as user_id,u.usercode,u.realname as user_realname,u.dep_id,d.name as dep_name,
+  	sum(if(type=2,time,0)) as overtime,
+  	sum(if(type=3,time,0)) as travel,
+  	sum(if(type=4,time,0)) as leave_0,
+  	sum(if(type=5,time,0)) as leave_1,
+  	sum(if(type=6,time,0)) as leave_2,
+  	sum(if(type=7,time,0)) as leave_3,
+  	sum(if(type in (8,11,12,13,14,15,16,17,18),time,0)) as leave_4,
+  	sum(if(type=9,time,0)) as overtimeHoli,
+  	sum(if(type=10,time,0)) as outside,
+  	sum(if(type='-2',time,0)) as early,
+  	sum(if(type='-1',time,0)) as absenteeism
+  	FROM sys_user u
+	LEFT JOIN cwa_attendance att ON u.id = att.user_id and att.date like #{month}
+	<if test="day!=null">
+    	and att.date  &lt; #{day}
+    </if>
+    and att.date &gt;= from_unixtime(u.create_time/1000,'%Y-%m-%d') 
+    and att.status = 3
+	LEFT JOIN sys_dep d ON u.dep_id = d.id
+	where u.usercode > '0000' and u.is_leave = 0 and u.is_delete = 0 
+	<if test="null!=ids and ids.size() > 0" >
+       and u.id in 
+      	<foreach item="item" collection="ids" open="(" separator="," close=")">
+      		#{item}
+    	</foreach>
+    </if>
+	<if test="userId != null" >
+       and u.id = #{userId}
+    </if>
+  	group by u.id 
+  </select>
+  
+  <update id="updateCwaAttendanceByRefId" parameterType="com.ecaray.ecms.entity.cwa.CwaAttendance">
+  	update cwa_attendance set status = #{status} where ref_id = #{refId}
+  </update>
+  <update id="updateCwaAttendanceCover" parameterType="com.ecaray.ecms.entity.cwa.vo.CwaFilter">
+  	update cwa_attendance set type = #{cwaType} where ref_id = #{relId} and ((start_time &lt;= #{endtime} and start_time &gt;= #{starttime}) or (#{starttime} &gt;= start_time and #{starttime} &lt; end_time))
+  </update>
+  <delete id="deleteByRefId" parameterType="java.lang.String" >
+    delete from cwa_attendance where ref_id = #{refId}
+  </delete>
+  <select id="listAttendanceByTime"  resultMap="BaseResultMap" >
+ 	select * from cwa_attendance where user_id = #{userId} and ((start_time &gt;= #{starttime} and start_time &lt; #{endtime}) or (#{starttime} &gt; start_time and #{starttime} &lt;end_time)) and status not in (-1,-2)
+  </select>
+  <select id="listAttendanceByTimeNoIng"  resultMap="BaseResultMap" >
+ 	select * from cwa_attendance where user_id = #{userId} and ((start_time &gt;= #{starttime} and start_time &lt; #{endtime}) or (#{starttime} &gt; start_time and #{starttime} &lt;end_time)) and status not in (-1,-2,1)
+  </select>
+  <select id="listAttendanceByTimeIng"  resultMap="BaseResultMap" >
+ 	select * from cwa_attendance where user_id = #{userId} and ((start_time &gt;= #{starttime} and start_time &lt; #{endtime}) or (#{starttime} &gt; start_time and #{starttime} &lt;end_time)) and status = 1
+  </select>
+  <select id="listAttendanceByTimeNotOvertime"  resultMap="BaseResultMap" >
+ 	select * from cwa_attendance where user_id = #{userId} and ((start_time &gt;= #{starttime} and start_time &lt; #{endtime}) or (#{starttime} &gt; start_time and #{starttime} &lt;end_time)) and type not in (2,9)
+  </select>
+  
+  
+  <resultMap id="UserBaseResultMap" type="com.ecaray.ecms.entity.cwa.CwaAttendance" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="process_type" property="processType" jdbcType="INTEGER" />
+    <result column="date" property="date" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="DOUBLE" />
+    <result column="end_time" property="et" jdbcType="BIGINT" />
+    <result column="start_time" property="st" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="ref_id" property="refId" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <select id="listOldUserAttendance"  resultMap="UserBaseResultMap" >
+ 	select * from cwa_user_attendance 
+  </select>
+  <select id="selectListByRefId"  parameterType="java.lang.String" resultMap="BaseResultMap" >
+ 	select * from cwa_attendance where ref_id = #{refId}
+  </select>
+  <select id="selectDayAllList"  parameterType="java.lang.String" resultMap="BaseResultMap" >
+ 	select * from cwa_attendance where user_id = #{userId} and date = #{date}
+  </select>
+  <select id="getAttendanceByResultId"  parameterType="java.lang.String" resultMap="BaseResultMap" >
+ 	select * from cwa_attendance where user_id = #{userId} and date = #{date} and ref_id = #{refId}
+  </select>
+  <select id="getExcepetionList" resultMap="BaseResultMap" >
+	select * from cwa_attendance where user_id in (select user_id from cwa_exception where date  = '2018-02-10'  and exp_type  = '2') and date = '2018-02-10' and type = '-2'  order by user_id desc 
+  </select>
+</mapper>

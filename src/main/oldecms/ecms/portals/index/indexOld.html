@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>亿车科技 OA系统</title>
+    <link rel="shortcut icon" type="images/x-icon" href="../../skins/img/short-icon.ico">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="bookmark" href="../skins/img/logo.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="../skins/img/logo.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../skins/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../skins/css/common.css"/>
+    <link rel="stylesheet" href="../skins/css/header.css"/>
+    <link rel="stylesheet" href="../skins/css/index.css"/>
+</head>
+<body>
+<!--头部start-->
+<header class="header">
+    <div class="header-content">
+        <span class="pull-left company-logo"></span>
+        <ul class="pull-left menu-list">
+            <li class="menu-item pull-left current">
+                <a href="index.html">首页</a>
+            </li>
+            <!--<li class="menu-item pull-left">
+                <a>人事</a>
+            </li>
+            <li class="menu-item pull-left">
+                <a>学习平台</a>
+            </li>-->
+        </ul>
+        <ul class="pull-right header-operation">
+            <li class="pull-right user-setting">
+                设置
+                <b class="setting-icon setting-close"></b>
+                <ol class="setting-list">
+                    <li class="text-center modify-password">修改密码</li>
+                    <li class="text-center login-out">退出系统</li>
+                </ol>
+            </li>
+           <!--  <li class="pull-right search-item">
+                <form>
+                    <input class="header-search" type="text" placeholder="请输入关键字搜索">
+                </form>
+            </li> -->
+
+        </ul>
+
+    </div>
+</header>
+<!--头部start-->
+<!--主题内容start-->
+<div id="all-content">
+    <section class="container">
+        <div class="user-info">
+            <div class="user-identity pull-left">
+                <img class="user-image pull-left" src="../skins/img/user-image.png"
+                     alt="用户信息" id="userhead">
+                <div class="pull-left">
+                    <div class="user-name" id="userName"></div>
+                    <div class="user-company-identity">
+                        <span class="user-branch" id="dptName"></span>
+                        <span class="user-job" id="position"></span>
+                    </div>
+                </div>
+            </div>
+            <ul class="operation-group pull-right">
+                <li class="operation-item pull-right operation-add">
+
+                </li>
+                <li class="operation-item text-center business pull-right">
+                    出差
+                </li>
+                <li class="operation-item text-center leave pull-right">
+                    请假
+                </li>
+                <li class="operation-item text-center overtime pull-right">
+                    加班
+                </li>
+                <li class="operation-item text-center reimbursement pull-right">
+                    报销
+                </li>
+            </ul>
+        </div>
+        <div class="top-banner clear-float">
+            <div class="pull-left banner-notice">
+                <div id="banner-carousel" class="carousel slide">
+                </div>
+            </div>
+            <div class="pull-left banner-image" id="bannerImage">
+
+            </div>
+        </div>
+        <div class="company-dynamic clear-float">
+            <div class="pull-left left-dynamic">
+                <!--工单start-->
+                <div class="pull-left module-work">
+                    <ul class="module-title clear-float" id="work-order">
+                        <li class="pull-left module-item current">待办工单</li>
+                        <li class="pull-left module-item">已办工单</li>
+                        <li class="pull-right module-more text-center"><a href="../workOrder/workOrder.html">更多</a></li>
+                    </ul>
+                    <ul class="work-list module-list">
+                        <li class="module-item clear-float">
+                            <a href="#">
+                                <span class="module-name pull-left">请假单</span>
+                                <span class="module-time pull-right">2017-04-10</span>
+                                <span class="module-personal pull-right">朱星星</span>
+                            </a>
+                        </li>
+                        <li class="module-item clear-float">
+                            <a href="#">
+                                <span class="module-name pull-left">请假单</span>
+                                <span class="module-time pull-right">2017-04-10</span>
+                                <span class="module-personal pull-right">朱星星</span>
+                            </a>
+                        </li>
+                        <li class="module-item clear-float">
+                            <a href="#">
+                                <span class="module-name pull-left">请假单</span>
+                                <span class="module-time pull-right">2017-04-10</span>
+                                <span class="module-personal pull-right">朱星星</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!--工单end-->
+                <!--新闻模块start-->
+                <div class="pull-right module-news">
+                    <ul class="module-title clear-float" id="company-news">
+                        <li class="pull-left module-item current" data-type="1">公司通知</li>
+                        <li class="pull-left module-item" data-type="0">公司新闻</li>
+                        <li class="pull-right module-more text-center" data-url="../news/newsList.html"><a>更多</a></li>
+                    </ul>
+                    <ul class="work-list module-list" id="company-message">
+                    </ul>
+                </div>
+                <!--新闻模块end-->
+
+                <!--优秀员工展示start-->
+                <div class="excellent-employee pull-left">
+                    <ul class="module-title clear-float">
+                        <li class="pull-left module-item current">优秀员工展</li>
+                        <!--<li class="pull-right module-more text-center"><a href="#">更多</a></li>-->
+                    </ul>
+                    <div id="employee-carousel" class="carousel slide employee-carousel">
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner" role="listbox">
+                            <div class="item active employee-item">
+                                <ul class="clear-float">
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/xulikao.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                徐礼考
+                                            </div>
+                                            <div class="employee-branch">工程建设部 <span class="branch-detail">维护工程师</span></div>
+                                            <div class="employee-prize">责任之星</div>
+                                        </a>
+                                    </li>
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/huangpeipei.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                黄培培
+                                            </div>
+                                            <div class="employee-branch">新能源事业部 <span class="branch-detail">售前技术经理</span></div>
+                                            <div class="employee-prize">责任之星</div>
+                                        </a>
+                                    </li>
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/ouli.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                欧礼
+                                            </div>
+                                            <div class="employee-branch">新能源事业部 <span class="branch-detail">Java工程师</span></div>
+                                            <div class="employee-prize">技术之星</div>
+                                        </a>
+                                    </li>
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/chenling.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                陈淋
+                                            </div>
+                                            <div class="employee-branch">路外停车事业部 <span class="branch-detail">Java工程师</span></div>
+                                            <div class="employee-prize">技术之星</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="item employee-item">
+                                <ul class="clear-float">
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/lianglibin.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                梁礼斌
+                                            </div>
+                                            <div class="employee-branch">运营部 <span class="branch-detail">运营推广</span></div>
+                                            <div class="employee-prize">优化之星</div>
+                                        </a>
+                                    </li>
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/shenronghua.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                申荣华
+                                            </div>
+                                            <div class="employee-branch">运营部 <span class="branch-detail">运营客服主管</span></div>
+                                            <div class="employee-prize">服务之星</div>
+                                        </a>
+                                    </li>
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/liujiahao.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                刘家浩
+                                            </div>
+                                            <div class="employee-branch">运营部 <span class="branch-detail">运营推广</span></div>
+                                            <div class="employee-prize">潜力之星</div>
+                                        </a>
+                                    </li>
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/hepeng.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                何鹏
+                                            </div>
+                                            <div class="employee-branch">路外停车事业部 <span class="branch-detail">产品经理</span></div>
+                                            <div class="employee-prize">潜力之星</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="item employee-item">
+                                <ul class="clear-float">
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/liwei.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                李伟
+                                            </div>
+                                            <div class="employee-branch">路内停车事业部<span class="branch-detail">产品经理</span></div>
+                                            <div class="employee-prize">潜力之星</div>
+                                        </a>
+                                    </li>
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/wujiandong.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                巫建东
+                                            </div>
+                                            <div class="employee-branch">工程建设部 <span class="branch-detail">项目实施工程师</span></div>
+                                            <div class="employee-prize">效率之星</div>
+                                        </a>
+                                    </li>
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/huangkefangyi.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                黄可方毅
+                                            </div>
+                                            <div class="employee-branch">工程建设部 <span class="branch-detail">实施工程师</span></div>
+                                            <div class="employee-prize">效率之星</div>
+                                        </a>
+                                    </li>
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/zhululu.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                祝露露
+                                            </div>
+                                            <div class="employee-branch">人资行政部 <span class="branch-detail">招聘专员</span></div>
+                                            <div class="employee-prize">效率之星</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="item employee-item">
+                                <ul class="clear-float">
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/wangruyu.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                王如岳
+                                            </div>
+                                            <div class="employee-branch">研发中心 <span class="branch-detail">测试总监</span></div>
+                                            <div class="employee-prize">贡献之星</div>
+                                        </a>
+                                    </li>
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/gaochao.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                高超
+                                            </div>
+                                            <div class="employee-branch">营销中心 <span class="branch-detail">销售经理</span></div>
+                                            <div class="employee-prize">贡献之星</div>
+                                        </a>
+                                    </li>
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/shifangming.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                石芳铭
+                                            </div>
+                                            <div class="employee-branch">战略发展部 <span class="branch-detail">战略发展经理</span></div>
+                                            <div class="employee-prize">创新之星</div>
+                                        </a>
+                                    </li>
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/zhaohuanyu.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                赵环宇
+                                            </div>
+                                            <div class="employee-branch">营销中心 <span class="branch-detail">区域经理</span></div>
+                                            <div class="employee-prize">明日之星</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="item employee-item">
+                                <ul class="clear-float">
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/hehui.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                何辉
+                                            </div>
+                                            <div class="employee-branch">运行维护部 <span class="branch-detail">服务器运维工程师</span></div>
+                                            <div class="employee-prize">明日之星</div>
+                                        </a>
+                                    </li>
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/chenhongying.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                陈红英
+                                            </div>
+                                            <div class="employee-branch">路外停车事业部 <span class="branch-detail">测试部经理</span></div>
+                                            <div class="employee-prize">明日之星</div>
+                                        </a>
+                                    </li>
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/chentiejun.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                陈铁钧
+                                            </div>
+                                            <div class="employee-branch">路外停车事业部<span class="branch-detail">前端工程师</span></div>
+                                            <div class="employee-prize">进步之星</div>
+                                        </a>
+                                    </li>
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/liuweili.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                刘炜丽
+                                            </div>
+                                            <div class="employee-branch">营销中心 <span class="branch-detail">品牌经理</span></div>
+                                            <div class="employee-prize">进步之星</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="item employee-item">
+                                <ul class="clear-float">
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/zhangbing.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                张冰
+                                            </div>
+                                            <div class="employee-branch">营销中心 <span class="branch-detail">销售经理</span></div>
+                                            <div class="employee-prize">进步之星</div>
+                                        </a>
+                                    </li>
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/yangjun.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                杨军
+                                            </div>
+                                            <div class="employee-branch">营销中心 <span class="branch-detail">区域经理</span></div>
+                                            <div class="employee-prize">行动之星</div>
+                                        </a>
+                                    </li>
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/chenruibing.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                陈锐斌
+                                            </div>
+                                            <div class="employee-branch">营销中心<span class="branch-detail">市场经理</span></div>
+                                            <div class="employee-prize">学习之星</div>
+                                        </a>
+                                    </li>
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/renliang.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                任亮
+                                            </div>
+                                            <div class="employee-branch">路外停车事业部 <span class="branch-detail">事业部总经理</span></div>
+                                            <div class="employee-prize">讲师之星</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="item employee-item">
+                                <ul class="clear-float">
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/zhangzhiqiang.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                张志强
+                                            </div>
+                                            <div class="employee-branch">新能源事业部 <span class="branch-detail">产品经理</span></div>
+                                            <div class="employee-prize">讲师之星</div>
+                                        </a>
+                                    </li>
+                                    <li class="employee pull-left text-center">
+                                        <a href="" class="text-center">
+                                            <img class="employee-image" src="../skins/img/index/zhangtao.jpg" alt="亿车科技">
+                                            <div class="employee-name">
+                                                张涛
+                                            </div>
+                                            <div class="employee-branch">工程建设部 <span class="branch-detail">实施组长</span></div>
+                                            <div class="employee-prize">协作之星</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Controls -->
+                        <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                            <span class="employee-prev employee-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                            <span class="employee-next employee-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+                <!--优秀员工展示end-->
+            </div>
+            <div class="pull-right right-dynamic">
+                <ul class="plat-menu" id="plat-menu">
+                    <!--<li class="plat-menu-item">-->
+                        <!--<a href="#">-->
+                            <!--<span class="icon icon-plat-customer"></span>-->
+                            <!--客户关系管理平台-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <!--<li class="plat-menu-item">-->
+                        <!--<a href="#">-->
+                            <!--<span class="icon icon-plat-contract"></span>-->
+                            <!--合同管理平台-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <!--<li class="plat-menu-item">-->
+                        <!--<a href="#">-->
+                            <!--<span class="icon icon-plat-project"></span>-->
+                            <!--项目管理平台-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <!--<li class="plat-menu-item">-->
+                        <!--<a href="#">-->
+                            <!--<span class="icon icon-plat-operate"></span>-->
+                            <!--运营管理平台-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <!--<li class="plat-menu-item">-->
+                        <!--<a href="#">-->
+                            <!--<span class="icon icon-plat-administration"></span>-->
+                            <!--人事行政管理平台-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <!--<li class="plat-menu-item">-->
+                        <!--<a href="#">-->
+                            <!--<span class="icon icon-plat-auth"></span>-->
+                            <!--权限管理平台-->
+                        <!--</a>-->
+                    <!--</li>-->
+                </ul>
+                <!--新员工轮播展-->
+                <div class="welcome-wall">
+                    <div class="wall-title text-center">欢迎新员工</div>
+                    <div class="wall-banner">
+                        <div id="wall-carousel" class="carousel slide wall-carousel">
+                            <!-- Indicators -->
+                            <ol class="carousel-indicators">
+                                <li data-target="#carousel-example-generic" data-to="0" class="active"></li>
+                                <li data-target="#carousel-example-generic" data-to="1"></li>
+                                <li data-target="#carousel-example-generic" data-to="2"></li>
+                            </ol>
+
+                            <!-- Wrapper for slides -->
+                            <div class="carousel-inner" role="listbox">
+                                <div class="item active text-center">
+                                    <a href="">
+                                        <img class="wall-image" src="../skins/img/index/chenlei.png" alt="亿车科技">
+                                        <div class="wall-item-title">陈雷</div>
+                                        <div class="wall-item-subtitle">营销中心<span class="margin-left-6">售前技术经理（武汉）</span></div>
+                                        <div class="wall-item-subhead">湖北<span class="margin-left-6">武汉</span></div>
+                                    </a>
+                                </div>
+                                <div class="item text-center">
+                                    <a href="">
+                                        <img class="wall-image" src="../skins/img/index/zhaoyong.png" alt="亿车科技">
+                                        <div class="wall-item-title">赵勇</div>
+                                        <div class="wall-item-subtitle">营销中心<span class="margin-left-6">区域经理 （西安）</span></div>
+                                        <div class="wall-item-subhead">陕西<span class="margin-left-6">宝鸡</span></div>
+                                    </a>
+                                </div>
+                                <div class="item text-center">
+                                    <a href="">
+                                        <img class="wall-image" src="../skins/img/index/zhangjiaxuan.png" alt="亿车科技">
+                                        <div class="wall-item-title">张嘉轩</div>
+                                        <div class="wall-item-subtitle">营销中心<span class="margin-left-6">区域经理</span></div>
+                                        <div class="wall-item-subhead">广东<span class="margin-left-6">汕头</span></div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+<!--主题内容end-->
+<footer class="footer">
+
+</footer>
+
+
+<div class="modal fade" id="modalout" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">温馨提示</h4>
+            </div>
+            <div class="modal-body">您的账号已在其他地方上线，请重新登录！</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info logout-sure">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--修改密码start-->
+<div class="modal fade" id="modifyPassword" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">修改密码</h4>
+            </div>
+            <form role="form" id="modifyPasswordForm" method="post" class="validate">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required">*</span>原密码：</label>
+                                <input id="accountname" name="accountname" type="password" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required">*</span>新密码：</label>
+                                <input id="newpwd" name="newpwd" type="password" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required">*</span>确认密码：</label>
+                                <input id="savepwd" name="savepwd" type="password" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button type="submit" class="btn btn-success" id="btnPwdSave">确定</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--修改密码end-->
+
+<!-- Bottom Scripts -->
+<script src="../skins/js/jquery-1.11.1.min.js"></script>
+<!--frame-->
+<script src="../skins/js/config.js"></script>
+<script src="../skins/js/base.js"></script>
+<script src="../skins/js/jquery.md5.js"></script>
+
+<script src="../skins/js/bootstrap.min.js"></script>
+<script src="../skins/js/jquery.validate.min.js"></script>
+<script src="../skins/js/header.js"></script>
+<script src="index.js"></script>
+
+<script type="text/javascript">
+    //禁止后退键 作用于Firefox、Opera
+//    document.onkeypress = indexObj.banBackSpace;
+    //禁止后退键  作用于IE、Chrome
+//    document.onkeydown = indexObj.banBackSpace;
+</script>
+</body>
+</html>

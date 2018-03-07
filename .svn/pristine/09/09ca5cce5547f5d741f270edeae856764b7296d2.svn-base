@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.sys.SysExcelTestMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.sys.SysDept" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * from sys_dep where id = #{id}
+  </select>
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * from sys_dep where name = #{name}
+  </select>
+  <select id="selectByNameAndParentId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * from sys_dep where name = #{name} and parent_id = #{parentId}
+  </select>
+  <insert id="insertSysDept" parameterType="com.ecaray.ecms.entity.sys.SysDept">
+  	 insert into sys_dep (id, name, parent_id, orders, is_delete)
+   	 values (#{id}, #{name},#{parentId}, #{orders}, 0)
+  </insert>
+  <update id="updateUserPassword" parameterType="java.lang.String">
+  	 update sys_user set password = (md5(#{password})) WHERE usercode = #{usercode}
+  </update>
+  <select id="selectMaxOrder" resultType="java.lang.Integer">
+  	select max(orders) from sys_dep 
+  </select>
+   <insert id="insertUser" parameterType="com.ecaray.ecms.entity.authority.User" >
+    insert into sys_user (id, username, password,
+    usercode, realname, idcard,
+    phone,tel, email, sex,is_leave,
+    profess_level, manage_level, dep_id,post,address,
+    direct_leader, create_time, update_time,
+    is_delete)
+    values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+    #{usercode,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR},
+    #{phone,jdbcType=VARCHAR},#{tel,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER},
+    #{isLeave,jdbcType=INTEGER},
+    #{professLevel,jdbcType=VARCHAR}, #{manageLevel,jdbcType=VARCHAR}, #{depId,jdbcType=VARCHAR},
+     #{post,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+    #{directLeader,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT},
+    #{isDelete,jdbcType=INTEGER})
+  </insert>
+   <resultMap id="UserBaseResultMap" type="com.ecaray.ecms.entity.authority.User" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="usercode" property="usercode" jdbcType="VARCHAR" />
+    <result column="realname" property="realname" jdbcType="VARCHAR" />
+    <result column="idcard" property="idcard" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="head_pic" property="headPic" jdbcType="VARCHAR" />
+    <result column="is_leave" property="isLeave" jdbcType="INTEGER" />
+    <result column="profess_level" property="professLevel" jdbcType="VARCHAR" />
+    <result column="manage_level" property="manageLevel" jdbcType="VARCHAR" />
+    <result column="dep_id" property="depId" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="direct_leader" property="directLeader" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <select id="selectUserByName" parameterType="java.lang.String" resultMap="UserBaseResultMap">
+  	select * from sys_user where realname = #{realname}
+  </select>
+  <update id="updateUser" parameterType="com.ecaray.ecms.entity.authority.User">
+	update  sys_user set direct_leader = #{directLeader} where id = #{id}
+  </update>
+  <select id="selectoneDepIdByName" parameterType="java.lang.String" resultType="java.lang.String">
+  	select id  from sys_dep where name = #{depName} and parent_id = '1'
+  </select>
+  <select id="selecttwoDepIdByName" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT
+			two.id
+		FROM
+			sys_dep two
+		LEFT JOIN sys_dep one ON two.parent_id = one.id
+		WHERE
+			two.NAME = #{twoName} and one.name=#{oneName}
+ </select>
+  <select id="selectthreeDepIdByName" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT
+			three.id
+		FROM
+			sys_dep three
+		left join sys_dep two on three.parent_id = two.id
+		LEFT JOIN sys_dep one ON two.parent_id = one.id
+		WHERE
+			one.name=#{oneName} and two.NAME = #{twoName} and three.name=#{threeName}
+ </select>
+  <select id="selectUserByUsercode" parameterType="java.lang.String" resultType="java.lang.String">
+ 	select id from sys_user where usercode=#{usercode}
+ </select>
+  <update id="updateDeptLeader" parameterType="com.ecaray.ecms.entity.authority.Dept">
+ 	 update sys_dep set leader_id = #{leaderId} ,leader_name = #{leaderName}  where id = #{id}
+  </update>
+</mapper>

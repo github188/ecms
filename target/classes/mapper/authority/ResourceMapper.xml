@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.authority.ResourceMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.authority.Resource" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="app_id" property="appId" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="comments" property="comments" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, url, type, app_id, parent_id, status, create_time, comments,icon
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_resource
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_resource
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.authority.Resource" >
+    insert into sys_resource (id, name, url, 
+      type, app_id, parent_id, 
+      status, create_time, comments, icon,
+      is_delete)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},
+      #{type,jdbcType=INTEGER}, #{appId,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR},
+      #{status,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR}, #{comments,jdbcType=VARCHAR}, 
+     #{icon,jdbcType=VARCHAR},  #{isDelete,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.authority.Resource" >
+    insert into sys_resource
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="appId != null" >
+        app_id,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="comments != null" >
+        comments,
+      </if>
+      <if test="icon != null" >
+        icon,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="comments != null" >
+        #{comments,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.authority.Resource" >
+    update sys_resource
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="appId != null" >
+        app_id = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="comments != null" >
+        comments = #{comments,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.authority.Resource" >
+    update sys_resource
+    set name = #{name,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      app_id = #{appId,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      comments = #{comments,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <sql id="By_app_column" >
+    id, name, url, type, app_id, parent_id, status, create_time, comments
+  </sql>
+  <select id="selectResourceByAppId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="By_app_column" />
+    from sys_resource
+    where app_id=#{appId}
+  </select>
+
+
+
+  <resultMap id="QueryFilterResultMap" type="com.ecaray.ecms.entity.authority.Vo.ResourceQueryVo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="app_id" property="appId" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+    <result column="parent_name" property="parentName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="comments" property="comments" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="selectResourcesFilter" resultMap="QueryFilterResultMap"
+          parameterType="com.ecaray.ecms.entity.authority.Vo.ResourceQueryFilter" >
+    select
+    a.id, a.name, a.url, a.type, a.app_id, a.parent_id, a.status, a.create_time, a.comments
+    from sys_resource a,sys_resource b
+    where
+    <if test="name != null" >
+    a.name like #{name} AND
+    </if>
+    <if test="appId != null" >
+      a.app_id = #{appId} AND
+    </if>
+    <if test="type != null" >
+      a.type = #{type} AND
+    </if>
+    a.parent_id = b.id  ORDER BY a.create_time ASC
+
+  </select>
+
+  <!--select resourceTree start-->
+
+  <resultMap type="com.ecaray.ecms.entity.authority.Vo.ResourceTreeVo" id="resourceTreeResultMap">
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="parent_id" property="pId" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="icon" property="icon" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <collection property="children"  column="id" ofType="com.ecaray.ecms.entity.authority.Vo.ResourceTreeVo"
+                select="selectResourceTreeByParentId"></collection>
+  </resultMap>
+
+
+  <select id="selectTreeResources"  resultMap="resourceTreeResultMap">
+    select  id,name,parent_id ,type,icon,status,url from sys_resource where parent_id = #{pid} and status = 0 order by app_id
+  </select>
+  <select id="selectResourceTreeByParentId"  resultMap="resourceTreeResultMap">
+    select  id,name,parent_id ,type ,icon,status,url from sys_resource where parent_id = #{id} and status = 0 order by app_id
+  </select>
+
+  <!--select resourceTree  end-->
+
+
+  <select id="selectDetailByPrimaryKey" resultMap="QueryFilterResultMap"  >
+
+    select a.*,b.name as parent_name from sys_resource a,sys_resource b where a.parent_id = b.id
+    AND a.id = #{id}
+  </select>
+
+  <select id="selectResourceByRoleId" resultMap="QueryFilterResultMap"  >
+     SELECT
+	a.*, b. NAME AS parent_name
+     FROM
+	sys_resource a,
+	sys_resource b,
+	sys_role_resource c
+     WHERE
+	a.parent_id = b.id
+     AND a.id = c.resource_id
+     AND c.role_id = #{roleId}
+  </select>
+  
+  <select id="selectOneResourceByRoleId" resultType="java.lang.String" parameterType="java.lang.String"  >
+     select resource_id from sys_role_resource r left join sys_resource s on r.resource_id = s.id where
+     r.role_id = #{roleId}  and s.parent_id = #{parentId} and s.status = 0
+  </select>
+
+  <select id="selectResourceByUserId" resultMap="QueryFilterResultMap"  >
+ 	SELECT
+    distinct resource.*
+    FROM
+    sys_user_role ur left join sys_user u on ur.user_id = u.id
+    left join sys_role role on ur.role_id = role.id
+    left join sys_role_resource rr on ur.role_id = rr.role_id
+    left join sys_resource resource on rr.resource_id = resource.id
+    WHERE
+     role.status = 0 and u.is_leave=0 and u.is_delete = 0  AND resource.id &gt; 1
+    <if test="typeLevel != null" >
+      and resource.type &lt; #{typeLevel}
+    </if>
+    <if test="resourceId != null" >
+      and resource.parent_id = #{resourceId}
+    </if>
+    <if test="userId != null" >
+      and u.id = #{userId}
+    </if>
+    order  by  resource.id
+  </select>
+  <select id="selectResourceListByRoleList" resultType="java.lang.String"  >
+ 	SELECT
+    distinct rr.resource_id
+    FROM
+    sys_role_resource rr 
+    left join sys_role r on rr.role_id = r.id
+    left join sys_resource re on rr.resource_id = re.id
+    WHERE r.status = 0 and re.status = 0
+    <if test="list!=null">
+    	 and rr.role_id in 
+      	<foreach item="item" collection="list" open="(" separator="," close=")">
+      		#{item}
+    	</foreach>
+    </if>
+  </select>
+
+</mapper>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.cwa.CwaRetroactiveMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.cwa.CwaRetroactive" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="VARCHAR" />
+    <result column="fristtime" property="fristTime" jdbcType="BIGINT" />
+    <result column="lasttime" property="lastTime" jdbcType="BIGINT" />
+    <result column="worktime" property="worktime" jdbcType="DOUBLE" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, date, fristtime, lasttime, worktime, remark, status, add_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from cwa_retroactive
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from cwa_retroactive
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.cwa.CwaRetroactive" >
+    insert into cwa_retroactive (id, user_id, date, 
+      fristtime, lasttime, worktime, 
+      remark, status, add_time, 
+      update_time)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{date,jdbcType=VARCHAR}, 
+      #{fristtime,jdbcType=BIGINT}, #{lasttime,jdbcType=BIGINT}, #{worktime,jdbcType=DOUBLE}, 
+      #{remark,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{addTime,jdbcType=BIGINT}, 
+      #{updateTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.cwa.CwaRetroactive" >
+    insert into cwa_retroactive
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="date != null" >
+        date,
+      </if>
+      <if test="fristTime != null" >
+        fristTime,
+      </if>
+      <if test="lastTime != null" >
+        lastTime,
+      </if>
+      <if test="worktime != null" >
+        worktime,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="fristTime != null" >
+        #{fristTime,jdbcType=BIGINT},
+      </if>
+      <if test="lastTime != null" >
+        #{lastTime,jdbcType=BIGINT},
+      </if>
+      <if test="worktime != null" >
+        #{worktime,jdbcType=DOUBLE},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.cwa.CwaRetroactive" >
+    update cwa_retroactive
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        date = #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="fristTime != null" >
+        fristtime = #{fristTime,jdbcType=BIGINT},
+      </if>
+      <if test="lastTime != null" >
+        lasttime = #{lastTime,jdbcType=BIGINT},
+      </if>
+      <if test="worktime != null" >
+        worktime = #{worktime,jdbcType=DOUBLE},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.cwa.CwaRetroactive" >
+    update cwa_retroactive
+    set user_id = #{userId,jdbcType=VARCHAR},
+      date = #{date,jdbcType=VARCHAR},
+      fristtime = #{fristtime,jdbcType=BIGINT},
+      lasttime = #{lasttime,jdbcType=BIGINT},
+      worktime = #{worktime,jdbcType=DOUBLE},
+      remark = #{remark,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      add_time = #{addTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

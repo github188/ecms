@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.process.SysProFilterMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.process.SysProFilter" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="node_id" property="nodeId" jdbcType="VARCHAR" />
+    <result column="next_node_id" property="nextNodeId" jdbcType="VARCHAR" />
+    <result column="filter" property="filter" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, node_id, next_node_id, filter
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_profilter
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_profilter
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.process.SysProFilter" >
+    insert into sys_profilter (id, node_id, next_node_id, 
+      filter)
+    values (#{id,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR}, #{nextNodeId,jdbcType=VARCHAR}, 
+      #{filter,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.process.SysProFilter" >
+    insert into sys_profilter
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="nodeId != null" >
+        node_id,
+      </if>
+      <if test="nextNodeId != null" >
+        next_node_id,
+      </if>
+      <if test="filter != null" >
+        filter,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeId != null" >
+        #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="nextNodeId != null" >
+        #{nextNodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="filter != null" >
+        #{filter,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.process.SysProFilter" >
+    update sys_profilter
+    <set >
+      <if test="nodeId != null" >
+        node_id = #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="nextNodeId != null" >
+        next_node_id = #{nextNodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="filter != null" >
+        filter = #{filter,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.process.SysProFilter" >
+    update sys_profilter
+    set node_id = #{nodeId,jdbcType=VARCHAR},
+      next_node_id = #{nextNodeId,jdbcType=VARCHAR},
+      filter = #{filter,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+    <select id="selectNodeFilters" parameterType="java.lang.String" resultMap="BaseResultMap">
+  		select * from sys_profilter where node_id = #{nodeId}
+  </select>
+</mapper>

@@ -1,0 +1,1231 @@
+<template>
+  <div class="content-box" id="newsDetail">
+    <el-breadcrumb separator="/">
+      <el-breadcrumb-item :to="{ path: '/index' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/news/list', query: {type: detail.newsType} }">{{detail.typeName && detail.typeName.split('#')[0]}}</el-breadcrumb-item>
+      <el-breadcrumb-item>详情</el-breadcrumb-item>
+    </el-breadcrumb>
+    <el-dialog v-model="modal" size="small">
+      <img width="100%" :src="getAvatar(commentsUser, {normal: true})" alt="">
+    </el-dialog>
+    <div class="container" v-loading.lock="loading" element-loading-text="拼命加载中">
+      <div class="news-detail" v-if="detail.newsTitle">
+        <h2 class="news-title">{{detail.newsTitle}}</h2>
+        <div class="news-content">
+          <div class="news-category">
+            <span class="news-category-tag">{{detail.typeName && detail.typeName.split('#')[0]}}</span>
+            <span class="new-author">
+              <router-link v-if="detail.addPersonId && detail.isDelete != 1" target="_blank" :to="'/person/'+ detail.addPersonId">
+                {{detail.newsAuthor && detail.newsAuthor.replace(' ', ' | ')}}
+              </router-link>
+              <span v-else> {{detail.newsAuthor && detail.newsAuthor.replace(' ', ' | ')}}</span>
+            </span>
+            <span class="news-time">{{new Date(detail.publishDate).toStr()}}</span>
+            <div class="news-interact article-icon">
+              <i class="read">
+                <span style="padding-left:4px;">{{detail.read}}</span>
+              </i>
+              <i class="thumb">{{detail.likes}}</i>
+              <a href="javascript:;" @click="fastComments">
+                <i class="comments">{{commentCount}}</i>
+              </a>
+            </div>
+          </div>
+          <!--内容-->
+          <div class="fr-element fr-view" v-html="detail.content"></div>
+          <template v-if="fileList.length>0">
+            <div class="file-box">
+              <p>
+                <b>附件</b>（{{fileList.length}}个）</p>
+              <!-- <div class="file-list">
+                <a v-for="(item, index) in fileList" :key="item.id" title="附件下载" @click="downFile('/news/attachment/'+ item.id +'/download', item.name)" class="file-download" href="javascript:;">
+                  <i class="el-icon-document" style="padding-right:10px;"></i>{{item.name}}</a>
+              </div> -->
+
+              <ul class="file-list">
+                <li v-for="(item) in fileList" :key="item.id">
+                  <a title="附件下载" @click="downFile('/news/attachment/'+ item.id +'/download', item.name)" class="file-download" href="javascript:;">
+                    <i class="el-icon-document" style="padding-right:10px;"></i>{{item.name}}</a>
+                  <router-link class="preview" v-if="item.name.includes('.pdf')" :to="{path: '/pdf', query: {url: `/news/attachment/${item.id}/download`, name: item.name}}" target="_blank" title="在线预览"> 预览</router-link>
+                </li>
+              </ul>
+
+            </div>
+          </template>
+        </div>
+        <!-- 评论和点赞 -->
+        <div class="clearfix"></div>
+        <div id="newsComments">
+          <div class="to-thumb">
+            <div ref="toThumb" :title="isThumb?'取消点赞':'点赞'" @click="toThumb(id)" class="to-thumb-icon"></div>
+            <div class="to-thumb-num">{{detail.likes}}</div>
+          </div>
+          <div class="c-area" v-if="detail.isComment == 0">
+            <div class="c-area-l">
+              <a class="avatar-link" href="javascript:;" style="cursor: context-menu">
+                <img class="comments-avatar" :src="getAvatar(personInfo, {normal:false,width:96, height:96})" alt="">
+              </a>
+            </div>
+
+            <div class="c-area-r">
+              <div class="comments-box article-cs" :class="{'focus': focus}">
+                <textarea contenteditable="true" @focus="focus=true,spread()" v-model="text" placeholder="写下你的评论..." class="textarea"></textarea>
+                <el-button type="success" :loading="disable" class="comments-submit" @click="toComments(id)">评论</el-button>
+                <div class="comments-bar">
+                  <i class="emoji-btn" @click="setArea"></i>
+                  <div v-if="showEmoji" class="emoji-box" :class="{'open':showEmoji}">
+                    <vue-emoji @choose="getEmoji"></vue-emoji>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="comments-num" v-if="detail.isComment != 1">{{commentCount}} 条评论</div>
+
+          <div class="c-area" v-if="detail.isComment == 0">
+            <ul class="comments-list">
+              <!-- 一级回复 -->
+              <li class="list-l" v-for="(item, index) in comments" :key="index" :id="'to'+item.id">
+                <div class="c-area-l">
+
+                  <router-link :title="'查看'+ item.addPersonName +'个人主页'" target="_blank" :to="item.isDelete == 1? 'javascript:;':'/person/'+item.user.id" class="avatar-link">
+                    <img class="comments-avatar" :src="getAvatar(item.user,{normal:false,width:96, height:96})" alt="">
+                  </router-link>
+                </div>
+                <div class="c-area-r">
+                  <p class="user-info">
+                    <span class="user-name" href="javascript:;">{{item.addPersonName}}</span>
+                    <span>{{getDepartment(item.user.depName)}} | {{item.user.post}}</span>
+                    <em>{{item.addTime | resetTime}}</em>
+                  </p>
+                  <p class="content" v-html="commentsFilter(item.content)"></p>
+                  <p class="article-icon">
+                    <a :title="item.isLikes?'取消点赞':'点赞'" @click="toThumb(item.id, item)" class="comments-reply" href="javascript:;">
+                      <i style="margin-left: 0; width: 50px" :class="{'on': item.isLikes}" class="thumb">{{item.likes}}</i>
+                    </a>
+                    <a title="回复" @click="reply(item, undefined)" class="comments-reply" href="javascript:;">
+                      <i style="margin-left: 5px; width: 50px" class="comments">回复</i>
+                    </a>
+                  </p>
+                  <el-collapse-transition>
+                    <div class="comments-box article-cs focus" v-if="item.show">
+                      <textarea v-model="subText" :placeholder="'回复'+ item.addPersonName+':'" class="textarea"></textarea>
+                      <el-button type="success" :loading="disable" class="comments-submit" @click="toComments(id, item.id, true)">回复</el-button>
+                      <div class="comments-bar">
+                        <i class="emoji-btn" @click="setArea"></i>
+                      </div>
+                    </div>
+                  </el-collapse-transition>
+                  <div class="emoji-box" v-if="item.show" :class="{'open':showEmoji}">
+                    <vue-emoji @choose="getEmojiSub"></vue-emoji>
+                  </div>
+
+                </div>
+                <!-- 二级回复 -->
+                <div class="multi-reply" v-if="commentsChild[index].length > 0">
+                  <li class="list-l" v-for="(child, childIndex) in commentsChild[index]" :key="child.id" :id="'to'+child.id">
+                    <div class="c-area-l">
+                      <router-link target="_blank" :title="'查看'+ child.addPersonName +'个人主页'" :to="child.isDelete == 1?'javascript:;':'/person/'+child.user.id" class="avatar-link">
+                        <img class="comments-avatar" :src="getAvatar(child.user,{normal:false,width:96, height:96})" alt="">
+                      </router-link>
+                    </div>
+                    <div class="c-area-r">
+                      <p class="user-info">
+                        <span style="padding:0" class="user-name" href="javascript:;">{{child.addPersonId.split('to')[0]}}</span>
+                        <span style="padding:0 12px; font-size: 14px">回复</span>
+                        <span style="padding:0" class="user-name">{{child.addPersonId.split('to')[1]}}</span>
+                        <em>{{child.addTime | resetTime}}</em>
+                      </p>
+                      <p class="content" v-html="commentsFilter(child.content)"></p>
+                      <p class="article-icon">
+                        <a :title="child.isLikes?'取消点赞':'点赞'" @click="toThumb(child.id, child)" class="comments-reply" href="javascript:;">
+                          <i style="margin-left: 0; width: 50px" :class="{'on': child.isLikes}" class="thumb">{{child.likes}}</i>
+                        </a>
+                        <a title="回复" @click="reply(commentsChild[index][childIndex], index)" class="comments-reply" href="javascript:;">
+                          <i style="margin-left: 5px; width: 50px" class="comments">回复</i>
+                        </a>
+                      </p>
+                      <el-collapse-transition>
+                        <div class="comments-box article-cs focus" v-if="child.show">
+                          <textarea v-model="subText" :placeholder="'回复'+child.addPersonId.split('to')[0]+':'" class="textarea"></textarea>
+                          <el-button type="success" :loading="disable" class="comments-submit" @click="toComments(id, child.id, true)">回复</el-button>
+                          <div class="comments-bar">
+                            <i class="emoji-btn" @click="setArea"></i>
+                          </div>
+                        </div>
+                      </el-collapse-transition>
+                      <div class="emoji-box" v-if="child.show" :class="{'open':showEmoji}">
+                        <vue-emoji @choose="getEmojiSub"></vue-emoji>
+                      </div>
+                    </div>
+                  </li>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div v-if="commentCount == 0 && detail.isComment == 0" class="no-comments">
+            智慧如你，不想
+            <a @click="focus=true" href="javascript:;">发表一点想法</a> 咩~
+          </div>
+
+          <div v-else-if="detail.isComment == 1" class="no-comments">
+            评论已关闭
+          </div>
+        </div>
+      </div>
+
+      <div class="news-trends">
+        <h2 class="news-trends-name">企业动态</h2>
+        <ul>
+          <li v-for="(item, index) in news" :key="index" v-if="item.id !=id">
+            <router-link @click.native="$router.go(0)" :to="{ path: '/news/detail', query: {id: item.id}}">{{item.newsTitle}}</router-link>
+            <span class="news-trends-time">{{new Date(item.publishDate).toStr()}}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div id="goTop" title="返回顶部"></div>
+  </div>
+</template>
+
+<style lang="scss">
+#newsDetail {
+  .file-download {
+    height: 30px;
+    font-size: 16px;
+    line-height: 30px;
+  }
+
+  .container {
+    overflow: hidden;
+    margin: 0 auto;
+    padding-bottom: 20px;
+    min-width: 1150px;
+    max-width: 1440px;
+    background: #fff;
+  }
+
+  .news-detail {
+    float: left;
+    margin-left: 102px;
+    padding-top: 48px;
+    width: 680px;
+  }
+
+  .news-title {
+    margin-bottom: 20px;
+    color: #000;
+    font-size: 26px;
+    /* margin-top: 30px; */
+    line-height: 36px;
+  }
+
+  .news-trends {
+    float: right;
+    margin-right: 88px;
+    width: 220px;
+    height: 1000px;
+  }
+
+  .news-trends-name {
+    margin: 30px 0;
+    font-size: 16px;
+  }
+
+  .news-trends ul li {
+    margin-bottom: 40px;
+    font-size: 14px;
+  }
+
+  .news-trends ul li a {
+    display: block;
+    color: #000;
+    font-size: 14px;
+    opacity: 0.8;
+  }
+
+  .news-trends ul li a:hover {
+    color: #01cd78;
+  }
+
+  .news-trends-time {
+    color: #000;
+    font-size: 12px;
+    opacity: 0.6;
+  }
+
+  .fast-share {
+    display: inline-block;
+    float: left;
+    width: 130px;
+    height: 200px;
+  }
+
+  .news-interact {
+    float: right;
+    margin-right: 28px;
+  }
+
+  .article-icon {
+    height: 24px;
+  }
+
+  .article-icon i {
+    display: inline-block;
+    margin-left: 42px;
+    padding-left: 20px;
+    width: 20px;
+    height: 16px;
+    background-position: left bottom;
+    background-repeat: no-repeat;
+    color: #a0a1aa;
+    font-style: normal;
+    font-size: 12px;
+  }
+
+  .article-icon i.read {
+    background-image: url("./img/read.png");
+  }
+
+  .article-icon i.thumb {
+    background-image: url("./img/thumb.png");
+    margin-right: 32px;
+  }
+
+  .article-icon i.thumb.on {
+    background-image: url("./img/thumb-on.png");
+  }
+
+  .article-icon i.comments {
+    margin-right: 0;
+    background-image: url("./img/comments.png");
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    margin-left: 0;
+  }
+
+  .article-icon i.comments:hover {
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+  }
+
+  .news-content {
+    float: left;
+    width: 680px;
+  }
+
+  .file-box {
+    p {
+      padding-left: 15px;
+      height: 30px;
+      background: #e6e6e6;
+      line-height: 30px;
+    }
+    .file-list {
+      padding: 10px;
+      border: 2px solid #e6e6e6;
+      li {
+        position: relative;
+        .preview {
+          position: absolute;
+          top: 5px;
+          right: 0;
+        }
+      }
+    }
+    a.file-download {
+      height: 30px;
+      color: rgb(120, 120, 120);
+      font-size: 16px;
+      line-height: 30px;
+      &:hover {
+        color: #01cd78;
+      }
+    }
+  }
+
+  .news-content img {
+    max-width: 100%;
+  }
+
+  .news-category {
+    margin-bottom: 35px;
+    color: #9e9e9e;
+    font-size: 14px;
+  }
+
+  .news-category-tag {
+    display: inline-block;
+    padding: 0 2px;
+    height: 22px;
+    border: 1px solid #999999;
+    font-size: 12px;
+    line-height: 22px;
+  }
+
+  .new-author {
+    padding-left: 14px;
+  }
+
+  .news-time {
+    margin: 0 10px;
+  }
+
+  .fr-element.fr-view {
+    text-align: justify;
+    font-size: 16px;
+    line-height: 30px;
+    img {
+      // background: url("./img/loading.gif") no-repeat center;
+    }
+  }
+
+  // .fr-element.fr-view p {
+  //   line-height: 1.8;
+  // }
+  #goTop {
+    position: fixed;
+    right: 10px;
+    bottom: 100px;
+    display: none;
+    width: 54px;
+    height: 54px;
+    background: url("./img/go-top.png");
+    cursor: pointer;
+  }
+  .el-loading-spinner {
+    position: fixed;
+    margin-left: -180px;
+    width: 100px;
+    left: 50%;
+  }
+  .el-loading-text {
+    color: #01cd78;
+  }
+}
+
+#newsComments {
+  clear: both;
+  .to-thumb {
+    position: relative;
+    margin-top: 60px;
+    margin-bottom: 40px;
+    width: 180px;
+    height: 56px;
+    border: 1px solid #01cd78;
+    border-radius: 40px;
+  }
+  .to-thumb-icon {
+    float: left;
+    width: 50%;
+    height: 100%;
+    background-image: url("./img/thumb-icon.png");
+    background-position: 44px center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }
+  .thumb-num-change {
+    position: absolute;
+    top: 19px;
+    right: 25px;
+    color: #01cd78;
+    opacity: 0;
+  }
+  .to-thumb-icon.on {
+    background-image: url("./img/thumb-icon-on.png");
+  }
+
+  .to-thumb-icon.on.animate {
+    animation: thumb 0.5s;
+  }
+  .to-thumb-num {
+    float: right;
+    margin-top: 13px;
+    padding-left: 22px;
+    width: 50%;
+    height: 30px;
+    border-left: 1px solid #01cd78;
+    color: #01cd78;
+    font-size: 15px;
+    line-height: 30px;
+  }
+
+  @keyframes thumbChange {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      top: 0;
+      opacity: 0;
+    }
+  }
+
+  @keyframes thumb {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.3);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  .c-area {
+    .emoji-box {
+      top: 40px;
+      left: -0;
+      z-index: 10;
+      overflow: hidden;
+      width: 425px;
+      height: 0px;
+      background: white;
+      box-shadow: 0 4px 20px 1px rgba(0, 0, 0, 0.2);
+    }
+    .emoji-box.open {
+      margin-top: -4px;
+      margin-bottom: 20px;
+      height: 250px;
+      transition: height 0.2s;
+      &:after {
+        opacity: 1;
+      }
+    }
+    .emoji-box:after {
+      position: absolute;
+      top: 31px;
+      left: 22px;
+      width: 16px;
+      height: 8px;
+      background: url("./img/coll-icon.png");
+      content: "";
+      opacity: 0;
+    }
+    .c-area-l {
+      float: left;
+      width: 48px;
+      height: 48px;
+      a {
+        display: block;
+        height: 100%;
+        img {
+          width: 48px;
+          height: 48px;
+          border-radius: 100%;
+        }
+      }
+    }
+    .c-area-r {
+      float: right;
+      width: 614px;
+      .comments-box {
+        position: relative;
+        textarea {
+          margin-top: 4px;
+          padding: 5px 7px;
+          width: 613px;
+          height: 40px;
+          border: 1px solid #dddddd;
+          color: #1f2d3d;
+          font-size: 14px;
+          line-height: 26px;
+          resize: none;
+          transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1),
+            height 0.2s;
+          &:focus {
+            border: 1px solid #01cd78;
+            transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+            + button + .comments-bar {
+              border: 1px solid #01cd78;
+              border-top: 1px solid rgba(0, 0, 0, 0);
+              transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+            }
+          }
+        }
+        .comments-submit {
+          position: absolute;
+          right: 0;
+          bottom: 43px;
+          z-index: 100;
+          float: right;
+          width: 90px;
+          height: 40px;
+          border: none;
+          border-radius: 0;
+          background: #01cd78;
+          color: #fff;
+          font-size: 14px;
+          cursor: pointer;
+        }
+        @-moz-document url-prefix() {
+          .comments-submit {
+            bottom: 41px;
+          }
+        }
+        .comments-bar {
+          position: relative;
+          top: -4px;
+          z-index: 99;
+          height: 40px;
+          border: 1px solid #dddddd;
+          background: #f5f5f7;
+          opacity: 0;
+          transition: all 0.3s;
+          .emoji-btn {
+            position: relative;
+            top: 0;
+            left: 10px;
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: url("./img/smile-icon.png") no-repeat center;
+            background-size: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            &:hover {
+              opacity: 0.8;
+            }
+          }
+        }
+      }
+      .comments-box.focus {
+        textarea {
+          height: 140px;
+          transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1),
+            height 0.2s; // border-bottom: 40px solid #f5f5f7;
+        }
+        .comments-submit {
+          bottom: 4px;
+        }
+        .comments-bar {
+          opacity: 1; // border: 1px solid #01cd78;
+          // border-top: 0;
+        }
+      }
+    }
+    .comments-list {
+      .list-l {
+        clear: both;
+        overflow: hidden;
+        margin-bottom: 38px;
+        .multi-reply {
+          position: relative;
+          top: 8px;
+          clear: both;
+          margin-top: 26px;
+          margin-left: 64px;
+          padding-top: 30px;
+          padding-left: 18px;
+          width: 615px;
+          border-top: 1px solid #f0f2f1;
+          background: #f5f6fa;
+          .list-l {
+            margin-bottom: 0;
+            padding-bottom: 26px;
+            .user-info {
+              em {
+                padding-right: 15px;
+              }
+            }
+          }
+          .c-area-r {
+            width: 522px;
+            .content {
+              width: 480px;
+            }
+          }
+          .comments-box {
+            width: 510px;
+            textarea {
+              width: 100%;
+            }
+          }
+        }
+        .multi-reply:before {
+          position: absolute;
+          top: -6px;
+          left: 105px;
+          border-right: 8px solid transparent;
+          border-bottom: 5px solid #f4f5f9;
+          border-left: 8px solid transparent;
+          content: "";
+        }
+        .user-info {
+          color: #999;
+          font-size: 12px;
+          em {
+            float: right;
+            font-style: normal;
+          }
+          .user-name {
+            padding-right: 8px;
+            color: #38c695;
+            font-size: 14px;
+          }
+        }
+        .content {
+          margin-top: 8px;
+          width: 610px;
+          color: rgba(0, 0, 0, 0.8);
+          word-break: break-all;
+          font-size: 14px;
+          line-height: 26px;
+        }
+        .article-icon {
+          margin-top: 10px;
+        }
+      }
+    }
+    .active-comments {
+      animation: animations 1.5s ease 2;
+      padding: 10px 0;
+    }
+    @keyframes animations {
+      0% {
+        box-shadow: 0 0 10px rgba(158, 158, 158, 0);
+      }
+      50% {
+        box-shadow: 0 0 10px rgba(158, 158, 158, 0.8);
+      }
+      100% {
+        box-shadow: 0 0 10px rgba(158, 158, 158, 0);
+      }
+    }
+  }
+  .comments-num {
+    clear: both;
+    margin-top: 64px;
+    margin-bottom: 36px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #e5e9ec;
+    font-size: 18px;
+  }
+  .no-comments {
+    margin: 0 auto;
+    margin-bottom: 50px;
+    padding-top: 140px;
+    width: 226px;
+    height: 92px;
+    background: url("./img/no-comments.png") no-repeat center;
+    background-size: contain;
+    text-align: center;
+  }
+  .no-comments a {
+    color: #01cd78;
+  }
+}
+</style>
+<script>
+import vueEmoji from "@/components/emoji/emoji";
+import emojiDate from "@/components/emoji/data";
+import lazyload from "jquery-lazyload";
+
+require("imageviewer");
+require("./css/viewer.css");
+
+// require("@/components/froala-editor/css/froala_editor.pkgd.min.css");
+// require("font-awesome/css/font-awesome.css");
+// require("@/components/froala-editor/css/froala_style.min.css");
+
+export default {
+  name: "newsDetail",
+  data() {
+    return {
+      detail: {}, //详情
+      personInfo: {}, //个人信息
+      comments: [], //评论列表
+      commentsChild: [], //子评论
+      text: "", //即将提交的评论内容,
+      subText: "", //即将提交的子评论内容,
+      id: this.$route.query.id,
+      modal: false,
+      commentCount: 0,
+      fileList: [], //附件列表
+      news: [], // 最新随机新闻
+      commentsUser: [], //评论用户的信息
+      showEmoji: false,
+      focus: false,
+      isThumb: false, //是否已经点赞
+      flag: true,
+      loading: true
+    };
+  },
+  components: {
+    vueEmoji
+  },
+  created() {
+    this.toRead(); //增加阅读数
+    this.ajax({
+      //获取个人信息
+      url: "/authority/user/homepage/detail",
+      success(data, $this) {
+        if (data.code == "success") {
+          $this.personInfo = data.content;
+        }
+      }
+    });
+    this.getComments();
+    this.getNews();
+    this.getThumbIs();
+  },
+  filters: {
+    resetTime(dateTimeStamp) {
+      let minute = 1000 * 60;
+      let hour = minute * 60;
+      let day = hour * 24;
+      let month = day * 30;
+      let now = new Date().getTime();
+      let diffValue = now - dateTimeStamp;
+      if (diffValue < 0) {
+        return "刚刚";
+      }
+      let monthC = diffValue / month;
+      let weekC = diffValue / (7 * day);
+      let dayC = diffValue / day;
+      let hourC = diffValue / hour;
+      let minC = diffValue / minute;
+      let result = "";
+      if (weekC == 1) {
+        result = "" + parseInt(weekC) + "周前";
+      } else if (dayC >= 1 && dayC <= 5) {
+        result = "" + parseInt(dayC) + "天前";
+      } else if (hourC >= 1 && hourC <= 24) {
+        result = "" + parseInt(hourC) + "小时前";
+      } else if (minC >= 1 && minC <= 60) {
+        result = "" + parseInt(minC) + "分钟前";
+      } else if (minC < 1) {
+        result = "刚刚";
+      } else {
+        result = new Date(dateTimeStamp).toStr();
+      }
+      return result;
+    }
+  },
+  methods: {
+    bigAvatar(avatar) {
+      //查看大头像
+      // this.modal = true;
+      // this.commentsUser = avatar;
+    },
+    getComments() {
+      //获取评论详情
+      this.ajax({
+        url: "news/comment/" + this.id + "/0/list",
+        data: {
+          pageNum: 1,
+          pageSize: 100
+        },
+        success(data, $this) {
+          if (data.code == "success") {
+            let { content } = data;
+            $this.comments = content.map((item, index) => {
+              item.show = false;
+              let tempChild = item.children.map(child => {
+                child.show = false;
+                return child;
+              });
+              $this.commentsChild[index] = tempChild.sort(
+                Utils.toSort("addTime")
+              );
+              // $this.commentsChild[index] = tempChild.sort((a, b) => {
+              //   return a.addTime > b.addTime
+              // })
+              return item;
+            });
+          }
+          setTimeout(() => {
+            let hash = $this.$route.hash;
+            let $hash = $(hash);
+            if (hash.indexOf("to") > 0 && $hash[0]) {
+              $("body,html").animate(
+                {
+                  scrollTop: $hash.offset().top - 220
+                },
+                10
+              );
+              $hash.addClass("active-comments");
+              $this.$router.push({
+                path: $this.path,
+                query: $this.$route.query
+              });
+            }
+          }, 1000);
+        }
+      });
+    },
+    getNews() {
+      //获取最新新闻
+      this.ajax({
+        url: "/news/common/list",
+        data: {
+          isTop: 1,
+          pageNum: 1,
+          pageSize: 5,
+          isPublish: 0
+        },
+        success(data, $this) {
+          if (data.code == "success") {
+            $this.news = data.content;
+          }
+        }
+      });
+    },
+    setArea() {
+      this.showEmoji = !this.showEmoji;
+    },
+    reply(comments, type) {
+      this.text = "";
+      this.subText = "";
+      if (type == undefined) {
+        //一级评论
+        this.commentsChild = this.commentsChild.map(item => {
+          return item.map(child => {
+            child.show = false;
+            return child;
+          });
+        });
+        this.comments = this.comments.map(item => {
+          if (item.id != comments.id) {
+            item.show = false;
+          }
+          return item;
+        });
+      } else {
+        //二级评论
+        this.comments = this.comments.map(item => {
+          item.show = false;
+          return item;
+        });
+        this.commentsChild[type] = this.commentsChild[type].map(item => {
+          if (item.id != comments.id) {
+            item.show = false;
+          }
+          return item;
+        });
+      }
+      this.focus = false;
+      comments.show = !comments.show;
+    },
+    closeAllComments() {
+      // this.text = '';
+      this.commentsChild = this.commentsChild.map(item => {
+        return item.map(child => {
+          child.show = false;
+          return child;
+        });
+      });
+      this.comments = this.comments.map(item => {
+        item.show = false;
+        return item;
+      });
+    },
+    fastComments() {
+      this.focus = true;
+      $("body,html").animate(
+        {
+          scrollTop: $(".comments-box").offset().top - 100
+        },
+        10
+      );
+    },
+    toComments(parentId, childId, sub) {
+      let text = "";
+      if (sub) {
+        //子回复
+        text = this.subText;
+        // this.subText = '';
+      } else {
+        text = this.text;
+        // this.text = '';
+      }
+      if (text.trim().length == 0) {
+        this.errorTips("评论内容不能为空!");
+        return;
+      }
+      let params = {
+        newId: parentId,
+        content: text.replace(/\n/g, "<br/>").replace(/\s/g, "&nbsp;")
+      };
+      if (childId) {
+        params.parentId = childId;
+      }
+      this.disable = true;
+      this.ajax({
+        url: "/news/comment",
+        type: "post",
+        data: params,
+        success(data, $this) {
+          if (data.code == "success") {
+            $this.getComments();
+            $this.text = "";
+            $this.subText = "";
+            $this.successTips("评论成功!");
+            $this.commentCount = data.content;
+            $this.showEmoji = false;
+          } else {
+            $this.errorTips(data.message);
+          }
+          $this.disable = false;
+        }
+      });
+    },
+    spread() {
+      this.closeAllComments();
+    },
+    getEmoji(value, src) {
+      this.text += `[${value}]`;
+    },
+    getEmojiSub(value, src) {
+      this.subText += `[${value}]`;
+    },
+    commentsFilter(value) {
+      let reg = /\[(.*?)\]/g;
+      return value.replace(reg, function(a, b) {
+        let src = emojiDate[b];
+        return (
+          src && (src = require("@/components/emoji/img/" + src + ".gif")),
+          src
+            ? '<img style="position:relative; top: 4px; margin-left: 3px; margin-right: 3px;" title="' +
+              b +
+              '" src="' +
+              src +
+              '" />'
+            : b
+        );
+      });
+    },
+    getThumbIs() {
+      this.ajax({
+        url: "/news/likes/status",
+        data: {
+          userId: Utils.getValue("u"),
+          refId: this.$route.query.id,
+          type: 2
+        },
+        success(data, $this) {
+          if (data.code == "success") {
+            $this.isThumb = data.content;
+          }
+        }
+      });
+    },
+    toThumb(id, item) {
+      let params = {
+        userId: Utils.getValue("u"),
+        refId: id,
+        type: 2
+      };
+
+      let isThumb = false;
+      if (item) {
+        isThumb = Boolean(item.isLikes);
+      } else {
+        isThumb = this.isThumb;
+      }
+
+      if (isThumb) {
+        //已经点赞过了
+        params.isvalid = 0;
+        if (item) {
+          item.isLikes = 0;
+          item.likes--;
+        } else {
+          $(this.$refs.toThumb).removeClass("on animate");
+          this.isThumb = false;
+          this.detail.likes--;
+        }
+        this.ajax({
+          //取消点赞
+          url: "news/likes/update",
+          type: "put",
+          data: params,
+          success(data, $this) {
+            if (data.code != "success") {
+              $this.errorTips("点赞失败!");
+            }
+          }
+        });
+      } else {
+        if (item) {
+          item.isLikes = 1;
+          item.likes++;
+        } else {
+          $(this.$refs.toThumb).addClass("on animate");
+          this.isThumb = true;
+          this.detail.likes++;
+        }
+        this.ajax({
+          url: "news/likes/read/add",
+          type: "put",
+          data: params,
+          success(data, $this) {
+            if (data.code != "success") {
+              $this.errorTips("点赞失败!");
+            }
+          }
+        });
+      }
+    },
+    toRead() {
+      this.ajax({
+        url: "news/likes/read/add",
+        type: "put",
+        data: {
+          userId: Utils.getValue("u"),
+          refId: this.$route.query.id,
+          type: 1
+        },
+        success(data, $this) {
+          if (data.code == "success") {
+            $this.getArticle();
+          }
+        }
+      });
+    },
+    getArticle() {
+      this.ajax({
+        //获取新闻公告详情
+        url: "/news/" + this.id + "/detail?",
+        data: {
+          comStatus: 0
+        },
+        success(data, $this) {
+          if (data.code == "success") {
+            // let loadingImg = require('@/pages/index/news/img/loading.gif')
+            $this.loading = false;
+            let { newsTitle, content } = data.content;
+            document.title = newsTitle;
+            $this.detail = data.content;
+
+            if ($this.detail.attachmentId) {
+              let attachmentId = $this.detail.attachmentId.split("#");
+              let attachmentName = $this.detail.attachmentName.split("#");
+              for (let i = 0; i < attachmentId.length - 1; i++) {
+                $this.fileList.push({
+                  name: attachmentName[i],
+                  id: attachmentId[i]
+                });
+              }
+            }
+            $this.commentCount = data.content.commentCount;
+            //  /<img [^>]*src=['"]([^'"]+)[^>]*>/gi
+            $this.detail.content = $this.dealImg(content);
+          }
+        }
+      });
+    },
+    getDepartment(name) {
+      let depart = name.split("-");
+      return depart[depart.length - 1];
+    }
+  },
+  updated() {
+    this.$nextTick(() => {
+      if (this.isThumb) {
+        $(this.$refs.toThumb).addClass("on");
+      }
+      if (this.flag && $(".thumb-img").length > 0) {
+        $(".fr-view").viewer({
+          url: "data-original",
+          navbar: false,
+          rotatable: false,
+          scalable: false,
+          transition: false,
+          view: function name(params) {
+            $(".viewer-canvas").addClass("load");
+          },
+          viewed: function() {
+            $(".viewer-canvas").removeClass("load");
+          }
+        });
+        $(".thumb-img").lazyload({
+          threshold: 180,
+          effect: "fadeIn",
+          data_attribute: "src"
+        });
+        $('.ecary-group').on('click', function(e){
+          e.preventDefault()
+        })
+        this.flag = false; 
+      }
+      // let $window = $(window)
+      // // 获取包含data-src属性的img，并以jQuery对象存入数组:
+      // let allImg = $('img[data-original]').get()
+      // let lazyImgs = allImg.map(i => $(i))
+      // let onScroll = function() {
+      //   // 获取页面滚动的高度:
+      //   var wtop = $window.scrollTop()
+      //   // 判断是否还有未加载的img:
+      //   if (lazyImgs.length > 0) {
+      //     // 获取可视区域高度:
+      //     var wheight = $window.height()
+      //     // 存放待删除的索引:
+      //     var loadedIndex = []
+      //     // 循环处理数组的每个img元素:
+
+      //     $.each(lazyImgs, function(index, $i) {
+      //       // 判断是否在可视范围内:
+      //       if ($i.offset().top - wtop < wheight) {
+      //         // 设置src属性:
+      //         $i.attr('src', $i.attr('data-original'))
+      //         // 添加到待删除数组:
+      //         loadedIndex.unshift(index)
+      //       }
+      //     })
+      //     // 删除已处理的对象:
+      //     $.each(loadedIndex, function(index, $i) {
+      //       lazyImgs.splice(index, 1)
+      //     })
+      //   }
+      // }
+      // // 绑定事件:
+      // $window.scroll(onScroll)
+      // // 手动触发一次:
+      // onScroll()
+    });
+  },
+  mounted() {
+    let $this = this;
+    $(window).on("scroll", function() {
+      var scrollTop = $(window).scrollTop();
+      var goTop = $("#goTop");
+      if (scrollTop >= 500) {
+        goTop.fadeIn();
+      } else {
+        goTop.fadeOut();
+      }
+    });
+
+    $("body")
+      .on("click", function(e) {
+        if (!$(e.target).hasClass("emoji-btn")) {
+          $this.showEmoji = false;
+          $(".comments-area").animate(
+            {
+              marginBottom: 0
+            },
+            300
+          );
+        }
+      })
+      .on("click", ".viewer-container", function(e) {
+        if ($(e.target).hasClass("viewer-canvas")) {
+          $(".viewer-close").trigger("click");
+        }
+      });
+    $("#goTop").on("click", function() {
+      $("body,html").animate(
+        {
+          scrollTop: 0
+        },
+        500
+      );
+    });
+    // window.addEventListener('popstate', function() {
+    //   window.location.reload()
+    // })
+  }
+};
+</script>

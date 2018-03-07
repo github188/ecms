@@ -1,0 +1,443 @@
+<template>
+  <div class="content-box">
+    <el-breadcrumb separator="/">
+      <el-breadcrumb-item :to="{ path: '/index' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>我的工作台</el-breadcrumb-item>
+    </el-breadcrumb>
+    <div class="work-order">
+      <div class="work-filter">
+        <el-form ref="form" label-width="85px" inline>
+          <el-form-item label="流程类型：" v-if="activeTab != 'read'">
+            <v-code ref="code" :clearable="true" style="width: 140px;" codeType="processtype" @change="getCode"></v-code>
+          </el-form-item>
+          <el-form-item label="发起人：" v-if="activeTab != 'myapply'&& activeTab != 'read'">
+            <el-input style="width: 140px;" v-model="search.sponsorsName"></el-input>
+          </el-form-item>
+          <el-form-item :label="activeTab != 'read'?'流程名称：':'标题：'">
+            <el-input style="width: 140px;" v-model="search.title"></el-input>
+          </el-form-item>
+          <el-button type="success" class="search-btn" @click="queryList(activeTab)">查询</el-button>
+        </el-form>
+      </div>
+      <el-tabs v-model="activeTab" @tab-click="queryList" class="work-list-tab" type="card">
+        <el-tab-pane name="todo">
+          <span slot="label">
+            <i class="icon icon-todo"></i> 我的待办</span>
+          <div v-if="todoList.length">
+            <ul class="work-box">
+              <li v-for="(item, index) in todoList" :key="index">
+                <el-row>
+                  <router-link :to="{name: 'workDetail', params: {id: item.processId, type: item.type}}">
+                    <!-- <router-link :to="{path: '/work/detail', query: {id: item.processId, type: item.type}}"> -->
+                    <p class="padding-b-10">{{item.title}}</p>
+                    <el-col :span="8">
+                      <i class="el-icon-time"></i>
+                      <span class="padding-t-15">{{item.nodesName}}</span>
+                    </el-col>
+                    <el-col :span="8" style="text-align: center">
+                      <span v-if="item.doingPerson.length">
+                        {{item.donePerson | dealStatus(item.doingPerson)}}&nbsp;&nbsp;
+                        <span class="deal-status">处理中</span>
+                      </span>
+                      <span v-else>
+                        <span v-if="item.doingPerson.length == 0 && item.donePerson.length == 0">{{item.nodesName}}</span>
+                        <span v-else>已完成</span>
+                      </span>
+                    </el-col>
+                    <el-col :span="8" style="text-align:right">
+                      <span class="padding-r-20">{{ item.sponsorsName }}</span>
+                      <span class="deal-time">{{ item.addTime | addTime(item.addTime, item.updateTime)}} </span>
+                    </el-col>
+                  </router-link>
+                </el-row>
+              </li>
+            </ul>
+            <el-pagination layout="prev, pager, next" :page-size="search.pageSize" @current-change="changePage" :total="totalPages">
+            </el-pagination>
+          </div>
+          <p style="font-size: 14px; margin-top: 130px; text-align:center;" v-else>
+            勤劳如您，一个待办都木有，点赞！
+          </p>
+        </el-tab-pane>
+
+        <el-tab-pane name="read">
+          <span slot="label">
+            <i class="icon icon-read"></i> 我的待阅</span>
+          <div v-if="readList.length">
+            <ul class="work-box">
+              <li v-for="(item, index) in readList" :key="index">
+                <el-row>
+                  <router-link @click.native="toRead(item.id)" target="_blank" :to="getReadLink(item)">
+                    <!-- <router-link :to="{path: '/work/detail', query: {id: item.id, type: item.type, nodeId: item.nodeId}}"> -->
+                    <el-col :span="16" style="height:19px">
+                      {{item.title}}
+                    </el-col>
+                    <el-col :span="8" style="text-align:right">
+                      <!-- <span class="padding-r-20">{{ item.sponsorsName }}</span> -->
+                      <span class="deal-time">{{ item.addTime | addTime(item.addTime, item.updateTime)}} </span>
+                    </el-col>
+                  </router-link>
+                </el-row>
+              </li>
+            </ul>
+            <el-pagination layout="prev, pager, next" :page-size="search.pageSize" @current-change="changePage" :total="totalPages">
+            </el-pagination>
+          </div>
+          <p style="font-size: 14px;margin-top: 130px; text-align:center" v-else>
+            您没有新的待阅，此处空空如也。
+          </p>
+        </el-tab-pane>
+
+        <el-tab-pane name="myapply">
+          <span slot="label">
+            <i class="icon icon-myapply"></i> 我的申请</span>
+          <div v-if="applyList.length">
+            <ul class="work-box">
+              <li v-for="(item, index) in applyList" :key="index">
+                <el-row>
+                  <router-link :to="{name: 'workDetail', params: {id: item.processId, type: item.type}}">
+                    <!-- <router-link :to="{path: '/work/detail', query: {id: item.id, type: item.type, nodeId: item.nodeId}}"> -->
+                    <p class="padding-b-10">{{item.title}}</p>
+                    <el-col :span="8">
+                      <i class="el-icon-time"></i>
+                      <span class="padding-t-15">{{item.nodesName}}</span>
+                    </el-col>
+                    <el-col :span="8" style="text-align: center">
+                      <span v-if="item.doingPerson.length">
+                        {{item.donePerson | dealStatus(item.doingPerson)}}&nbsp;&nbsp;
+                        <span class="deal-status">处理中</span>
+                      </span>
+                      <span v-else>
+                        <span v-if="item.doingPerson.length == 0 && item.donePerson.length == 0">{{item.nodesName}}</span>
+                        <span v-else>已完成</span>
+                      </span>
+                    </el-col>
+                    <el-col :span="8" style="text-align:right">
+                      <span class="padding-r-20">{{ item.sponsorsName }}</span>
+                      <span class="deal-time">{{ item.addTime | addTime(item.addTime, item.updateTime)}} </span>
+                    </el-col>
+                  </router-link>
+                </el-row>
+              </li>
+            </ul>
+            <el-pagination layout="prev, pager, next" :page-size="search.pageSize" @current-change="changePage" :total="totalPages">
+            </el-pagination>
+          </div>
+          <p style="font-size: 14px;margin-top: 130px; text-align:center" v-else>
+            您还没有发起过任何申请，此处空空如也。
+          </p>
+        </el-tab-pane>
+
+        <el-tab-pane name="done">
+          <span slot="label">
+            <i class="icon icon-done"></i> 我的已办</span>
+          <div v-if="doneList.length">
+            <ul class="work-box">
+              <li v-for="(item, index) in doneList" :key="index">
+                <el-row>
+                  <router-link :to="{name: 'workDetail', params: {id: item.processId, type: item.type}}">
+                    <!-- <router-link :to="{path: '/work/detail', query: {id: item.processId, type: item.type}}"> -->
+                    <p class="padding-b-10">{{item.title}}</p>
+                    <el-col :span="8">
+                      <i class="el-icon-time"></i>
+                      <span class="padding-t-15">{{item.nodesName}}</span>
+                    </el-col>
+                    <el-col :span="8" style="text-align: center">
+                      <span v-if="item.doingPerson.length">
+                        {{item.donePerson | dealStatus(item.doingPerson)}}&nbsp;&nbsp;
+                        <span class="deal-status">处理中</span>
+                      </span>
+                      <span v-else>
+                        <span v-if="item.doingPerson.length == 0 && item.donePerson.length == 0">{{item.nodesName}}</span>
+                        <span v-else>已完成</span>
+                      </span>
+                    </el-col>
+                    <el-col :span="8" style="text-align:right">
+                      <span class="padding-r-20">{{ item.sponsorsName }}</span>
+                      <span class="deal-time">{{ item.addTime | addTime(item.addTime, item.updateTime)}} </span>
+                    </el-col>
+                  </router-link>
+                </el-row>
+              </li>
+            </ul>
+            <el-pagination layout="prev, pager, next" :page-size="search.pageSize" @current-change="changePage" :total="totalPages">
+            </el-pagination>
+          </div>
+          <p style="font-size: 14px; margin-top: 130px; text-align:center" v-else>
+            四大皆空，已办也空。
+          </p>
+        </el-tab-pane>
+
+      </el-tabs>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.search-btn {
+  margin-left: 20px;
+  margin-top: 3px;
+}
+.work-order {
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  background: #fff;
+  /* min-height: 665px; */
+  min-height: calc(100vh - 152px);
+}
+.work-filter {
+  margin-left: 300px;
+  z-index: 99;
+  overflow: hidden;
+}
+.work-list-tab {
+  float: left;
+}
+.work-box {
+  margin-top: 20px;
+}
+.work-box li {
+  padding: 15px 0;
+  border-bottom: 1px solid #e6e9eb;
+  color: #40474d;
+  font-size: 14px;
+}
+.deal-status {
+  color: #888a95;
+}
+.deal-time {
+  color: #92939d;
+}
+.el-icon-time {
+  font-size: 14px;
+  font-weight: normal;
+  padding-left: 2px;
+  color: #01cd78;
+}
+i.icon {
+  display: inline-block;
+  width: 22px;
+  height: 24px;
+  background-image: url('./img/icon.png');
+  background-repeat: no-repeat;
+  position: relative;
+  top: 10px;
+  padding-right: 30px;
+}
+i.icon.icon-todo {
+  background-position: -110px 0;
+}
+.is-active i.icon.icon-todo {
+  background-position: -110px -34px;
+}
+i.icon.icon-done {
+  background-position: 0 0;
+}
+.is-active i.icon.icon-done {
+  background-position: 0 -34px;
+}
+i.icon.icon-myapply {
+  background-position: -56px 0;
+}
+i.icon.icon-read {
+  background-position: -168px 0;
+}
+.is-active i.icon.icon-myapply {
+  background-position: -56px -34px;
+}
+.is-active i.icon.icon-read {
+  background-position: -168px -34px;
+}
+@media screen and (max-width: 1366px) {
+  .search-btn {
+    margin-left: 16px;
+  }
+}
+</style>
+
+<style>
+.work-list-tab {
+  width: 100%;
+}
+
+.work-list-tab .el-tabs__item {
+  display: block;
+  height: 48px;
+  line-height: 48px;
+  border-radius: 6px;
+}
+
+.work-list-tab .el-tabs__header {
+  border-bottom: none;
+  width: 280px;
+  float: left;
+  top: 20px;
+  position: absolute;
+}
+
+.work-list-tab .el-tabs__content {
+  margin-left: 310px;
+}
+
+.work-list-tab.el-tabs--card .el-tabs__header .el-tabs__item.is-active {
+  border: none;
+  color: #fff;
+  background-color: #01cd78;
+}
+
+.work-list-tab .el-tabs__nav {
+  width: 242px;
+}
+
+.work-order .el-pagination {
+  float: right;
+  margin: 60px 0;
+}
+
+.work-order .el-autocomplete-suggestion__wrap,
+.work-order .el-pager li,
+.work-order .el-pagination .btn-next,
+.work-order .el-pagination .btn-prev,
+.work-order .el-pager li:last-child {
+  border: none;
+}
+
+.work-order .el-pager li.active {
+  background-color: transparent;
+  color: #01cd78;
+  border-radius: 50%;
+  border: 1px solid #01cd78;
+}
+
+.work-order .el-pager li:hover,
+.work-order .el-pagination button:hover {
+  color: #01cd78 !important;
+}
+</style>
+
+<script>
+import Code from '@/components/getCode'
+export default {
+  name: 'workList',
+  components: {
+    'v-code': Code,
+  },
+  data() {
+    return {
+      todoList: [],
+      doneList: [],
+      applyList: [],
+      readList: [],
+      activeTab: 'todo',
+      totalPages: 1, //总页数
+      search: {
+        type: null, //流程类型
+        title: null, //流程名称
+        sponsorsName: null, //发起人
+        pageNum: 1,
+        pageSize: 5,
+        userId: Utils.getValue('u')
+      },
+    }
+  },
+  created() {
+    let { name } = this.$route.query
+    if (name) {
+      this.queryList(name)
+      this.activeTab = name
+    } else {
+      this.queryList('todo')
+    }
+  },
+  filters: {
+    addTime(addTime, updateTime) {
+      return updateTime ? new Date(updateTime).toStr() : new Date(addTime).toStr()
+    },
+    dealStatus(donePerson, doingPerson) {
+      let doingArr = []
+      for (let i = 0; i < doingPerson.length; i++) {
+        doingArr.push(doingPerson[i].handlerName)
+      }
+      if (doingPerson.length !== 0) {
+        return Utils.arrayUnique(doingArr).join('、')
+      }
+    },
+  },
+  methods: {
+    getCode(code) {
+      this.search.type = code.value
+    },
+    queryList(tab) {
+      if (typeof tab == 'string') {
+        var name = tab
+      } else {
+        var { name } = tab
+      }
+      let url = '/sys/process/' + name + '/list';
+      if (name == 'read') {
+        url = 'news/toread/list'
+      }
+      this.activeTab = name
+      this.ajax({
+        url,
+        data: Utils.filterObjectNull(this.search),
+        success(data, $this) {
+          if (data.code == 'success') {
+            if (name == 'todo') {
+              $this.todoList = data.content
+            } else if (name == 'done') {
+              $this.doneList = data.content
+            } else if (name == 'myapply') {
+              $this.applyList = data.content
+            } else if (name == 'read') {
+              $this.readList = data.content
+            }
+            $this.search.pageNum = 1
+            $this.totalPages = data.totals
+          }
+        },
+      })
+    },
+    changePage(currentPage) {
+      this.search.pageNum = currentPage
+      this.queryList(this.activeTab)
+    },
+    getReadLink(item) {
+      if (item.type == 1) { //新闻
+        return { path: '/news/detail', query: { id: item.refId } }
+      } else if (item.type == 2) { //评论
+        return { path: '/news/detail', hash: 'to' + item.newscomId, query: { id: item.refId } }
+      }
+    },
+    toRead(id) {
+      this.ajax({
+        url: '/news/toread/update',
+        data: {
+          id,
+          status: 1
+        },
+        success() {
+
+        }
+      })
+    }
+  },
+  mounted(){
+    this.$nextTick(() => {
+        if ($('.el-form').length != 0) {
+          $('.el-form').find('input:text')
+            .off('keypress').on('keypress', function (e) {
+              if (e.keyCode == 13) {
+                e.preventDefault()
+                $(this)
+                  .parents('form')
+                  .find('.search-btn')
+                  .trigger('click')
+              }
+            })
+        }
+      })
+  }
+}
+</script>

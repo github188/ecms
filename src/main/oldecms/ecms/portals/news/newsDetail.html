@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>亿车科技EAP</title>
+    <link rel="shortcut icon" type="images/x-icon" href="../../skins/img/short-icon.ico">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="../skins/img/logo.ico" type="image/x-icon"/>
+    <link rel="bookmark" href="../skins/img/logo.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../skins/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../skins/css/common.css"/>
+    <link rel="stylesheet" href="../skins/css/header.css"/>
+    <link rel="stylesheet" href="../skins/css/newsDetail.css">
+    <link rel="stylesheet" href="../skins/js/colorBox/colorbox.css">
+</head>
+<body>
+<!--头部start-->
+<header class="header">
+    <div class="header-box">
+        <a href="../../home.html" class="logo" title="亿车科技OA系统首页">
+            <h2>
+                <img src="../../skins/img/oa_logo.png" alt="">
+            </h2>
+        </a>
+        <!--<div class="search">-->
+        <!--<input type="text" placeholder="输入关键字搜索">-->
+        <!--</div>-->
+        <div class="setting">
+            <ul>
+                <li class="menu" id="emailNum">
+                    <a title="邮箱" id="emailMenu" target="_blank" class="message" href="javascript:;"></a>
+                </li>
+                <li class="menu">
+                    <a class="setting" href="#"></a>
+                    <ol class="sub-menu">
+                        <li><a href="#" id="changePassword">修改密码</a></li>
+                        <li><a href="../personInfo/personInfo.html" id="changePerson">个人信息</a></li>
+                    </ol>
+                </li>
+                <li class="menu"><a title="退出" id="logOut" class="log-out" href="#"></a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+<div class="current-content">
+    <div class="crumbs-pannel">
+        <a href="../../home.html">首页</a>>
+        <a href="newsList.html?mestype=1" id="prePage"></a>>
+        <a href="" class="current-color">详情</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="news-detail">
+        <h2 class="news-title"></h2>
+        <div class="fast-share">
+            <div class="news-comments" title="查看评论">
+                <span class="comments-amount">0</span>
+            </div>
+        </div>
+        <div class="news-content">
+            <div class="news-category">
+                <span class="news-category-tag"></span>
+                <span class="news-time"></span>
+                <span class="new-author"></span>
+            </div>
+            <!--内容-->
+            <div class="news-substance"></div>
+            <div class="comments-area">
+                <div class="comments-num"><b class="comments-amount">0</b><span>条评论</span></div>
+                <div class="comments-input">
+                    <a href="javascript:;" style="cursor: context-menu">
+                        <img class="comments-avatar" src="../skins/img/male-default.png" alt="">
+                    </a>
+                    <div class="comments-box">
+                        <textarea placeholder="写下你的评论..." class="comments-text"></textarea>
+                        <div class="submit-box">
+                            <button type="button" class="comments-submit">评论</button>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="comments-list">
+                </ul>
+                <div class="page-number" id="askPage"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="news-trends">
+        <h2 class="news-trends-name">企业动态</h2>
+        <ul> </ul>
+    </div>
+</div>
+
+<div id="goTop" title="返回顶部"></div>
+<!--修改密码start-->
+<div class="modal fade" id="modifyPassword" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">修改密码</h4>
+            </div>
+            <form role="form" id="modifyPasswordForm" method="post" class="validate">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required">*</span>原密码：</label>
+                                <input id="accountname" name="accountname" type="password" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required">*</span>新密码：</label>
+                                <input id="newpwd" name="newpwd" type="password" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required">*</span>确认密码：</label>
+                                <input id="savepwd" name="savepwd" type="password" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button type="submit" class="btn btn-success" id="btnPwdSave">确定</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--修改密码end-->
+
+<!-- Bottom Scripts -->
+<script src="../skins/js/jquery-1.11.1.min.js"></script>
+<!--frame-->
+<script src="../../skins/js/config.js"></script>
+<script src="../skins/js/base.js"></script>
+<script src="../skins/js/jquery.validate.min.js"></script>
+<script src="../skins/js/jquery.md5.js"></script>
+
+<script src="../skins/js/bootstrap.min.js"></script>
+<script src="../skins/js/header.js"></script>
+<script src="../../skins/js/layer/layer.js"></script>
+<script src="../skins/js/plugins/pagination/pagination.js"></script>
+<script src="../skins/js/colorBox/jquery.colorbox.js"></script>
+<script src="../skins/js/colorBox/jquery.colorbox-zh-CN.js"></script>
+<script src="../news/newsDetail.js"></script>
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>亿车科技EAP - 员工信息</title>
+    <link rel="shortcut icon" type="images/x-icon" href="../../skins/img/short-icon.ico">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="../skins/img/logo.ico" type="image/x-icon"/>
+    <link rel="bookmark" href="../skins/img/logo.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../skins/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../skins/css/header.css"/>
+    <link rel="stylesheet" href="../skins/js/plugins/pagination/pagination.css">
+    <style>
+        .main-section{
+            width: 1180px;
+            margin: 0 auto;
+            margin-top: 102px;
+        }
+        .person-left{
+            width: 280px;
+            background-color: #fff;
+            height: 100%;
+            float: left;
+            text-align: center;
+        }
+        .person-avatar{
+            display: block;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+            margin-top: 35px;
+            cursor: default;
+        }
+        .person-avatar img{
+            height: 100%;
+            width: 100%;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+        }
+        .person-name{
+            margin-top: 30px;
+            font-size: 16px;
+        }
+        .person-day{
+            margin-top: 17px;
+            font-size: 16px;
+        }
+        .person-day span{
+            color: #f37f39;
+            font-weight: bold;
+        }
+        .person-avatar-edit{
+            height: 32px;
+            line-height: 32px;
+            width: 100px;
+            background: #01cd78;
+            color: #fff;
+            border: none;
+            margin-top: 35px;
+        }
+        .person-right{
+            height: 100%;
+            background: #fff;
+            margin-left: 304px;
+            padding-top: 50px;
+            padding-left: 24px;
+        }
+        .person-head{
+            color: #333333;
+            font-size: 16px;
+        }
+        .person-item{
+            margin-bottom: 50px;
+        }
+        .person-head:before{
+            content: '';
+            background: #01cd78;
+            height: 16px;
+            width: 4px;
+            display: inline-block;
+            position: relative;
+            top: 2px;
+            margin-right: 10px;
+        }
+        .person-info-half{
+            display: inline-block;
+            width: 400px;
+            font-size: 14px;
+            margin-top: 25px;
+        }
+        .person-info-label{
+            display: block;
+            color: #999;
+            font-weight:normal;
+            margin-bottom: 15px;
+        }
+        .person-info-value{
+            color: #333;
+        }
+        .person-info-value[readonly]{
+            border: none;
+        }
+        .person-phone-edit, .person-phone-cancel{
+            color: #01cd78;
+            padding-left: 70px;
+            background: none;
+            border: none;
+            outline: none;
+        }
+        .person-avatar-edit-file{
+            position: relative;
+            left: 30px;
+            top: -34px;
+            height: 34px;
+            width: 160px;
+            opacity: 0;
+        }
+        .btn-success,.btn-success:hover,.btn-success:active,.btn-success:focus{
+            background-color: #01cd78;
+            border-color: #01cd78;
+        }
+        .form-group label.error{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<!--头部start-->
+<header class="header">
+    <div class="header-box">
+        <a href="../../home.html" class="logo" title="亿车科技OA系统首页">
+            <h2>
+                <img src="../../skins/img/oa_logo.png" alt="">
+            </h2>
+        </a>
+        <!--<div class="search">-->
+        <!--<input type="text" placeholder="输入关键字搜索">-->
+        <!--</div>-->
+        <div class="setting">
+            <ul>
+                <li class="menu" id="emailNum">
+                    <a title="邮箱" id="emailMenu" target="_blank" class="message" href="javascript:;"></a>
+                </li>
+                <li class="menu">
+                    <a class="setting" href="#"></a>
+                    <ol class="sub-menu">
+                        <li><a href="#" id="changePassword">修改密码</a></li>
+                        <li><a href="./personInfo.html" id="changePerson">个人信息</a></li>
+                    </ol>
+                </li>
+                <li class="menu"><a title="退出" id="logOut" class="log-out" href="#"></a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+<section class="main-section">
+    <div class="person-left">
+        <a href="javascript:;" class="person-avatar">
+            <img id="personAvatarImg" src="" alt="">
+        </a>
+
+        <p class="person-name">&nbsp;</p>
+        <p class="person-day">这是您在亿车的第<span id="personDay">0</span></p>
+
+        <button type="button" class="person-avatar-edit" href="javascript:;">修改头像</button>
+        <input style="cursor: pointer" type="file" id="uploadAvatar" name="uploadAvatar" class="person-avatar-edit-file" onchange="person.uploadAvatar();" value="修改头像"><!-- accept="image/png,image/jpg,image/gif"-->
+    </div>
+
+    <div class="person-right">
+        <div class="person-item">
+            <div class="person-head">基本信息</div>
+            <div class="person-info">
+                <div class="person-info-half">
+                    <label class="person-info-label">工号</label>
+                    <span class="person-info-value" id="personCode"></span>
+                </div>
+
+                <div class="person-info-half">
+                    <label class="person-info-label">姓名</label>
+                    <span class="person-info-value" id="personName"></span>
+                </div>
+            </div>
+
+            <div class="person-info">
+                <div class="person-info-half">
+                    <label class="person-info-label">部门</label>
+                    <span class="person-info-value" id="personDep"></span>
+                </div>
+
+                <div class="person-info-half">
+                    <label class="person-info-label">岗位</label>
+                    <span class="person-info-value" id="personPost"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="person-item">
+            <div class="person-head">联系方式</div>
+            <div class="person-info">
+                <div class="person-info-half">
+                    <label class="person-info-label">手机</label>
+                    <input class="person-info-value" id="personPhone" readonly />
+                    <button type="button" class="person-phone-edit" data-status="0">编辑</button>
+                    <button style="padding-left: 0; color: gray; display: none" type="button" class="person-phone-cancel" >取消</button>
+                </div>
+
+                <div class="person-info-half">
+                    <label class="person-info-label">座机</label>
+                    <span class="person-info-value" id="personTel"></span>
+                </div>
+            </div>
+
+            <div class="person-info">
+                <div class="person-info-half">
+                    <label class="person-info-label">邮箱</label>
+                    <span class="person-info-value" id="personEmail"></span>
+                </div>
+
+                <div class="person-info-half">
+                    <label class="person-info-label">常驻地</label>
+                    <span class="person-info-value" id="personAddress"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+
+<!--修改密码start-->
+<div class="modal fade" id="modifyPassword" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">修改密码</h4>
+            </div>
+            <form role="form" id="modifyPasswordForm" method="post" class="validate">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required">*</span>原密码：</label>
+                                <input id="accountname" name="accountname" type="password" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required">*</span>新密码：</label>
+                                <input id="newpwd" name="newpwd" type="password" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required">*</span>确认密码：</label>
+                                <input id="savepwd" name="savepwd" type="password" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button type="submit" class="btn btn-success" id="btnPwdSave">确定</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--修改密码end-->
+
+<!-- Bottom Scripts -->
+<script src="../skins/js/jquery-1.11.1.min.js"></script>
+<!--frame-->
+<script src="../../skins/js/config.js"></script>
+<script src="../skins/js/base.js"></script>
+<script src="../skins/js/jquery.validate.min.js"></script>
+<script src="../skins/js/jquery.md5.js"></script>
+
+<script src="../skins/js/bootstrap.min.js"></script>
+<script src="../skins/js/header.js"></script>
+<script src="../skins/js/plugins/pagination/pagination.js"></script>
+<script src="../../skins/js/layer/layer.js"></script>
+<script src="personInfo.js"></script>
+</body>
+</html>
+
+
+
+

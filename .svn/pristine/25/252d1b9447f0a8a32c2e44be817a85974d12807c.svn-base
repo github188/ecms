@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>归档合同-详情</title>
+    <link rel="shortcut icon" type="images/x-icon" href="../skins/img/short-icon.ico">
+    <link rel="bookmark" type="image/x-icon" href="../skins/img/short-icon.ico"/>
+    <link rel="stylesheet" href="../skins/css/fonts/linecons/css/linecons.css"/>
+    <link rel="stylesheet" href="../skins/css/fonts/fontawesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../skins/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../skins/css/xenon-core.css"/>
+    <link rel="stylesheet" href="../skins/css/xenon-forms.css"/>
+    <link rel="stylesheet" type="text/css" href="../skins/js/layer/skin/layer.css">
+    <link rel="stylesheet" type="text/css" href="css/contract.css">
+</head>
+<style>
+    body{
+        background: #fff;
+    }
+    #contractTab .col-sm-8{
+        padding-left: 0;
+    }
+    a:hover{
+        color: #01cd78;
+    }
+</style>
+<body>
+<div class="top-panel">
+    <span class="pull-left" id="clientName">合同归档详情</span>
+    <div id="contractFileButton" class="pull-right margin-t-20 margin-l-20 "></div>
+
+</div>
+<ul class="nav side-panel" role="tablist">
+    <li class="active"><a href="#contractTab" role="tab" data-toggle="tab">合同信息</a></li>
+    <li><a href="#businessTab" role="tab" data-toggle="tab">商务信息</a></li>
+    <li><a href="#projectTab" role="tab" data-toggle="tab">工程信息</a></li>
+    <!--<li><a href="#financeTab" role="tab" data-toggle="tab">财务信息</a></li>-->
+</ul>
+<div class="tab-content tab-content-panel edit-info">
+    <div class="tab-pane active" id="contractTab">
+        <div class="list-top">
+            <h4 class="list-title">基本信息</h4>
+        </div>
+
+        <div class="row tab-main">
+            <div class="form-group col-sm-4">
+                <label class="col-sm-4 text-right">合同编号：</label>
+                <div class="col-sm-8">
+                    <p class="show-info" id="contractCode">&nbsp;</p>
+                </div>
+            </div>
+            <div class="form-group col-sm-4">
+                <label class="col-sm-4 text-right">合同名称：</label>
+                <div class="col-sm-8">
+                    <p class="show-info" id="contractName">&nbsp;</p>
+                </div>
+            </div>
+            <div class="form-group col-sm-4">
+                <label class="col-sm-4 text-right">合同日期：</label>
+                <div class="col-sm-8">
+                    <p class="show-info" id="contractDate">&nbsp;</p>
+                </div>
+            </div>
+            <div class="form-group col-sm-4">
+                <label class="col-sm-4 text-right">合同属性：</label>
+                <div class="col-sm-8">
+                    <p class="show-info" id="contractAttr">&nbsp;</p>
+                </div>
+            </div>
+            <div class="form-group col-sm-4">
+                <label class="col-sm-4 text-right">式份：</label>
+                <div class="col-sm-8">
+                    <p class="show-info" id="contractType">&nbsp;</p>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-4">
+                <label class="col-sm-4 text-right">片区：</label>
+                <div class="col-sm-8">
+                    <p class="show-info" id="regionName">&nbsp;</p>
+                </div>
+            </div>
+
+            <!--<div class="form-group col-sm-4">-->
+                <!--<label class="col-sm-4 text-right">办事处：</label>-->
+                <!--<div class="col-sm-8">-->
+                    <!--<p class="show-info">某某办事处</p>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <div class="form-group col-sm-4">
+                <label class="col-sm-4 text-right">业务员：</label>
+                <div class="col-sm-8">
+                    <p class="show-info" id="salesmanName">&nbsp;</p>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-4">
+                <label class="col-sm-4 text-right">业务员电话：</label>
+                <div class="col-sm-8">
+                    <p class="show-info" id="salesmanTel">&nbsp;</p>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-4">
+                <label class="col-sm-4 text-right">合同所属商机：</label>
+                <div class="col-sm-8">
+                    <p class="show-info" id="oppName">&nbsp;</p>
+                </div>
+            </div>
+
+            <div class="col-sm-12"></div>
+        </div>
+
+        <div class="list-top">
+            <h4 class="list-title">客户信息</h4>
+        </div>
+
+        <div class="row tab-main">
+            <div class="form-group col-sm-4">
+                <label class="col-sm-4 text-right">客户名称：</label>
+                <div class="col-sm-8">
+                    <p class="show-info" id="customerName">&nbsp;</p>
+                </div>
+            </div>
+            <div class="form-group col-sm-4">
+                <label class="col-sm-4 text-right">合作方地址：</label>
+                <div class="col-sm-8">
+                    <p class="show-info" id="crmAdress">&nbsp;</p>
+                </div>
+            </div>
+            <div class="form-group col-sm-4">
+                <label class="col-sm-4 text-right">联系人：</label>
+                <div class="col-sm-8">
+                    <p class="show-info" id="crmConName">&nbsp;</p>
+                </div>
+            </div>
+            <div class="form-group col-sm-4">
+                <label class="col-sm-4 text-right">联系人电话：</label>
+                <div class="col-sm-8">
+                    <p class="show-info" id="crmConTel">&nbsp;</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="list-top">
+            <h4 class="list-title">合同原件</h4>
+
+        </div>
+
+        <div class="col-sm-8">
+            <p class="show-info" id="fileList">&nbsp;</p>
+        </div>
+    </div>
+
+    <div class="tab-pane" id="businessTab">
+        <div class="list-top">
+            <h4 class="list-title">基本信息</h4>
+        </div>
+
+        <div class="row tab-main">
+            <div class="form-group col-sm-4">
+                <label class="col-sm-5 text-right">签约模式：</label>
+                <div class="col-sm-7">
+                    <p class="show-info" id="signStyle">&nbsp;</p>
+                </div>
+            </div>
+            <div class="form-group col-sm-4">
+                <label class="col-sm-5 text-right">合同金额(元)：</label>
+                <div class="col-sm-7">
+                    <p class="show-info" id="contractAmount">&nbsp;</p>
+                </div>
+            </div>
+            <div class="form-group col-sm-4">
+                <label class="col-sm-5 text-right">单车道金额(元)：</label>
+                <div class="col-sm-7">
+                    <p class="show-info" id="carAmount">&nbsp;</p>
+                </div>
+            </div>
+            <div class="form-group col-sm-4">
+                <label class="col-sm-5 text-right">广告金额(元)：</label>
+                <div class="col-sm-7">
+                    <p class="show-info" id="adAmount">&nbsp;</p>
+                </div>
+            </div>
+            <div class="form-group col-sm-4">
+                <label class="col-sm-5 text-right">对账周期(天)：</label>
+                <div class="col-sm-7">
+                    <p class="show-info" id="period">&nbsp;</p>
+                </div>
+            </div>
+            <div class="form-group col-sm-4">
+                <label class="col-sm-5 text-right">合同起止时间：</label>
+                <div class="col-sm-7">
+                    <p class="show-info" id="startStopTime">&nbsp;</p>
+                </div>
+            </div>
+            <div class="form-group col-sm-4">
+                <label class="col-sm-5 text-right">合同年限：</label>
+                <div class="col-sm-7">
+                    <p class="show-info" id="deadline">&nbsp;</p>
+                </div>
+            </div>
+            <div class="form-group col-sm-4">
+                <label class="col-sm-5 text-right">付款方式：</label>
+                <div class="col-sm-7">
+                    <p class="show-info" id="payStyle">&nbsp;</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-pane" id="projectTab">
+        <div class="list-top">
+            <h4 class="list-title">硬件信息</h4>
+        </div>
+
+        <div class="row tab-main">
+            <div class="form-group col-sm-4">
+                <label class="col-sm-5 text-right">车道数(个)：</label>
+                <div class="col-sm-7">
+                    <p class="show-info" id="carRoads">&nbsp;</p>
+                </div>
+            </div>
+            <div class="form-group col-sm-4">
+                <label class="col-sm-5 text-right">泊位数(个)：</label>
+                <div class="col-sm-7">
+                    <p class="show-info" id="berth">&nbsp;</p>
+                </div>
+            </div>
+            <div class="col-sm-12"></div>
+            <div class="form-group col-sm-4">
+                <label class="col-sm-5 text-right">设备清单：</label>
+                <div class="col-sm-7" >
+                    <p class="show-info" id="deviceList">&nbsp;</p>
+                </div>
+            </div>
+            <div class="col-sm-12"></div>
+            <div class="form-group col-sm-4">
+                <label class="col-sm-5 text-right">其他特殊需求：</label>
+                <div class="col-sm-7">
+                    <p class="show-info" id="otherDemand">&nbsp;</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="list-top">
+            <h4 class="list-title">验收信息</h4>
+        </div>
+
+        <div class="row tab-main">
+            <div class="form-group col-sm-4">
+                <label class="col-sm-5 text-right">验收时间：</label>
+                <div class="col-sm-7">
+                    <p class="show-info" id="verifyTime">&nbsp;</p>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-4">
+                <label class="col-sm-5 text-right">验收人：</label>
+                <div class="col-sm-7">
+                    <p class="show-info" id="verifyPerson">&nbsp;</p>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-4">
+                <label class="col-sm-5 text-right">验收结果：</label>
+                <div class="col-sm-7">
+                    <p class="show-info" id="verifyResult">&nbsp;</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="tab-pane" id="financeTab">
+        <div class="list-top">
+            <h4 class="list-title">账户信息</h4>
+        </div>
+        <div class="row tab-main">
+            <div class="form-group col-sm-8">
+                <label class="col-sm-2 text-right">开户银行：</label>
+                <div class="col-sm-7">
+                    <p class="show-info">中国人名银行</p>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-8">
+                <label class="col-sm-2 text-right">打款户名：</label>
+                <div class="col-sm-7">
+                    <p class="show-info">万科集团</p>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-8">
+                <label class="col-sm-2 text-right">账号：</label>
+                <div class="col-sm-7">
+                    <p class="show-info">624783594678321836</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="list-top">
+            <h4 class="list-title">回款信息</h4>
+        </div>
+
+        <div class="row tab-main">
+            <p class="finance-year">第一年</p>
+            <div class="form-group col-sm-8">
+                <label class="col-sm-2 text-right">年份：</label>
+                <div class="col-sm-7">
+                    <p class="show-info">2016</p>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-8">
+                <label class="col-sm-2 text-right">应收金额：</label>
+                <div class="col-sm-7">
+                    <p class="show-info">300000元</p>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-8">
+                <label class="col-sm-2 text-right">回款时间：</label>
+                <div class="col-sm-7">
+                    <p class="show-info">2016/09/01</p>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-8">
+                <label class="col-sm-2 text-right">回款金额：</label>
+                <div class="col-sm-7">
+                    <p class="show-info">300000元</p>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-8">
+                <label class="col-sm-2 text-right">开票信息：</label>
+                <div class="col-sm-7">
+                    <p class="show-info">是</p>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-8">
+                <label class="col-sm-2 text-right">是否催款：</label>
+                <div class="col-sm-7">
+                    <p class="show-info">否</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<script src="../skins/js/jquery-1.11.1.min.js"></script>
+<script src="../skins/js/date/laydate.js" type="text/javascript"></script>
+<!--validate-->
+<script src="../skins/js/jquery.validate.min.js" type="text/javascript"></script>
+<script src="../skins/js/editor/js/wangEditor.js"></script>
+<script src="../skins/js/editor/js/xss.js"></script>
+<!--frame-->
+<script src="../skins/js/config.js"></script>
+<script src="../skins/js/jquery.md5.js"></script>
+<script src="../skins/js/base.js"></script>
+<script src="../skins/js/ajax.js"></script>
+<script src="../skins/js/datagrid.js"></script>
+<script src="../skins/js/bootstrap.min.js"></script>
+<script src="../skins/js/layer/layer.js"></script>
+<script src="contractFileDetail.js"></script>
+</body>
+</html>

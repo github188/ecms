@@ -1,0 +1,340 @@
+<meta charset="UTF-8">
+<link rel="stylesheet" href="project/css/contract.css" />
+<style>
+    .ztree *{
+        font-size: 14px;
+    }
+    #contractFileList .dataTable{
+        font-size: 16px;
+    }
+    #contractFileList .dataTable th{
+        padding: 0;
+        border: none !important;
+    }
+    #contractFileList .dataTable th, #contractFileList .dataTable td{
+        border: none;
+        border-bottom: 1px solid #ddd;
+    }
+    a:hover{
+        color: #01cd78 ;
+    }
+    .file-link{
+        width: 195px;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        position: relative;
+        top: 6px;
+    }
+    ul.ascription li {
+        cursor: pointer;
+        list-style: none;
+        float: left;
+        margin: 0px 5px;
+        padding: 2px 5px;
+        border-bottom: 2px solid #fff;
+    }
+
+    ul.ascription li:first-child {
+        margin-left: 0;
+    }
+
+    ul.ascription li.active, ul.ascription li:hover {
+        color: #01cd78;
+        border-bottom: 2px solid #01cd78;
+    }
+    #clearProject{
+        position: absolute;
+        right: 24px;
+        top: 5px;
+        font-style: normal;
+        padding: 0 5px;
+        cursor: pointer;
+        display: none;
+    }
+</style>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="form-horizontal">
+            <div class="form-group inblock" style="width: 100%; margin-bottom: 0">
+                <label class="control-label col-sm-2">审批状态：</label>
+                <ul class="col-sm-10 ascription clearfix"
+                    style="padding-top: 4px; padding-left: 0">
+                    <li class="active"  data-state="2">已通过</li>
+                    <li data-state="1">审批中</li>
+                    <li data-state="3">已驳回</li>
+                </ul>
+            </div>
+
+            <div class="form-group inblock">
+                <label class="col-sm-2 control-label">&nbsp;&nbsp;&nbsp;发起人：</label>
+                <input type="text" class="form-control input-key" name="searchSalesName" id="searchSalesName">
+            </div>
+
+            <div class="form-group inblock">
+                <label class="col-sm-2 control-label">合同类型：</label>
+                <select class="form-control" name="searchContractType" id="searchContractType"></select>
+            </div>
+
+            <div class="form-group inblock">
+                <label class="col-sm-2 control-label" style="padding-left: 10px;">合同名称/编号</label>
+                <input type="text" class="form-control input-key" name="searchContractName" id="searchContractName">
+            </div>
+
+            <div class="col-sm-12"></div>
+
+            <div class="form-group inblock" style="min-width: 300px;">
+                <label class="col-sm-2 control-label">归属部门：</label>
+                <select type="text" class="form-control input-key" name="searchDepTop" id="searchDepTop"></select>
+            </div>
+
+            <div class="form-group inblock" style="min-width: 195px;">
+                <select type="text" class="form-control input-key" name="searchDepMiddle" id="searchDepMiddle"></select>
+            </div>
+
+            <div class="form-group inblock">
+                <select type="text" class="form-control input-key" name="searchDepBottom" id="searchDepBottom"></select>
+            </div>
+
+            <div class="col-sm-12"></div>
+
+            <div class="form-group inblock" style="min-width: 300px;">
+                <label class="col-sm-2 control-label">合同金额：</label>
+                <input type="text" class="form-control input-key" name="searchContractAmountStart" id="searchContractAmountStart">
+            </div>
+            <div class="form-group inblock" style="position: relative;">
+                <span style="position: absolute; left: -19px; top: 6px;">一</span>
+                <input type="text" class="form-control input-key" name="searchContractAmountEnd" id="searchContractAmountEnd">
+            </div>
+        </div>
+    </div>
+    <div class="button-position">
+        <button class="btn btn-orange btn-search">查询</button>
+    </div>
+</div>
+
+<div class="panel panel-nopadding">
+    <div class="panel-body">
+        <div class="list-top">
+            <h4 class="list-title">合同列表</h4>
+            <div class="button-power-position">
+                <!--<button class="btn btn-turquoise" id="startVerify">发起审批</button>-->
+                <!--<button class="btn btn-turquoise" id="export">导出合同</button>-->
+                <span id="contractFileButton" style="margin-right: 10px;"></span>
+                <a class="btn btn-turquoise" href="javascript:;" id="downTpl">下载模板</a>
+            </div>
+        </div>
+        <div class="table-responsive" id="contractList"></div>
+    </div>
+</div>
+
+<!-- 合同模板库操作Modal -->
+<div class="modal fade" id="contractTempletModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 950px;">
+        <div class="modal-content" style="height: 670px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">下载合同模板</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <ul id="contractTreeView" style="overflow-y: scroll; height: 480px;" class="ztree tree-contain" data-currentdepid="" data-currentdepname=""></ul>
+                    </div>
+                    <div class="col-sm-8">
+                        <div style="border:1px solid #e5e5e5; height: 470px; width: 656px;">
+                            <!--外面套一层是为了避免分页layout错乱-->
+                            <div class="table-responsive" id="contractFileList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 发起审批 [[-->
+<div class="modal fade" id="startVerifyModal" data-backdrop="static">
+    <div class="modal-dialog" style="height: 90%; overflow: auto">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">合同审批申请</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" class="validate form-horizontal contract-form-modal" id="approveForm">
+                    <div class="modal-body">
+                        <div class="row">
+
+                            <div class="form-group col-sm-12">
+                                <label class="col-sm-4 text-right"><span class="required">*</span>合同发起人：</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" disabled name="salesmanName" id="salesmanName" />
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="col-sm-4 text-right"><span class="required">*</span>合同归属部门：</label>
+                                <div class="col-sm-8">
+                                    <input type="text" disabled class="form-control" name="departmentName" id="departmentName" />
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="col-sm-4 text-right">关联项目：</label>
+                                <div class="col-sm-8" style="position: relative;">
+                                    <input type="text" readonly class="form-control" name="projectName" id="projectName" />
+                                    <em id="clearProject" title="删除">x</em>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="col-sm-4 text-right"><span class="required">*</span>合同类型：</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control  col-sm-2" id="contractType" name="contractType"></select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group col-sm-12">
+                                <label class="col-sm-4 text-right"><span class="required">*</span>合同名称：</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="contractName" id="contractName" />
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="col-sm-4 text-right"><span class="required">*</span>合作方名称：</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="partnerName" id="partnerName" />
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="col-sm-4 text-right">合同金额（元）：</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="contractAmount" id="contractAmount" />
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="col-sm-4 text-right"><span class="required">*</span>合同开始日期：</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control choose-date" readonly name="startDate" id="startDate" />
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="col-sm-4 text-right"><span class="required">*</span>合同结束日期：</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" readonly name="endDate" id="endDate" />
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="col-sm-4 text-right"><span class="required">*</span>合同附件：</label>
+                                <div class="col-sm-8">
+                                    <div class="btn btn-turquoise" id="picker" style="position: relative;">选择文件</div>
+                                    <span class="padding-l-10" id="fileOperate"></span>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="col-sm-4 text-right"></label>
+                                <div class="col-sm-8" id="fileList"></div>
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="col-sm-4 text-right">其他说明：</label>
+                                <div class="col-sm-8">
+                                    <textarea rows="5" class="form-control" maxlength="200" name="remarks" id="remarks"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="modal-msg"></div>
+                        <button type="submit" class="btn btn-success" id="btnAddPro">确定</button>
+                        <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <!--  data-dismiss="modal" -->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 停用、启用 ]]-->
+
+<!-- 选择人员 -->
+<div class="modal fade" id="choosePersonModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 850px;">
+        <div class="modal-content" style="min-height: 700px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">选择人员 <span style="color:red; font-size: 12px;">(双击可选择)</span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row form-inline">
+                    <div class="form-group col-sm-12">
+                        <div class="input-group col-sm-12">
+                            <input type="text" class="form-control" placeholder="请输入员工姓名" id="queryKD">
+                            <span class="input-group-btn">
+                            <button class="btn btn-orange btn-search" type="button" id="btnSearchDepLeader">搜索</button>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <div>
+                            <!--外面套一层是为了避免分页layout错乱-->
+                            <div class="table-responsive" id="depLeaderList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 选择关联项目 -->
+<div class="modal fade" id="chooseProjectModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 850px;">
+        <div class="modal-content" style="min-height: 700px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">选择关联项目 <span style="color:red; font-size: 12px;">(双击选择)</span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row form-inline">
+
+                    <div class="form-group inblock">
+                        <label class="col-sm-4 control-label" style="text-align: right; margin-top: 6px">项目经理：</label>
+                        <input type="text" class="form-control input-key" name="modalProjectPerson" id="modalProjectPerson">
+                    </div>
+
+                    <div class="form-group inblock">
+                        <label class="col-sm-5 control-label" style="padding-left: 10px; margin-top: 6px">项目名称/编号：</label>
+                        <input type="text" class="form-control input-key" name="modalProjectNum" id="modalProjectNum">
+                    </div>
+
+                    <button id="projectSearch" class="btn btn-orange" style="margin-left: 30px; margin-top: 6px;">查询</button>
+
+                    <!--<div class="form-group inblock">-->
+                        <!--<button id="projectSearch" class="btn btn-orange" style="margin-left: 30px;">查询</button>-->
+                    <!--</div>-->
+
+                    <div class="form-group col-sm-12">
+                        <div>
+                            <!--外面套一层是为了避免分页layout错乱-->
+                            <div class="table-responsive" id="projectList" style="margin: 20px 0"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<div id="fileTrigger"></div>-->
+    <script type="text/javascript" src="skins/js/webuploader/webuploader.js"></script>
+<script type="text/javascript" src="project/projectContract.js"></script>

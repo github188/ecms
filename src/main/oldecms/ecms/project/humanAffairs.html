@@ -1,0 +1,106 @@
+<meta charset="UTF-8">
+<link href="project/css/humanAffairs.css" type="text/css" rel="stylesheet">
+<div class="panel panel-nopadding">
+    <div class="panel-body">
+        <div class="form-horizontal pull-left">
+            <!--<div class="form-group inblock" style="position: relative">-->
+                <!--<label class="col-sm-2 control-label">部门：</label>-->
+                <!--<input type="text" class="form-control input-key" readonly id="department" >-->
+                <!--<div id="DepartForAddPerPanel">-->
+                    <!--<span class="close-tree-sel" id="closeDepartForAddPer" title="关闭">&times;</span>-->
+                    <!--<ul id="treeDepartForAddPer" class="ztree tree-contain-addper-sel"></ul>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="form-group inblock">
+                <label class="col-sm-2 control-label">姓名：</label>
+                <input type="text" class="form-control input-key" id="userName">
+            </div>
+            <!--<div class="form-group inblock">-->
+                <!--<label class="col-sm-2 control-label">电话：</label>-->
+                <!--<input type="text" class="form-control input-key" id="telPhone">-->
+            <!--</div>-->
+
+            <!--<div class="form-group inblock">-->
+                <!--<label class="col-sm-2 control-label">直接上级：</label>-->
+                <!--<input type="text" class="form-control input-key" id="higherUps">-->
+            <!--</div>-->
+            <!--<div class="form-group inblock">-->
+                <!--<label class="col-sm-2 control-label">常驻地：</label>-->
+                <!--<input type="text" class="form-control input-key" id="address">-->
+            <!--</div>-->
+            <div class="form-group inblock">
+                <button class="btn btn-orange btn-search margin-l-20">查询</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-nopadding">
+    <div class="panel-body">
+        <div class="table-responsive" id="personList">
+            <p style="text-align: center; font-size: 14px; margin-top: 20px;">想要协作找不到人? 搜索一下马上找到ta!</p>
+        </div>
+    </div>
+</div>
+<!-- 修改考勤记录 -->
+<div class="modal fade" id="editAttendanceModal" data-backdrop="static" data-clear="true">
+    <div class="modal-dialog" style="width: 640px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">修改考勤记录</h4>
+            </div>
+            <form class="form-validate" id="editAttendanceForm" role="form">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required">*</span>日期</label>
+                            <div class="col-md-10">
+                                <input class="form-control" id="editlayDate" name="layDate" type="text" readonly="readonly">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required">*</span>状态</label>
+                            <div class="col-md-10">
+                                <select class="form-control" name="status">
+                                    <option value="0">休（周末及法定节假日）</option>
+                                    <option value="1">正常</option>
+                                    <option value="2">休年假</option>
+                                    <option value="">差旅</option>
+                                    <option value="">年休假</option>
+                                    <option value="">调休假</option>
+                                    <option value="">病假</option>
+                                    <option value="">事假</option>
+                                    <option value="">有薪假</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required">*</span>时长</label>
+                            <div class="col-md-10">
+                                <select class="form-control" name="duration">
+                                    <option value="0">1天</option>
+                                    <option value="1">0.5天</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required">*</span>修改备注</label>
+                            <div class="col-md-10">
+                                <textarea class="form-control" name="remark" style="height: 100px"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button class="btn btn-success btn-examine" type="submit">确定</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="project/humanAffairs.js"></script>

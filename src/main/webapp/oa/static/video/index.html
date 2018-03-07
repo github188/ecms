@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <script src="js/polyfill.js"></script>
+    <script src="js/chimee-player.browser.js"></script>
+</head>
+<style>
+    *{
+        padding: 0;
+        margin: 0;
+    }   
+    #wrapper{
+        height: 352px;
+    }
+    chimee-progressbar-all, chimee-volume.horizonal chimee-volume-bar-all{
+        background: #03cf7c !important;
+    } 
+</style>
+<body>
+
+    <div id="wrapper"></div>
+    <script>
+        window.onload = function(){
+            var search = window.location.search
+            var videoUrl =  search.split('url=')[1]
+            var player = new ChimeePlayer({
+                wrapper: '#wrapper',  // video dom容器
+                src: videoUrl,
+                controls: true,
+                volume: 0.5,
+                height: 352,
+                width: 640
+            });
+        }    
+    </script>
+</body>
+</html>

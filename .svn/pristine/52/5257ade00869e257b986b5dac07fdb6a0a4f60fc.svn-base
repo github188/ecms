@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.cwa.CwaExceptionMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.cwa.CwaException" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="cwa_id" property="cwaId" jdbcType="VARCHAR" />
+    <result column="exp_type" property="expType" jdbcType="INTEGER" />
+    <result column="exp_name" property="expName" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="VARCHAR" />
+    <result column="worktime" property="worktime" jdbcType="DOUBLE" />
+    <result column="fristtime" property="fristtime" jdbcType="VARCHAR" />
+    <result column="lasttime" property="lasttime" jdbcType="VARCHAR" />
+    <result column="result_type" property="resultType" jdbcType="INTEGER" />
+    <result column="result_id" property="resultId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, exp_type, cwa_id,exp_name, date, worktime, fristtime, lasttime, result_type, 
+    result_id, status, add_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from cwa_exception
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from cwa_exception
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.cwa.CwaException" >
+    insert into cwa_exception (id, user_id, exp_type, 
+      exp_name, date, worktime, 
+      fristtime, lasttime, result_type, 
+      result_id, status, add_time, 
+      update_time)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{expType,jdbcType=INTEGER}, 
+      #{expName,jdbcType=VARCHAR}, #{date,jdbcType=VARCHAR}, #{worktime,jdbcType=DOUBLE}, 
+      #{fristtime,jdbcType=VARCHAR}, #{lasttime,jdbcType=VARCHAR}, #{resultType,jdbcType=INTEGER}, 
+      #{resultId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{addTime,jdbcType=BIGINT}, 
+      #{updateTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.cwa.CwaException" >
+    insert into cwa_exception
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="expType != null" >
+        exp_type,
+      </if>
+      <if test="expName != null" >
+        exp_name,
+      </if>
+        <if test="cwaId != null" >
+        cwa_id,
+      </if>
+      <if test="date != null" >
+        date,
+      </if>
+      <if test="worktime != null" >
+        worktime,
+      </if>
+      <if test="fristtime != null" >
+        fristtime,
+      </if>
+      <if test="lasttime != null" >
+        lasttime,
+      </if>
+      <if test="resultType != null" >
+        result_type,
+      </if>
+      <if test="resultId != null" >
+        result_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="expType != null" >
+        #{expType,jdbcType=INTEGER},
+      </if>
+      <if test="expName != null" >
+        #{expName,jdbcType=VARCHAR},
+      </if>
+      <if test="cwaId != null" >
+        #{cwaId,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="worktime != null" >
+        #{worktime,jdbcType=DOUBLE},
+      </if>
+      <if test="fristtime != null" >
+        #{fristtime,jdbcType=VARCHAR},
+      </if>
+      <if test="lasttime != null" >
+        #{lasttime,jdbcType=VARCHAR},
+      </if>
+      <if test="resultType != null" >
+        #{resultType,jdbcType=INTEGER},
+      </if>
+      <if test="resultId != null" >
+        #{resultId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.cwa.CwaException" >
+    update cwa_exception
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="expType != null" >
+        exp_type = #{expType,jdbcType=INTEGER},
+      </if>
+      <if test="expName != null" >
+        exp_name = #{expName,jdbcType=VARCHAR},
+      </if>
+      <if test="cwaId != null" >
+        cwa_id = #{cwaId,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        date = #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="worktime != null" >
+        worktime = #{worktime,jdbcType=DOUBLE},
+      </if>
+      <if test="fristtime != null" >
+        fristtime = #{fristtime,jdbcType=VARCHAR},
+      </if>
+      <if test="lasttime != null" >
+        lasttime = #{lasttime,jdbcType=VARCHAR},
+      </if>
+      <if test="resultType != null" >
+        result_type = #{resultType,jdbcType=INTEGER},
+      </if>
+      <if test="resultId != null" >
+        result_id = #{resultId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.cwa.CwaException" >
+    update cwa_exception
+    set user_id = #{userId,jdbcType=VARCHAR},
+      exp_type = #{expType,jdbcType=INTEGER},
+      exp_name = #{expName,jdbcType=VARCHAR},
+      date = #{date,jdbcType=VARCHAR},
+      worktime = #{worktime,jdbcType=DOUBLE},
+      fristtime = #{fristtime,jdbcType=VARCHAR},
+      lasttime = #{lasttime,jdbcType=VARCHAR},
+      result_type = #{resultType,jdbcType=INTEGER},
+      result_id = #{resultId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+   
+  <select id="selectByResultId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select * from cwa_exception where result_id = #{resultId}
+  </select>
+  <resultMap id="resultHashMap" type="com.ecaray.ecms.entity.process.Vo.DoneResultVo" >
+  	 <result column="result" property="result" />  
+  	 <result column="num" property="count" />  
+  </resultMap>
+  
+  <select id="countUserHandlerRecord" parameterType="com.ecaray.ecms.entity.cwa.CwaException" resultMap="resultHashMap">
+  	select result_type as result,count(1) as count from cwa_exception 
+  	where user_id = #{userId} and status = 2 and date like #{date} group by result_type
+  </select>
+  <select id="selectByUserDateType" resultMap="BaseResultMap">
+  	select * from cwa_exception where user_id = #{userId} and date = #{date} and exp_type = #{expType} and status = 1
+  </select>
+  <select id="selectByUserDate" resultMap="BaseResultMap">
+  	select * from cwa_exception where user_id = #{userId} and date = #{date} and status != 2
+  </select>
+  <select id="selectCwaExceptionByCwaId" resultMap="BaseResultMap">
+  	select * from cwa_exception where cwa_id = #{cwaId} 
+  </select>
+</mapper>

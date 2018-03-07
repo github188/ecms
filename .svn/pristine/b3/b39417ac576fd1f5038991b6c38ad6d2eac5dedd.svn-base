@@ -1,0 +1,208 @@
+<meta charset="UTF-8">
+<link href="project/css/menuManage.css" type="text/css" rel="stylesheet">
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="form-horizontal">
+            <div class="form-group inblock inblock-lg">
+                <label class="col-sm-2 control-label">关键字：</label>
+                <input type="text" class="form-control input-key" id="keywords" placeholder="输入菜单名称查询">
+            </div>
+           <!--  <div class="form-group inblock">
+                <label class="col-sm-2 control-label">类型：</label>
+                <div class="select-form-kind">
+                    <select class="form-control" name="restype" id="restype">
+                        <option value="">--全部--</option>
+                        <option value="1">页面</option>
+                        <option value="2">操作</option>
+                    </select>
+                </div>
+            </div> -->
+            <!-- <div class="form-group inblock">
+                <label class="col-sm-2 control-label">所属模块：</label>
+                <div class="select-form-kind">
+                    <select class="form-control" name="appidOfSearch" id="appidOfSearch">
+                        <option value="">--请选择--</option>
+                        <option value="OA系统">OA系统</option>
+                        <option value="pmo">pmo</option>
+                        <option value="组织架构">组织架构</option>
+                    </select>
+                </div>
+            </div> -->
+            <div class="form-group inblock inblock-nomarginleft">
+                <button class="btn btn-orange btn-search" id="btnSearchMenu">查询</button>
+                <div class="test"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-nopadding">
+    <div class="panel-body">
+        <div class="list-top">
+            <h4 class="list-title">菜单配置</h4>
+            <div class="button-power-position">
+                <button class="btn btn-turquoise btn-add" id="btnAddMenu">新增</button>
+            </div>
+        </div>
+        <div class="table-responsive" id="menuList"></div>
+    </div>
+</div>
+
+<!--编辑菜单 [[ -->
+<div class="modal fade" id="editMenuModal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">新增基础菜单</h4>
+            </div>
+            <form role="form" method="post" class="validate formvalidate" id="editMenuForm">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="mName" class="control-label"><span class="required">*</span>菜单名称</label>
+                                <input id="mName" name="mName" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">菜单所处路径</label>
+                                <input type="text" class="form-control" id="mUrl" name="mUrl">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required">*</span>上级菜单节点</label>
+                                <input type="text" class="form-control input-key " id="mParentName" name="mParentName" readonly/>
+                                <div class="menu-contain">
+                                    <span class="close-tree-sel" id="closeMenuTree">&times;</span>
+                                    <ul id="treeForMenu" class="ztree tree-contain-sel"></ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required">*</span>所属模块</label>
+                                <select class="form-control" name="mAppId" id="mAppId">
+                                    <option value="">&#45;&#45;请选择&#45;&#45;</option>
+                                    <option value="一级模块">一级模块</option>
+                                    <option value="pmo">PMO</option>
+                                    <option value="组织架构">组织架构</option>
+                                </select>
+                            </div>
+                        </div>-->
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="nametype" class="control-label"><span class="required">*</span>权限类型</label>
+                                <select id="nametype" class="form-control" name="nametype">
+                                    <option value="">--请选择--</option>
+                                    <option value="0">0-模块</option>
+                                    <option value="1">1-页面</option>
+                                    <option value="2">2-操作</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12" id="menuIcon"></div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-left modal-msg"></div>
+                    <button type="submit" class="btn btn-success" id="btnSave">确定</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--编辑菜单 ]] -->
+
+<!--提示框 [[ -->
+<div class="modal fade" id="alertConfirm" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">温馨提示</h4>
+            </div>
+            <div id="centerhtml" class="modal-body"></div>
+            <div class="modal-footer">
+                <div class="text-left modal-msg"></div>
+                <button id="alertSaveBtn" type="button" class="btn btn-info role-sure">确定</button>
+                <button type="reset" class="btn btn-white" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--提示框 ]] -->
+
+<!--字体图标modal [[ -->
+<div class="modal fade" id="menuIconModal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">选择菜单图标</h4>
+            </div>
+            <div class="modal-body">
+                <div class="icon-list" id="iconList">
+                    <span class="menu-iconfont menu-icon">&#xe66b;</span>
+                    <span class="menu-iconfont menu-icon">&#xe600;</span>
+                    <span class="menu-iconfont menu-icon">&#xe63c;</span>
+                    <span class="menu-iconfont menu-icon">&#xe62b;</span>
+                    <span class="menu-iconfont menu-icon">&#xe618;</span>
+                    <span class="menu-iconfont menu-icon">&#xe728;</span>
+                    <span class="menu-iconfont menu-icon">&#xe601;</span>
+                    <span class="menu-iconfont menu-icon">&#xe606;</span>
+                    <span class="menu-iconfont menu-icon">&#xe646;</span>
+                    <span class="menu-iconfont menu-icon">&#xe614;</span>
+                    <span class="menu-iconfont menu-icon">&#xe607;</span>
+                    <span class="menu-iconfont menu-icon">&#xe608;</span>
+                    <span class="menu-iconfont menu-icon">&#xe60b;</span>
+                    <span class="menu-iconfont menu-icon">&#xe642;</span>
+                    <span class="menu-iconfont menu-icon">&#xe61c;</span>
+                    <span class="menu-iconfont menu-icon">&#xe6c9;</span>
+                    <span class="menu-iconfont menu-icon">&#xe674;</span>
+                    <span class="menu-iconfont menu-icon">&#xe650;</span>
+                    <span class="menu-iconfont menu-icon">&#xe61d;</span>
+                    <span class="menu-iconfont menu-icon">&#xe624;</span>
+                    <span class="menu-iconfont menu-icon">&#xe6a9;</span>
+                    <span class="menu-iconfont menu-icon">&#xe62a;</span>
+                    <span class="menu-iconfont menu-icon">&#xe691;</span>
+                    <span class="menu-iconfont menu-icon">&#xe649;</span>
+                    <span class="menu-iconfont menu-icon">&#xe6b4;</span>
+                    <span class="menu-iconfont menu-icon">&#xe623;</span>
+                    <span class="menu-iconfont menu-icon">&#xe639;</span>
+                    <span class="menu-iconfont menu-icon">&#xe6e1;</span>
+                    <span class="menu-iconfont menu-icon">&#xe602;</span>
+                    <span class="menu-iconfont menu-icon">&#xe70a;</span>
+                    <span class="menu-iconfont menu-icon">&#xe631;</span>
+                    <span class="menu-iconfont menu-icon">&#xe609;</span>
+                    <span class="menu-iconfont menu-icon">&#xe622;</span>
+                    <span class="menu-iconfont menu-icon">&#xe60a;</span>
+                    <span class="menu-iconfont menu-icon">&#xe6b5;</span>
+                    <span class="menu-iconfont menu-icon">&#xe615;</span>
+                    <span class="menu-iconfont menu-icon">&#xe632;</span>
+                    <span class="menu-iconfont menu-icon">&#xe636;</span>
+                    <span class="menu-iconfont menu-icon">&#xe603;</span>
+                    <span class="menu-iconfont menu-icon">&#xe60c;</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--字体图标modal ]] -->
+
+<!--
+<input style="display: none;" type='text' id="id" value=''/>
+<input style="display: none;" type='text' id="srcresname" value=''/>
+<input style="display: none;" type='text' id="sortnum" value=''/>
+<input style="display: none;" type='text' id="basicstatus" value=''/>
+<input style="display: none;" type='text' id="rescode" value=''/>
+-->
+
+<script type="text/javascript" src="project/menuManage.js"></script>

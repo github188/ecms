@@ -1,0 +1,285 @@
+<meta charset="UTF-8">
+<link href="project/css/crmBusinessManage.css" type="text/css" rel="stylesheet">
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="form-horizontal complaimOrder">
+            <div class="form-group inblock" style="width: 100%;">
+                <label class="control-label col-sm-2">&nbsp;商机归属：</label>
+                <ul class="col-sm-10 ascription clearfix ul" style="padding-top: 4px;padding-left: 0">
+                    <li class="active" data-state="1">全部</li>
+                    <li data-state="2">我跟进的<span class="deptnum"></span></li>
+                </ul>
+            </div>
+            <div>
+                <div class="form-group inblock">
+                    <label class="control-label col-sm-2">商机名称：</label>
+                    <input type="text" class="form-control input-key" id="bNameQ">
+                </div>
+                <div class="form-group inblock" style="position: relative;">
+                    <label class="col-sm-2 control-label">跟进人：</label>
+                    <div style="right:2px;top:-2px;cursor:pointer;display:none;" class="input_clear"><i class="Hui-iconfont f-26 c_blue" style="position: absolute;top:6px;right:46px;">X</i></div>  
+                    <input type="text" class="form-control input-key" id="bFollowQ" />
+                </div>
+                <div class="form-group inblock">
+                    <label class="control-label col-sm-2">合作模式：</label>
+                    <select class="form-control" flag="co_mode" id="bCollaborateModeQ">
+                    </select>
+                </div>
+                <div class="form-group inblock">
+                    <label class="col-sm-2 control-label">意向项目：</label>
+                    <select class="form-control" flag="int_items" id="bWantProQ">
+                    </select>
+                </div>
+                <div class="form-group inblock">
+                    <label class="col-sm-2 control-label">最后跟进时间：</label>
+                    <input class="form-control laydate-icon" id="bLastFollowTimeQ" type="text" readonly="readonly">
+                </div>
+                <div class="form-group inblock">
+                    <label class="control-label col-sm-2">客户名称：</label>
+                    <input type="text" class="form-control input-key" id="bClientNameQ">
+                </div>
+                <div class="form-group inblock">
+                    <label class="col-sm-2 control-label">片区：</label>
+                    <select class="form-control" flag="region" id="bAreaQ">
+                    </select>
+                </div>
+                <div class="form-group inblock">
+                    <label class="col-sm-2 control-label">销售阶段：</label>
+                    <select class="form-control" flag="sale_stage" id="bSalesStageQ">
+                    </select>
+                </div>
+            </div>
+            <div class="clearboth"></div>
+            <div class="button-position">
+                <button class="btn btn-orange btn-search search" id="searchlist">查询</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="panel panel-nopadding">
+    <div class="panel-body">
+        <div class="list-top">
+            <h4 class="list-title">商机</h4>
+            <div class="button-power-position" id="btnsOfListContain">
+                <button class="btn btn-turquoise btn-add">新增</button>
+            </div>
+        </div>
+        <div class="table-responsive" id="opplist"></div>
+    </div>
+</div>
+
+<!-- 新增商机 -->
+<div class="modal fade" id="addBusinessModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 780px; height: 700px; overflow: auto">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">新增商机</h4>
+            </div>
+            <form method="post" class="validate" id="addBusinessForm">
+                <div class="modal-body">
+                    <h5>基础信息</h5>
+                    <div class="row"><!--form-inline addbusiness-contain-->
+                        <div class="form-group col-sm-6">
+                            <label class="control-label"><span class="required">*</span>商机名称：</label>
+                            <input type="text" class="form-control" name="bName" id="bName"/>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label"><span class="required">*</span>负责人：</label>
+                            <input type="text" class="form-control" name="bFollow" id="bFollow" readonly/>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label"><span class="required">*</span>客户名称：</label>
+                            <input type="text" class="form-control" name="bClientName" id="bClientName" readonly/>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label"><span class="required">*</span>片区：</label>
+                            <select class="form-control" name="bArea" flag="region"  id="bArea">
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label"><span class="required">*</span>预计销售金额：</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" aria-label="预计销售金额" name="bPredictSaleAmount" id="bPredictSaleAmount">
+                                <span class="input-group-addon">万元</span>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label"><span class="required">*</span>预计成交日期：</label>
+                            <input type="text" class="form-control laydate-icon" name="bPredictBargainDate" id="bPredictBargainDate" readonly/>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label"><span class="required">*</span>意向项目：</label>
+                            <select class="form-control" name="bWantPro" flag="int_items" id="bWantPro">
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label"><span class="required">*</span>合作模式：</label>
+                            <select class="form-control" name="bCollaborateMode" flag="co_mode" id="bCollaborateMode">
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label"><span class="required">*</span>销售阶段：</label>
+                            <select class="form-control" name="bSalesStage" flag="sale_stage" id="bSalesStage">
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-12 choose-contact-block">
+                            <label class="control-label"><span class="required">*</span>联系人：</label>
+                            <input type="text" class="form-control" name="bContact" id="bContact" readonly/>
+                            <button class="btn btn-success" id="btnAddContact" type="button">新增联系人</button>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <label class="control-label"><span class="required">*</span>商机说明：</label>
+                            <textarea rows="5" class="form-control desc-textarea" maxlength="200" name="bDesc" id="bDesc"></textarea>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button type="submit" class="btn btn-success" id="btnAddPro">确定</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 选择人员 -->
+<div class="modal fade" id="choosePersonModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 850px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">选择人员 <span style="color:red; font-size: 12px;">(双击可选择)</span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row form-inline">
+                    <div class="form-group col-sm-12">
+                        <div class="input-group col-sm-12">
+                            <input type="text" class="form-control" placeholder="请输入员工姓名" id="queryKD">
+                            <span class="input-group-btn">
+                            <button class="btn btn-orange btn-search" type="button" id="btnSearchDepLeader">搜索</button>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <div>
+                            <!--外面套一层是为了避免分页layout错乱-->
+                            <div class="table-responsive" id="depLeaderList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 选择客户 -->
+<div class="modal fade" id="chooseCusModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 850px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">选择客户</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row form-inline">
+                    <div class="form-group col-sm-12">
+                        <div class="input-group col-sm-12">
+                            <input type="text" class="form-control" placeholder="请输入客户名称" id="queryKDCus">
+                            <span class="input-group-btn">
+                            <button class="btn btn-orange btn-search" type="button" id="btnSearchCus">搜索</button>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <div>
+                            <!--外面套一层是为了避免分页layout错乱-->
+                            <div class="table-responsive" id="depCusList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 选择联系人 -->
+<div class="modal fade" id="chooseConModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 850px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">选择联系人</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row form-inline">
+                    <div class="form-group col-sm-12">
+                        <div class="input-group col-sm-12">
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <div>
+                            <!--外面套一层是为了避免分页layout错乱-->
+                            <div class="table-responsive" id="contactList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 选择联系人 -->
+<div class="modal fade" id="addConModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 850px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="conhead" >新增联系人</h4>
+            </div>
+            <div class="contact-contain" style="margin-bottom: 10px;">
+                  <h5>联系人信息</h5>
+                  <div class="row form-inline">
+                      <div class="form-group col-sm-2">
+                          <label class="control-label">姓名：</label>
+                      </div>
+                      <div class="form-group col-sm-2">
+                          <label class="control-label">电话：</label>
+                      </div>
+                      <div class="form-group col-sm-2">
+                          <label class="control-label">职位：</label>
+                      </div>
+                      <div class="form-group col-sm-4">
+                          <label class="control-label">备注：</label>
+                      </div>
+                  </div>
+                  <div class="row form-inline contact-item">
+                      <div class="form-group col-sm-2">
+                          <input type="text" class="form-control c-name"/>
+                      </div>
+                      <div class="form-group col-sm-2">
+                          <input type="text" class="form-control c-tel"/>
+                      </div>
+                      <div class="form-group col-sm-2">
+                          <input type="text" class="form-control c-post"/>
+                      </div>
+                      <div class="form-group col-sm-4">
+                          <input type="text" class="form-control c-remark"/>
+                      </div>
+                      <div class="form-group col-sm-2">
+                          <img src="skins/img/tianjia@2x.png" alt="" class="icon-add" id="btnIconAdd">
+                      </div>
+                  </div>
+              </div>
+               <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button type="submit" class="btn btn-success" id="btnAddClient">确定</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="project/crmBusinessManage.js"></script>

@@ -1,0 +1,174 @@
+@charset "UTF-8";
+ul.ascription li {
+    cursor: pointer;
+    list-style: none;
+    float: left;
+    margin: 0px 5px;
+    padding: 2px 5px;
+    border-bottom: 2px solid #fff;
+}
+
+ul.ascription li:first-child {
+    margin-left: 0px;
+}
+
+ul.ascription li.active, ul.ascription li:hover {
+    color: #01cd78;
+    border-bottom: 2px solid #01cd78;
+}
+
+.wangEditor-container .wangEditor-txt {
+    min-height: 200px;
+}
+
+.search-boxs {
+    position: relative;
+    width: 100%;
+}
+
+.search-boxs .clear-inp {
+    position: absolute;
+    top: -2px;
+    right: 12px;
+    display: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: #606060;
+}
+
+.search-boxs .clear-inp:hover {
+    color: #2c2e2f;
+}
+
+.renew-search-content {
+    position: absolute;
+    top: 35px;
+    left: 0;
+    width: 100%;
+    z-index: 99;
+    display: none;
+}
+
+.renew-search-border {
+    width: 99.9%;
+    max-height: 230px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #6cc5f8;
+}
+
+.renew-search-content p {
+    width: 100%;
+    margin: 0;
+    padding: 12px 16px;
+    overflow: hidden;
+    font-size: 14px;
+    color: #2c2e2f;
+    cursor: pointer;
+}
+
+.renew-search-content .search-items:hover {
+    background: #f2f2f2;
+}
+
+.renew-search-content .nodata {
+    color: #a0a0a0;
+}
+
+.audit-row span {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.audit-row .form-group {
+    margin-bottom: 10px;
+}
+
+.adt-desc {
+    margin: 8px auto;
+}
+
+.adt-one-desc {
+    min-width: 100%;
+}
+
+.adt-sel {
+    min-width: 120px;
+}
+
+#twoAdtContain input {
+    min-width: 180px;
+}
+
+.modal .display-none {
+    display: none;
+}
+
+.ztree * {
+    font-size: 14px;
+}
+
+.ztree li {
+    line-height: 22px;
+}
+
+.ztree li span {
+    line-height: 22px;
+}
+
+.ztree li a.curSelectedNode {
+    height: 22px;
+}
+
+.ztree li span.button.switch {
+    width: 18px;
+    height: 22px;
+}
+
+.ztree li span.button.ico_open {
+    vertical-align: middle;
+}
+
+.ztree li span.button.ico_docu {
+    vertical-align: text-bottom;
+}
+
+.z-index20 {
+    z-index: 20;
+}
+
+.tree-contain {
+    /*margin-top: 50px;*/
+    padding-left: 15px;
+    width: 100%;
+    height: 350px;
+    overflow-y: scroll;
+}
+
+.adtone-datablock span, .adttwo-datablock span {
+    margin-right: 15px;
+}
+
+.adtone-datablock span:not(:last-of-type), .adttwo-datablock span:not(:last-of-type) {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.editor-wrap {
+    margin: 10px;
+}
+
+#taskOfMebs {
+    width: 539px;
+}
+
+.dmd-fblist {
+    margin: 10px 0;
+}
+.form-horizontal .form-group.inblock .control-label{
+    width: 126px;
+}
+
+
+

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.cwa.CwaCorrectAttMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.cwa.CwaCorrectAtt" >
+    <id column="c_id" property="cId" jdbcType="VARCHAR" />
+    <result column="cwa_id" property="cwaId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    c_id, cwa_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from cwa_correct_att
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectListByCId" resultType="java.lang.String" parameterType="java.lang.String" >
+    select cwa_id
+    from cwa_correct_att
+    where c_id = #{cId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from cwa_correct_att
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.cwa.CwaCorrectAtt" >
+    insert into cwa_correct_att (c_id, cwa_id)
+    values (#{cId,jdbcType=VARCHAR}, #{cwaId,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.cwa.CwaCorrectAtt" >
+    insert into cwa_correct_att
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="cwaId != null" >
+        cwa_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="cwaId != null" >
+        #{cwaId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.cwa.CwaCorrectAtt" >
+    update cwa_correct_att
+    <set >
+      <if test="cwaId != null" >
+        cwa_id = #{cwaId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.cwa.CwaCorrectAtt" >
+    update cwa_correct_att
+    set cwa_id = #{cwaId,jdbcType=VARCHAR}
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+</mapper>

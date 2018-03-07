@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.cwa.CwaAttendanceReportMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.cwa.CwaAttReport" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="usercode" property="usercode" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="user_realname" property="userRealname" jdbcType="VARCHAR" />
+    <result column="dep_id" property="depId" jdbcType="VARCHAR" />
+    <result column="dep_name" property="depName" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="VARCHAR" />
+    <result column="normal" property="normal" jdbcType="DOUBLE" />
+    <result column="paid_day" property="paidDay" jdbcType="DOUBLE" />
+    <result column="overtime" property="overtime" jdbcType="DOUBLE" />
+    <result column="overtime_holi" property="overtimeHoli" jdbcType="DOUBLE" />
+    <result column="outside" property="outside" jdbcType="DOUBLE" />
+    <result column="travel" property="travel" jdbcType="DOUBLE" />
+    <result column="leave_0" property="leave0" jdbcType="DOUBLE" />
+    <result column="leave_1" property="leave1" jdbcType="DOUBLE" />
+    <result column="leave_2" property="leave2" jdbcType="DOUBLE" />
+    <result column="leave_3" property="leave3" jdbcType="DOUBLE" />
+    <result column="leave_4" property="leave4" jdbcType="DOUBLE" />
+    <result column="early" property="early" jdbcType="DOUBLE" />
+    <result column="absenteeism" property="absenteeism" jdbcType="DOUBLE" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, usercode, user_id, user_realname, dep_id, dep_name, date, normal, paid_day,overtime,overtime_holi,outside, travel, 
+    leave_0, leave_1, leave_2, leave_3, leave_4, early, absenteeism,status
+  </sql>
+  <sql id="As_Base_Column_List" >
+    att.id, att.usercode, att.user_id, att.user_realname, att.dep_id, att.dep_name, att.date, att.normal,att.paid_day, att.overtime,att.overtime_holi,att.outside,att.travel, 
+    att.leave_0, att.leave_1, att.leave_2, att.leave_3, att.leave_4, att.early,att.absenteeism,att.status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from cwa_att_submit
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from cwa_att_submit
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.cwa.CwaAttReport" >
+    insert into cwa_att_submit (id, usercode, user_id, 
+      user_realname, dep_id, dep_name, 
+      date, normal, overtime, 
+      travel, leave_0, leave_1, 
+      leave_2, leave_3, leave_4)
+    values (#{id,jdbcType=VARCHAR}, #{usercode,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{userRealname,jdbcType=VARCHAR}, #{depId,jdbcType=VARCHAR}, #{depName,jdbcType=VARCHAR}, 
+      #{date,jdbcType=VARCHAR}, #{normal,jdbcType=DOUBLE}, #{overtime,jdbcType=DOUBLE}, 
+      #{travel,jdbcType=DOUBLE}, #{leave0,jdbcType=DOUBLE}, #{leave1,jdbcType=DOUBLE}, 
+      #{leave2,jdbcType=DOUBLE}, #{leave3,jdbcType=DOUBLE}, #{leave4,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.cwa.CwaAttReport" >
+    insert into cwa_att_submit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="usercode != null" >
+        usercode,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userRealname != null" >
+        user_realname,
+      </if>
+      <if test="depId != null" >
+        dep_id,
+      </if>
+      <if test="depName != null" >
+        dep_name,
+      </if>
+      <if test="date != null" >
+        date,
+      </if>
+      <if test="normal != null" >
+        normal,
+      </if>
+      <if test="paidDay != null" >
+        paid_day,
+      </if>
+      <if test="overtime != null" >
+        overtime,
+      </if>
+      <if test="overtimeHoli != null" >
+        overtime_holi,
+      </if>
+      <if test="outside != null" >
+        outside,
+      </if>
+      <if test="travel != null" >
+        travel,
+      </if>
+      <if test="leave0 != null" >
+        leave_0,
+      </if>
+      <if test="leave1 != null" >
+        leave_1,
+      </if>
+      <if test="leave2 != null" >
+        leave_2,
+      </if>
+      <if test="leave3 != null" >
+        leave_3,
+      </if>
+      <if test="leave4 != null" >
+        leave_4,
+      </if>
+      <if test="early != null" >
+        early,
+      </if>
+      <if test="absenteeism != null" >
+        absenteeism,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="usercode != null" >
+        #{usercode,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userRealname != null" >
+        #{userRealname,jdbcType=VARCHAR},
+      </if>
+      <if test="depId != null" >
+        #{depId,jdbcType=VARCHAR},
+      </if>
+      <if test="depName != null" >
+        #{depName,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="normal != null" >
+        #{normal,jdbcType=DOUBLE},
+      </if>
+      <if test="paidDay != null" >
+        #{paidDay,jdbcType=DOUBLE},
+      </if>
+      <if test="overtime != null" >
+        #{overtime,jdbcType=DOUBLE},
+      </if>
+      <if test="overtimeHoli != null" >
+        #{overtimeHoli,jdbcType=DOUBLE},
+      </if>
+      <if test="outside != null" >
+        #{outside,jdbcType=DOUBLE},
+      </if>
+      <if test="travel != null" >
+        #{travel,jdbcType=DOUBLE},
+      </if>
+      <if test="leave0 != null" >
+        #{leave0,jdbcType=DOUBLE},
+      </if>
+      <if test="leave1 != null" >
+        #{leave1,jdbcType=DOUBLE},
+      </if>
+      <if test="leave2 != null" >
+        #{leave2,jdbcType=DOUBLE},
+      </if>
+      <if test="leave3 != null" >
+        #{leave3,jdbcType=DOUBLE},
+      </if>
+      <if test="leave4 != null" >
+        #{leave4,jdbcType=DOUBLE},
+      </if>
+      <if test="early != null" >
+        #{early,jdbcType=DOUBLE},
+      </if>
+      <if test="absenteeism != null" >
+        #{absenteeism,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.cwa.CwaAttReport" >
+    update cwa_att_submit
+    <set >
+      <if test="usercode != null" >
+        usercode = #{usercode,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userRealname != null" >
+        user_realname = #{userRealname,jdbcType=VARCHAR},
+      </if>
+      <if test="depId != null" >
+        dep_id = #{depId,jdbcType=VARCHAR},
+      </if>
+      <if test="depName != null" >
+        dep_name = #{depName,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        date = #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="normal != null" >
+        normal = #{normal,jdbcType=DOUBLE},
+      </if>
+      <if test="paidDay != null" >
+        paid_day = #{paidDay,jdbcType=DOUBLE},
+      </if>
+      <if test="overtime != null" >
+        overtime = #{overtime,jdbcType=DOUBLE},
+      </if>
+      <if test="overtimeHoli != null" >
+        overtime_holi = #{overtimeHoli,jdbcType=DOUBLE},
+      </if>
+      <if test="outside != null" >
+        outside = #{outside,jdbcType=DOUBLE},
+      </if>
+      <if test="travel != null" >
+        travel = #{travel,jdbcType=DOUBLE},
+      </if>
+      <if test="leave0 != null" >
+        leave_0 = #{leave0,jdbcType=DOUBLE},
+      </if>
+      <if test="leave1 != null" >
+        leave_1 = #{leave1,jdbcType=DOUBLE},
+      </if>
+      <if test="leave2 != null" >
+        leave_2 = #{leave2,jdbcType=DOUBLE},
+      </if>
+      <if test="leave3 != null" >
+        leave_3 = #{leave3,jdbcType=DOUBLE},
+      </if>
+      <if test="leave4 != null" >
+        leave_4 = #{leave4,jdbcType=DOUBLE},
+      </if>
+      <if test="early != null" >
+        early = #{early,jdbcType=DOUBLE},
+      </if>
+      <if test="absenteeism!= null" >
+        absenteeism = #{absenteeism,jdbcType=DOUBLE},
+      </if>
+      <if test="status !=null" >
+        status = #{status,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.cwa.CwaAttReport" >
+    update cwa_att_submit
+    set usercode = #{usercode,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      user_realname = #{userRealname,jdbcType=VARCHAR},
+      dep_id = #{depId,jdbcType=VARCHAR},
+      dep_name = #{depName,jdbcType=VARCHAR},
+      date = #{date,jdbcType=VARCHAR},
+      normal = #{normal,jdbcType=DOUBLE},
+      overtime = #{overtime,jdbcType=DOUBLE},
+      travel = #{travel,jdbcType=DOUBLE},
+      leave_0 = #{leave0,jdbcType=DOUBLE},
+      leave_1 = #{leave1,jdbcType=DOUBLE},
+      leave_2 = #{leave2,jdbcType=DOUBLE},
+      leave_3 = #{leave3,jdbcType=DOUBLE},
+      leave_4 = #{leave4,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectSubmitList" parameterType="com.ecaray.ecms.entity.cwa.vo.CwaAttendanceFilter" resultMap="BaseResultMap">
+  	select  <include refid="Base_Column_List" /> from cwa_att_submit where date = #{month}
+  	<if test="name != null" >
+       and user_realname like #{name}
+    </if>
+  	<if test="status != null" >
+       and status = #{status}
+    </if>
+    <if test="depIdList != null" >
+       and dep_id in 
+      	<foreach item="item" collection="depIdList" open="(" separator="," close=")">
+      		#{item}
+    	</foreach>
+    </if>
+  </select>
+  <select id="selectAttendanceListByRole" parameterType="com.ecaray.ecms.entity.cwa.vo.CwaAttendanceFilter" resultMap="BaseResultMap">
+  	select  <include refid="As_Base_Column_List" /> from cwa_att_submit att left join sys_user u on att.user_id = u.id where u.is_leave = 0 and  att.date = #{month}
+  	<if test="name != null" >
+       and att.user_realname like #{name}
+    </if>
+  	<if test="status != null" >
+       and att.status = #{status}
+    </if>
+    <if test="depIdList == null" >
+   		and att.dep_id is null
+   	</if>
+   	<if test="depIdList != null" >
+   	 	and att.dep_id in 
+   	 	<foreach item="item" collection="depIdList" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+   	</if>
+  </select>
+  <select id="selectAdminAttList" parameterType="com.ecaray.ecms.entity.cwa.vo.CwaAttendanceFilter" resultMap="BaseResultMap">
+  	select  <include refid="Base_Column_List" /> from cwa_att_submit where date = #{month}
+  	<if test="name != null" >
+       and user_realname like #{name}
+    </if>
+  	<if test="status != null" >
+       and status = #{status}
+    </if>
+    <if test="depIdList.size() > 0" >
+       and dep_id in 
+      	<foreach item="item" collection="depIdList" open="(" separator="," close=")">
+      		#{item}
+    	</foreach>
+    </if> 
+    <if test="depIdList.size() == 0" >
+       and dep_id in ('')
+    </if> 
+  </select>
+  <select id="selectByUserAndDate" parameterType="com.ecaray.ecms.entity.cwa.CwaAttReport" resultMap="BaseResultMap">
+  	select  <include refid="Base_Column_List" /> from cwa_att_submit where date = #{date} and user_id = #{userId} 
+  </select>
+  <select id="selectReportListByMonth" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select  <include refid="Base_Column_List" /> from cwa_att_submit where date = #{month} 
+  </select>
+   <select id="selectReportListByRole" parameterType="com.ecaray.ecms.entity.cwa.vo.CwaAttendanceFilter" resultMap="BaseResultMap">
+  	select  <include refid="Base_Column_List" /> from cwa_att_submit where date = #{month}
+  	<if test="name != null" >
+       and user_realname like #{name}
+    </if>
+  	<if test="status != null" >
+       and status = #{status}
+    </if>
+    <if test="depIdList.size() > 0" >
+       and dep_id in 
+      	<foreach item="item" collection="depIdList" open="(" separator="," close=")">
+      		#{item}
+    	</foreach>
+    </if> 
+    <if test="depIdList.size() == 0" >
+       and dep_id in ('')
+    </if> 
+  </select>
+   <update id="updateAttendanceStatus" >
+  	update cwa_att_submit set status = #{status} where date = #{month}
+  	<if test="list!=null" >
+       and user_id in 
+      	<foreach item="item" collection="list" open="(" separator="," close=")">
+      		#{item}
+    	</foreach>
+    </if>
+  </update>
+   <select id="listReportStatus" resultType="java.lang.Integer" >
+  	select ifnull(status,4) from cwa_att_submit  where date = #{month}
+  	<if test="list!=null" >
+       and user_id in 
+      	<foreach item="item" collection="list" open="(" separator="," close=")">
+      		#{item}
+    	</foreach>
+    </if>
+  </select>
+</mapper>

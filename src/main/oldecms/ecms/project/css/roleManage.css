@@ -1,0 +1,36 @@
+@charset "UTF-8";
+.tree-contain {
+    padding-left: 15px;
+    width: 100%;
+    height: 400px;
+    overflow-y: scroll;
+}
+
+.ztree * {
+    font-size: 14px;
+}
+
+.ztree li {
+    line-height: 22px;
+}
+
+.ztree li span {
+    line-height: 22px;
+}
+
+.ztree li a.curSelectedNode {
+    height: 22px;
+}
+
+.ztree li span.button.switch {
+    width: 18px;
+    height: 22px;
+}
+
+.ztree li span.button.ico_open {
+    vertical-align: middle;
+}
+
+.ztree li span.button.ico_docu {
+    vertical-align: text-bottom;
+}

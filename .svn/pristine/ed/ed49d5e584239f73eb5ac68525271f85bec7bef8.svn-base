@@ -1,0 +1,183 @@
+<link href="skins/js/editor/css/wangEditor.min.css" type="text/css" rel="stylesheet">
+<link rel="stylesheet" href="project/css/newsManage.css">
+<!--搜索区域start-->
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="form-horizontal complaimOrder clear-float">
+            <div class="form-group inblock">
+                <label class="control-label col-sm-2">标题：</label>
+                <input type="text" class="form-control input-key" id="newsTitle">
+            </div>
+            <div class="form-group inblock">
+                <label class="control-label col-sm-2">发布人：</label>
+                <input type="text" class="form-control input-key" id="publicPerson">
+            </div>
+            <div class="form-group inblock">
+                <label class="col-sm-2 control-label">当前状态：</label>
+                <select class="form-control" id="status">
+                    <option value="">--请选择--</option>
+                    <option value="0">已发布</option>
+                    <option value="1">未发布</option>
+                </select>
+            </div>
+        </div>
+        <div class="button-position clearboth">
+            <button class="btn btn-orange btn-search search" id="search">查询</button>
+        </div>
+    </div>
+</div>
+<!--搜索区域end-->
+<!--表格区域start-->
+<div class="panel panel-nopadding">
+    <div class="panel-body">
+        <div class="list-top">
+            <h4 class="list-title">新鲜事儿列表</h4>
+            <div class="button-power-position">
+                <button class="btn btn-turquoise" id="newsAdd">新增</button>
+            </div>
+        </div>
+        <div class="table-responsive" id="newsList">
+        </div>
+    </div>
+</div>
+<!--表格区域end-->
+
+
+<!--新闻新增start-->
+<div class="modal fade" id="newsEditModal" data-backdrop="static" data-clear="true">
+    <div class="modal-dialog" style="width: 850px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">新增</h4>
+            </div>
+            <form class="formvalidate form-validate" id="newsEditForm" role="form">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required" aria-required="true">*</span>标题</label>
+                            <div class="col-md-10">
+                                <div class="search-boxs errorPlacement">
+                                    <input class="form-control" name="title" id="title" type="text" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label">&nbsp;&nbsp;&nbsp;作者</label>
+                            <div class="col-md-5">
+                                <div class="search-boxs errorPlacement">
+                                    <input class="form-control" name="author" id="author" type="text"
+                                           autocomplete="off">
+
+                                </div>
+                            </div>
+                            <div class="col-md-5" style="position: relative;top: 8px;color: #b2b3b9;"> <span>请输入部门和姓名</span></div>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required" aria-required="true">*</span>类型</label>
+                            <div class="col-md-5">
+                                <div class="search-boxs errorPlacement">
+                                    <select class="form-control" name="newsType" id="newsType">
+                                        <option value="">--请选择--</option>
+                                        <option value="0">新闻</option>
+                                        <option value="1">公告</option>
+                                        <option value="2">分享</option>
+                                        <option value="3">制度</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-5 checkbox">
+                                <label class="checkbox-inline">
+                                    <input name="isTop" id="isTop" type="checkbox">
+                                    <span class="lbl"></span><span class="">是否置顶</span>
+                                </label>
+                            </div>
+                        </div>
+                        <!--<div class="col-md-12 form-group">-->
+                            <!--<label class="col-md-2 control-label"><span class="required" aria-required="true">*</span>发布日期</label>-->
+                            <!--<div class="col-md-5">-->
+                                <!--<input type="text" class="form-control laydate-icon" name="publicTime" readonly-->
+                                       <!--id="publicTime"/>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                        <!--<div class="col-md-12 form-group">-->
+                        <!--<label class="col-md-2 control-label">谁可见</label>-->
+                        <!--<div class="col-md-5">-->
+                        <!--<select class="form-control" name="openPersonal" id="openPersonal">-->
+                        <!--<option value="">&#45;&#45;请选择&#45;&#45;</option>-->
+                        <!--<option value="0">谁一</option>-->
+                        <!--<option value="1">谁二</option>-->
+                        <!--</select>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-5 checkbox">-->
+                        <!--<label class="checkbox-inline">-->
+                        <!--<input name="isTop" id="isTop" type="checkbox">-->
+                        <!--<span class="lbl"></span><span class="">是否置顶</span>-->
+                        <!--</label>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label">&nbsp;&nbsp;&nbsp;图片</label>
+                            <div class="col-md-10 relative">
+                                <div class="pull-left uploadIcon">
+                                    <b class="upload-image-icon"></b>
+                                    <input type="file" class="upload-input" name="uploadImage" id="uploadImage">
+                                </div>
+                                <div class="choice-file pull-left" id="imgPreview">
+                                </div>
+                                <div class="pull-left image-explain">
+                                    说明：此处添加的图片放置在首页展示(建议宽高比例2:1)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label">&nbsp;&nbsp;&nbsp;附件</label>
+                            <div class="col-md-10">
+                                <div class="pull-left uploadIcon">
+                                    <b class="attachment-icon"></b>
+                                    <input class="upload-input" type="file" name="uploadAttachment"
+                                           id="uploadAttachment">
+                                </div>
+                                <div class="choice-attachment pull-left" id="choice-attachment">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required" aria-required="true">*</span>正文</label>
+                            <div class="col-md-12">
+                                <div class="wangeditor-container" id="newsEditor"></div>
+                                <div class="newsContentEmpty" id="newsContentEmpty">正文内容不能为空</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button class="btn btn-success btn-examine" type="submit" id="sureSave">确定</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--新闻新增end-->
+<!--评论管理start-->
+<div class="modal fade" id="commentManage" data-backdrop="static" data-clear="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">评论管理</h4>
+            </div>
+            <div class="modal-body">
+                <ul class="comment-list" id="comment-list">
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--评论管理end-->
+
+<script src="project/newsManage.js"></script>

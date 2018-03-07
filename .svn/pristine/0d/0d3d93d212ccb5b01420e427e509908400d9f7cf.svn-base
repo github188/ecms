@@ -1,0 +1,124 @@
+package com.ecaray.ecms.services.cwa;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+import com.ecaray.ecms.commons.utils.DateUtil;
+import com.ecaray.ecms.commons.utils.LeaveCalender;
+import com.ecaray.ecms.dao.mapper.cwa.CwaUserHolidayMapper;
+import com.ecaray.ecms.dao.mapper.sys.SysUserTakeoffMapper;
+import com.ecaray.ecms.entity.authority.User;
+import com.ecaray.ecms.entity.cwa.CwaHolidayRecord;
+import com.ecaray.ecms.entity.cwa.CwaUserConfirm;
+import com.ecaray.ecms.entity.cwa.CwaUserHoliday;
+import com.ecaray.ecms.entity.sys.SysUserTakeoff;
+import com.ecaray.ecms.services.authority.UserService;
+import com.ecaray.ecms.services.processes.ProcessService;
+
+@Component
+public class CwaYearHolidayTask {
+	@Autowired
+	UserService userService;
+	@Autowired
+	CwaUserHolidayMapper cwaUserHolidayMapper;
+	@Autowired
+	SysUserTakeoffMapper sysUserTakeoffMapper;
+	@Autowired
+	CwaReportService cwaAttendanceReportService;
+	@Autowired
+	CwaAttendanceService cwaAttendanceService;
+	@Autowired
+	CwaUserHolidayService cwaUserHolidayService;
+	@Autowired
+	LeaveCalender leaveCalender;
+	@Autowired
+	ProcessService processService;
+	
+	public CwaYearHolidayTask(){
+		System.out.println("YearHoliday任务启动成功！");
+	}
+    @Scheduled(cron="0 0 0 1 * ?")   //每月1号0点0分执行
+    public void run() {  
+    	SimpleDateFormat stf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	double startYearHoliday = 5.0;
+    	String month = DateUtil.format(new Date(), "MM");
+    	int year = Integer.parseInt(DateUtil.format(new Date(), "yyyy"));
+    	if(month.equals("01")) {
+    		month = "12";
+    	} else{
+    		month = String.format("%02d", Integer.parseInt(month) - 1);
+    	}
+        List<User> list = userService.selectUserListByMonth(month);
+        for(User user : list) {
+        	long joinDate = user.getCreateTime();
+        	int joinYear = Integer.parseInt(DateUtil.format(joinDate, "yyyy"));
+        	if(year - joinYear > 0) {
+        		double userHoliday = startYearHoliday + (year - joinYear - 1);
+            	CwaUserHoliday cwaholiday = cwaUserHolidayMapper.selectByPrimaryKey(user.getId());
+            	CwaUserHoliday cwaUserHoliday = new CwaUserHoliday();
+            	cwaUserHoliday.setUserId(user.getId());
+            	cwaUserHoliday.setAnnual(userHoliday);
+            	cwaUserHoliday.setLastAnnual(cwaholiday.getAnnual());
+            	cwaUserHolidayMapper.updateByPrimaryKeySelective(cwaUserHoliday);
+            	CwaHolidayRecord record = new CwaHolidayRecord();
+            	record.setBlance(userHoliday);
+            	record.setAddnum(userHoliday);
+            	record.setDate(DateUtil.format(new Date(),"yyyy-MM-dd"));
+            	record.setUserId(user.getId());
+            	record.setType(4);
+            	cwaUserHolidayService.saveUseHolidayRecord(record);
+            	System.out.println(stf.format(new Date()) + "更新了" + user.getId() + "年假" + userHoliday + "天");
+        	}
+        }
+	}  
+    
+    @Scheduled(cron="0 0 0 1 1 ?")   //1月1号0点0分执行
+    public void run2() {  
+    	List<CwaUserHoliday> holiday = cwaUserHolidayMapper.selectList();
+    	for(CwaUserHoliday day:holiday){
+    		if(day.getLastTakeoff() - day.getSubTakeoff() > 0) {
+    			SysUserTakeoff usertakeoff = new SysUserTakeoff();
+    			usertakeoff.setUserId(day.getUserId());
+    			usertakeoff.setTakeoff(day.getLastTakeoff() - day.getSubTakeoff());
+    			sysUserTakeoffMapper.insertSelective(usertakeoff);
+    			day.setLastTakeoff(day.getAddTakeoff());
+    		} else {
+    			day.setLastTakeoff(day.getLastTakeoff()+day.getAddTakeoff()-day.getSubTakeoff());
+    		}
+    		day.setAddTakeoff(0d);
+			day.setSubTakeoff(0d);
+    		cwaUserHolidayMapper.updateByTakeOff();
+    	}
+    }
+    
+    @Scheduled(cron="0 0 6 * * ?")   //每天6点0分执行
+    public void run4() throws Exception {  
+    	List<User> userList = userService.selectAllUserList();
+    	long time = DateUtil.nowTime();
+    	String today = DateUtil.format(time);
+    	String lastday = DateUtil.format(time - 24 * 3600 * 1000);
+    	String month = DateUtil.format(time,"yyyy-MM");
+    	String lastmonth = DateUtil.getPreMonth(month);
+    	cwaAttendanceService.valiAttendanceAndPunchCard(userList,lastday);
+    	String fristWorkDay = leaveCalender.getMonthThWorkDay(month, 1);
+    	String fourthWorkDay = leaveCalender.getMonthThWorkDay(month, 4);
+    	if (fristWorkDay.equals(today)) {
+    		for (User user : userList) {
+    			CwaUserConfirm cwaUserConfirm = new CwaUserConfirm();
+    			cwaUserConfirm.setMonth(lastmonth);
+    			cwaUserConfirm.setUserId(user.getId());
+    			processService.createProcess(cwaUserConfirm);
+    		}
+    	}
+    }
+    
+    public static void main(String[] args) {
+    	System.out.println(String.format("%02d", 9));
+	}
+    
+}

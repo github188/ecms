@@ -1,0 +1,157 @@
+<meta charset="UTF-8">
+<link href="project/css/crmSetting.css" type="text/css" rel="stylesheet">
+
+<style>
+	.noborder{
+		border:0px;
+	}
+</style>
+<div class="panel panel-nopadding">
+	<div class="list-top">
+		<h4 class="list-title">字段设置</h4>
+	</div>
+	<div class="panel-body">
+		<div class="form-group inblock" style="width: 100%;">
+			<label class="control-label col-sm-2" style="font-size: 14px;">客户状态</label>
+			<button class="btn btn-turquoise  edit-files" style="float: right; padding: 0px, 5px;" >编辑</button>
+			<button class="btn btn-orange  save-files" style="float: right; padding: 0px, 5px;">保存</button>
+		</div>
+		<HR style="FILTER: alpha(opacity = 100, finishopacity = 0, style = 3)"width="100%" color=#987cb9 SIZE=3>
+		<div class="form-horizontal complaimOrder" id="client_status">
+       	</div>
+	</div>
+</div>
+
+<div class="panel panel-nopadding">
+	<div class="panel-body">
+		<div class="form-group inblock" style="width: 100%;">
+			<label class="control-label col-sm-2" style="font-size: 14px;">合作领域</label>
+			<button class="btn btn-turquoise  edit-files" style="float: right; padding: 0px, 5px;">编辑</button>
+			<button class="btn btn-orange  save-files" style="float: right; padding: 0px, 5px;">保存</button>
+		</div>
+		<HR style="FILTER: alpha(opacity = 100, finishopacity = 0, style = 3)"
+			width="100%" color=#987cb9 SIZE=3>
+		<div class="form-horizontal complaimOrder" id="co_area">
+       	</div>
+	</div>
+</div>
+
+<div class="panel panel-nopadding">
+	<div class="panel-body">
+		<div class="form-group inblock" style="width: 100%;">
+			<label class="control-label col-sm-2" style="font-size: 14px;">客户级别</label>
+			<button class="btn btn-turquoise edit-files" style="float: right; padding: 0px, 5px;">编辑</button>
+			<button class="btn btn-orange save-files" style="float: right; padding: 0px, 5px;">保存</button>
+		</div>
+		<HR style="FILTER: alpha(opacity = 100, finishopacity = 0, style = 3)"
+			width="100%" color=#987cb9 SIZE=3>
+		<div class="form-horizontal complaimOrder" id="client_level">
+			
+       	</div>
+	</div>
+</div>
+
+<div class="panel panel-nopadding">
+	<div class="panel-body">
+		<div class="form-group inblock" style="width: 100%;">
+			<label class="control-label col-sm-2" style="font-size: 14px;">片区</label>
+			<button class="btn btn-turquoise  edit-files" style="float: right; padding: 0px, 5px;">编辑</button>
+			<button class="btn btn-orange  save-files" style="float: right; padding: 0px, 5px;">保存</button>
+				
+		</div>
+		<HR style="FILTER: alpha(opacity = 100, finishopacity = 0, style = 3)"
+			width="100%" color=#987cb9 SIZE=3>
+		<div class="form-horizontal complaimOrder" id="region">
+			
+       	</div>
+	</div>
+</div>
+<div class="panel panel-nopadding">
+	<div class="panel-body">
+		<div class="form-group inblock" style="width: 100%;">
+			<label class="control-label col-sm-2" style="font-size: 14px;">意向项目</label>
+			<button class="btn btn-turquoise edit-files" style="float: right; padding: 0px, 5px;">编辑</button>
+			<button class="btn btn-orange  save-files" style="float: right; padding: 0px, 5px;">保存</button>
+		</div>
+		<HR style="FILTER: alpha(opacity = 100, finishopacity = 0, style = 3)"
+			width="100%" color=#987cb9 SIZE=3>
+		<div class="form-horizontal complaimOrder" id="int_items">
+			
+       	</div>
+	</div>
+</div>
+<div class="panel panel-nopadding">
+	<div class="panel-body">
+		<div class="form-group inblock" style="width: 100%;">
+			<label class="control-label col-sm-2" style="font-size: 14px;">合作模式</label>
+			<button class="btn btn-turquoise   edit-files" style="float: right; padding: 0px, 5px;">编辑</button>
+			<button class="btn btn-orange  save-files" style="float: right; padding: 0px, 5px;">保存</button>
+		</div>
+		<HR style="FILTER: alpha(opacity = 100, finishopacity = 0, style = 3)"
+			width="100%" color=#987cb9 SIZE=3>
+		<div class="form-horizontal complaimOrder" id="co_mode">
+			
+       	</div>
+	</div>
+</div>
+<div class="panel panel-nopadding">
+	<div class="panel-body">
+		<div class="form-group inblock" style="width: 100%;">
+			<label class="control-label col-sm-2" style="font-size: 14px;">成交状态</label>
+			<button class="btn btn-turquoise   edit-files" style="float: right; padding: 0px, 5px;">编辑</button>
+			<button class="btn btn-orange  save-files" style="float: right; padding: 0px, 5px;">保存</button>
+		</div>
+		<HR style="FILTER: alpha(opacity = 100, finishopacity = 0, style = 3)"
+			width="100%" color=#987cb9 SIZE=3>
+		<div class="form-horizontal complaimOrder" id="deal_status">
+			
+       	</div>
+	</div>
+</div>
+<div class="panel panel-nopadding">
+	<div class="panel-body">
+		<div class="form-group inblock" style="width: 100%;">
+			<label class="control-label col-sm-2" style="font-size: 14px;">客户类型</label>
+			<button class="btn btn-turquoise   edit-files" style="float: right; padding: 0px, 5px;">编辑</button>
+			<button class="btn btn-orange  save-files" style="float: right; padding: 0px, 5px;">保存</button>
+		</div>
+		<HR style="FILTER: alpha(opacity = 100, finishopacity = 0, style = 3)"
+			width="100%" color=#987cb9 SIZE=3>
+		<div class="form-horizontal complaimOrder" id="client_type">
+			
+       	</div>
+	</div>
+</div>
+<div class="panel panel-nopadding">
+	<div class="panel-body">
+		<div class="form-group inblock" style="width: 100%;">
+			<label class="control-label col-sm-2" style="font-size: 14px;">销售阶段</label>
+			<button class="btn btn-turquoise   edit-files" style="float: right; padding: 0px, 5px;">编辑</button>
+			<button class="btn btn-orange  save-files" style="float: right; padding: 0px, 5px;">保存</button>
+		</div>
+		<HR style="FILTER: alpha(opacity = 100, finishopacity = 0, style = 3)"
+			width="100%" color=#987cb9 SIZE=3>
+		<div class="form-horizontal complaimOrder" id="sale_stage">
+			
+       	</div>
+	</div>
+</div>
+<div class="panel panel-nopadding">
+	<div class="panel-body">
+		<div class="form-group inblock" style="width: 100%;">
+			<label class="control-label col-sm-2" style="font-size: 14px;">跟进形式</label>
+			<button class="btn btn-turquoise   edit-files" style="float: right; padding: 0px, 5px;">编辑</button>
+			<button class="btn btn-orange  save-files" style="float: right; padding: 0px, 5px;">保存</button>
+		</div>
+		<HR style="FILTER: alpha(opacity = 100, finishopacity = 0, style = 3)"
+			width="100%" color=#987cb9 SIZE=3>
+		<div class="form-horizontal complaimOrder" id="follow_mode">
+			
+       	</div>
+	</div>
+</div>
+
+
+
+
+<script type="text/javascript" src="project/crmSetting.js"></script>

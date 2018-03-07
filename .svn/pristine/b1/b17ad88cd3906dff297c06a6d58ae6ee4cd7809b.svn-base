@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.ctm.CtmContractMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.ctm.CtmContract" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="ctm_name" property="ctmName" jdbcType="VARCHAR" />
+    <result column="ctm_code" property="ctmCode" jdbcType="VARCHAR" />
+    <result column="cus_name" property="cusName" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="dep_id" property="depId" jdbcType="VARCHAR" />
+    <result column="dep_name" property="depName" jdbcType="VARCHAR" />
+    <result column="ctm_attr" property="ctmAttr" jdbcType="CHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="start_time" property="startTime" jdbcType="BIGINT" />
+    <result column="end_time" property="endTime" jdbcType="BIGINT" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="add_user" property="addUser" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, ctm_name, ctm_code, cus_name, user_id, user_name, dep_id, dep_name, ctm_attr, 
+    amount, project_id, status, start_time, end_time, remark, add_time, update_time, 
+    add_user
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ctm_contract
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ctm_contract
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.ctm.CtmContract" >
+    insert into ctm_contract (id, ctm_name, ctm_code, 
+      cus_name, user_id, user_name, 
+      dep_id, dep_name, ctm_attr, 
+      amount, project_id, status, 
+      start_time, end_time, remark, 
+      add_time, update_time, add_user
+      )
+    values (#{id,jdbcType=VARCHAR}, #{ctmName,jdbcType=VARCHAR}, #{ctmCode,jdbcType=VARCHAR}, 
+      #{cusName,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{depId,jdbcType=VARCHAR}, #{depName,jdbcType=VARCHAR}, #{ctmAttr,jdbcType=CHAR}, 
+      #{amount,jdbcType=DECIMAL}, #{projectId,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{startTime,jdbcType=BIGINT}, #{endTime,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, #{addUser,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.ctm.CtmContract" >
+    insert into ctm_contract
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="ctmName != null" >
+        ctm_name,
+      </if>
+      <if test="ctmCode != null" >
+        ctm_code,
+      </if>
+      <if test="cusName != null" >
+        cus_name,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="depId != null" >
+        dep_id,
+      </if>
+      <if test="depName != null" >
+        dep_name,
+      </if>
+      <if test="ctmAttr != null" >
+        ctm_attr,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="addUser != null" >
+        add_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="ctmName != null" >
+        #{ctmName,jdbcType=VARCHAR},
+      </if>
+      <if test="ctmCode != null" >
+        #{ctmCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cusName != null" >
+        #{cusName,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="depId != null" >
+        #{depId,jdbcType=VARCHAR},
+      </if>
+      <if test="depName != null" >
+        #{depName,jdbcType=VARCHAR},
+      </if>
+      <if test="ctmAttr != null" >
+        #{ctmAttr,jdbcType=CHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=BIGINT},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=BIGINT},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="addUser != null" >
+        #{addUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.ctm.CtmContract" >
+    update ctm_contract
+    <set >
+      <if test="ctmName != null" >
+        ctm_name = #{ctmName,jdbcType=VARCHAR},
+      </if>
+      <if test="ctmCode != null" >
+        ctm_code = #{ctmCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cusName != null" >
+        cus_name = #{cusName,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="depId != null" >
+        dep_id = #{depId,jdbcType=VARCHAR},
+      </if>
+      <if test="depName != null" >
+        dep_name = #{depName,jdbcType=VARCHAR},
+      </if>
+      <if test="ctmAttr != null" >
+        ctm_attr = #{ctmAttr,jdbcType=CHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=BIGINT},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=BIGINT},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="addUser != null" >
+        add_user = #{addUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.ctm.CtmContract" >
+    update ctm_contract
+    set ctm_name = #{ctmName,jdbcType=VARCHAR},
+      ctm_code = #{ctmCode,jdbcType=VARCHAR},
+      cus_name = #{cusName,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      dep_id = #{depId,jdbcType=VARCHAR},
+      dep_name = #{depName,jdbcType=VARCHAR},
+      ctm_attr = #{ctmAttr,jdbcType=CHAR},
+      amount = #{amount,jdbcType=DECIMAL},
+      project_id = #{projectId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      start_time = #{startTime,jdbcType=BIGINT},
+      end_time = #{endTime,jdbcType=BIGINT},
+      remark = #{remark,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      add_user = #{addUser,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <select id="selectCtmList" parameterType="com.ecaray.ecms.entity.ctm.Vo.CtmFilter" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> from ctm_contract where 1=1
+  	<if test="key != null" >
+        and (ctm_code like #{key} or ctm_name like #{key}) 
+    </if>
+  	<if test="userName != null" >
+        and user_name like #{userName}
+    </if>
+  	<if test="ctmAttr != null" >
+        and ctm_attr like #{ctmAttr}
+    </if>
+  	<if test="depIds != null" >
+  		and dep_id in 
+        <foreach collection="depIds" item="item" open="(" separator="," close=")">
+    		 #{item}
+    	</foreach>
+    </if>
+  	<if test="userIds != null" >
+  		and user_id in 
+        <foreach collection="userIds" item="item" open="(" separator="," close=")">
+    		 #{item}
+    	</foreach>
+    </if>
+  	<if test="startAmount != 0.0" >
+  		and amount &gt;= #{startAmount}
+    </if>
+    <if test="endAmount != 0.0" >
+  		and amount &lt;= #{endAmount }
+    </if>
+    <if test="status != null" >
+  		and status = #{status }
+    </if>
+    order by add_time desc
+  </select>
+  <select id="selectCtmCountByDay" parameterType="java.lang.Long" resultType="java.lang.Integer">
+  	select count(1) from ctm_contract where add_time &gt;= #{day} 
+  </select>
+</mapper>

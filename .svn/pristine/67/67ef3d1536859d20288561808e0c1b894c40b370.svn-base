@@ -1,0 +1,233 @@
+//考勤异常
+<template>
+  <div id="unusualOrder">
+    <el-form class="form" label-width="100px" label-position="right">
+      <template v-if="details.processType == 9">
+        <!-- 主动提起异常单详情 -->
+        <div class="order-box order-detail-container">
+          <el-form-item label="考勤类型：">
+            <span> {{details.resultType == 0?'出勤':details.typeName}}</span>
+          </el-form-item>
+          <el-form-item label="开始时间：">
+            <span>{{details.starttime | getTime}}</span>
+          </el-form-item>
+          <el-form-item label="结束时间：">
+            <span>{{details.endtime | getTime}}</span>
+          </el-form-item>
+          <el-form-item label="时长：">
+            <span> {{details.timeLength}}天 </span>
+          </el-form-item>
+          <el-form-item label="其他说明：">
+            <span v-html="details.reason"></span>
+          </el-form-item>
+          <el-form-item label="关联考勤单：" v-if="details.resultType != 8 && details.refList.length>0">
+            <p v-for="(item, index) in details.refList" :key="index">
+              <a class="link" title="查看考勤详情" target="_blank" :href="appRoot + '/work/detail?id='+ item.id+ '&type='+item.pType">{{item.title}}</a>
+            </p>
+          </el-form-item>
+        </div>
+      </template>
+      <template v-else>
+        <!-- 系统生成的异常单详情 -->
+        <div class="order-box order-detail-container">
+          <h2 class="title">{{details.date}} 异常详情</h2>
+          <el-form-item label="打卡记录：">
+            <p>
+              <span>上班时间： {{details.fristtime || '--'}}</span>
+            </p>
+            <p>
+              <span>下班时间： {{details.lasttime || '--'}}</span>
+            </p>
+            <p>
+              <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;时长： {{details.worktime? details.worktime + '小时': '--'}}</span>
+            </p>
+          </el-form-item>
+          <el-form-item label="考勤状态：">
+            <span class="red-color">{{dealExpName(details.expName)}}</span>
+          </el-form-item>
+        </div>
+
+        <div class="order-box order-detail-container" v-if="details.resultObj">
+          <h2 class="title">处理方式： {{['不处理', '补请假单', '', '补出差单', '', '补外出单','','','补签打卡','','补外出单'][details.resultType]}}</h2>
+
+          <template v-if="details.resultType == 0">
+            <!-- 不处理 -->
+            <el-form-item label="考勤状态：">
+              <span class="red-color">{{dealExpName(details.expName)}}</span>
+            </el-form-item>
+            <el-form-item label="异常说明：">
+              <span v-html="details.resultObj.reason"></span>
+            </el-form-item>
+          </template>
+
+          <template v-if="details.resultType == 1">
+            <!-- 补请假单 -->
+            <askForLeave :details="details.resultObj"></askForLeave>
+          </template>
+
+          <template v-if="details.resultType == 3">
+            <!-- 补出差单 -->
+            <outOff :details="details.resultObj"></outOff>
+          </template>
+
+          <template v-if="details.resultType == 8">
+            <!-- 补签打卡 -->
+            <el-form-item label="补签记录：">
+              <p>
+                <span>上班时间： {{getTimeMinutes(details.resultObj.fristTime) || '--'}}</span>
+              </p>
+              <p>
+                <span>下班时间： {{getTimeMinutes(details.resultObj.lastTime) || '--'}}</span>
+              </p>
+              <p>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;时长： {{details.resultObj.worktime? details.resultObj.worktime + '小时': '--'}}</span>
+              </p>
+            </el-form-item>
+            <el-form-item label="考勤状态：">
+              <!-- <span v-if="isExp(details, details.resultObj.worktime)" class="red-color">{{details.expType == 3?'加班异常': '早退'}}</span>-->
+              <span :style="'color:' + isExp(details, details.resultObj.worktime).color">{{isExp(details, details.resultObj.worktime).status}}</span>
+            </el-form-item>
+            <el-form-item label="事由：">
+              <span class="word-break">{{details.resultObj.remark}}</span>
+            </el-form-item>
+          </template>
+
+          <template v-if="details.resultType == 10">
+            <!-- 补外出单 -->
+            <beOut :details="[details.resultObj]"></beOut>
+          </template>
+        </div>
+
+      </template>
+    </el-form>
+  </div>
+</template>
+<style lang="scss">
+#unusualOrder {
+  .title {
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e6e9eb;
+    color: #48576a;
+    font-weight: normal;
+    font-size: 16px;
+  }
+  .word-break {
+    word-break: break-all;
+  }
+  .red-color {
+    color: red;
+  } // .link{
+  //   color: #01cd78;
+  //   &:hover{
+  //     opacity: .6;
+  //   }
+  // }
+}
+</style>
+
+<script>
+import askForLeave from './askForLeave' //请假
+import outOff from './outOff' //出差
+import beOut from './beOut' //外出
+export default {
+  name: 'unusnal',
+  props: ['details'],
+  components: {
+    askForLeave,
+    outOff,
+    beOut,
+  },
+  data() {
+    return {
+      affairsName: '', //请假类型
+    }
+  },
+  filters: {
+    getTime(time) {
+      if (time) {
+        return new Date(time).toStr().slice(0, 16)
+      }
+    },
+  },
+  mounted() {
+    $('.order-detail').css('min-height', window.innerHeight - 160)
+  },
+  updated() {
+    this.getAffairsType()
+  },
+  methods: {
+    dealExpName(name) {
+      if (name) {
+        let expName = name.split('#')
+        let status = expName[0]
+        let time = expName[1]
+        if (time == 0.5) {
+          return status + ' 0.5'
+        }
+        let worktime = this.details.worktime;
+        if(this.details.resultType == 0 && time == 1.0 && (worktime && worktime >=4) ){//不处理且加班为一天但实际打卡时间为0.5天
+          return '加班0.5'
+        }
+        
+        return status
+      }
+    },
+    isExp(details, workTime) {
+      // expType[1-旷工, 2-早退, 3-加班异常]
+      let expName = details.expName.split('#')
+      let status = expName[0]
+      let time = expName[1]
+      let object = {
+        color: 'red',
+        status
+      }
+      if (time == undefined && workTime >= 8) { //兼容旧版本数据
+        object.color = '#38c695'
+        if (details.expType == 3) {
+          object.status = '加班'
+        } else {
+          object.status = '出勤'
+        }
+        return object
+      }
+      if (time == 0.5 && workTime >= 4 || time == 1 && workTime >= 8) {
+        object.color = '#38c695'
+        if (details.expType == 3) {
+          object.status = '加班'
+        } else {
+          object.status = '出勤'
+        }
+      } else {
+        if (details.expType == 3) {
+          object.status = '加班异常'
+        } else {
+          object.status = status
+        }
+        // if(details.expType == 2){   //早退
+
+        // }
+      }
+      return object
+    },
+    getAffairsType() {
+      this.ajax({
+        url: '/ctm/setting/param/list',
+        data: {
+          code: 'cwa_leave_type',
+        },
+        success(data, $this) {
+          if (data.code == 'success') {
+            let { content } = data
+            for (let i = 0; i < content.length; i++) {
+              if (content[i].value == $this.details.resultObj && $this.details.resultObj.type) {
+                $this.affairsName = content[i].name
+              }
+            }
+          }
+        },
+      })
+    },
+  },
+}
+</script>

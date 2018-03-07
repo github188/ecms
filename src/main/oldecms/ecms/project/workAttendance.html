@@ -1,0 +1,148 @@
+<meta charset="UTF-8">
+<link rel="stylesheet" href="skins/js/month/monthPicker.css">
+<link rel="stylesheet" href="skins/js/calendarrecord/style.css">
+<link href="project/css/workAttendance.css" type="text/css" rel="stylesheet">
+<div class="panel panel-nopadding">
+    <div class="panel-body">
+        <div class="list-top margin-b-20" style="border-bottom: none; overflow: inherit;">
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="form-group inblock" style="margin-left: -46px; position:relative;">
+                        <label class="col-sm-2 control-label">部门：</label>
+                        <input type="text" class="form-control dep-parentname" name="depParentName" readonly/>
+                        <span title="清除" class="clear-depart" id="clearDepart">&times;</span>
+                        <div id="DepartForSuperiorEditPanel">
+                            <span title="关闭" class="close-tree-sel" id="closeDepartForSuperiorEdit">&times;</span>
+                            <ul id="treeDepartForSuperiorEdit" class="ztree tree-contain-editdep-sel"></ul>
+                        </div>
+                    </div>
+
+                    <div class="form-group inblock" style="margin-left: -45px;">
+                        <label class="col-sm-2 control-label">月份：</label>
+                        <input type="text" class="form-control input-key laydate-icon" id="layDate" readonly="readonly">
+                    </div>
+
+                    <div class="form-group inblock" style="margin-left: -45px;">
+                        <label class="col-sm-2 control-label">姓名：</label>
+                        <input type="text" class="form-control input-key" id="userName">
+                    </div>
+                    <button style="margin-top: 6px;" class="btn btn-orange btn-search">查询</button>
+
+                    <div class="pull-right" id="workAttendanceButton" style="margin-top: 8px; margin-right: 20px; margin-bottom: 20px"></div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div>
+                <div class="table-responsive" id="personList"><p style="text-align: center; margin-top: 200px;">加载中...</p></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 查看考勤记录 -->
+<div class="modal fade" id="detailAttendanceModal" data-backdrop="static" data-clear="true">
+    <div class="modal-dialog" style="width: 1200px;">
+        <div class="modal-content" style=" height: 720px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">考勤记录详情</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="calendar-record" id="calendarTable"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 修改考勤记录 -->
+<div class="modal fade" id="editAttendanceModal" data-backdrop="static" data-clear="true">
+    <div class="modal-dialog" style="width: 640px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">修改考勤记录</h4>
+            </div>
+            <form class="form-validate" id="editAttendanceForm" role="form">
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required">*</span>状态</label>
+                            <div class="col-md-10">
+                                <select class="form-control" name="status" id="leaveType"></select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required" aria-required="true">*</span>开始时间</label>
+                            <div class="col-md-5" style="margin-right: 0; padding-right: 0">
+                                <input class="form-control lay-date-start" id="starDate" type="text" readonly="" name="startDate">
+                            </div>
+                            <div class="col-md-5" style="padding-left: 0; margin-left: 0">
+                                <select class="form-control ask-time" id="startTime" name="startTime" data-num="1">
+                                    <option  data-num="1"  value="09:00">09:00</option>
+                                    <option  data-num="2"  value="10:00">10:00</option>
+                                    <option  data-num="3"  value="11:00">11:00</option>
+                                    <option  data-num="4"  value="12:00">12:00</option>
+                                    <option  data-num="4"  value="14:00">14:00</option>
+                                    <option  data-num="5"  value="15:00">15:00</option>
+                                    <option  data-num="6"  value="16:00">16:00</option>
+                                    <option  data-num="7"  value="17:00">17:00</option>
+                                    <option  data-num="8" value="18:00">18:00</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label ask-time"><span class="required" aria-required="true">*</span>结束时间</label>
+                            <div class="col-md-5" style="margin-right: 0; padding-right: 0">
+                                <input class="form-control lay-date-end" id="endDate" type="text" readonly="" name="endDate">
+                            </div>
+                            <div class="col-md-5" style="padding-left: 0; margin-left: 0">
+                                <select class="form-control ask-time" id="endTime" name="endTime" data-num="8">
+                                    <option data-num="1" value="09:00">09:00</option>
+                                    <option data-num="2" value="10:00">10:00</option>
+                                    <option data-num="3" value="11:00">11:00</option>
+                                    <option data-num="4" value="12:00">12:00</option>
+                                    <option data-num="4" value="14:00">14:00</option>
+                                    <option data-num="5" value="15:00">15:00</option>
+                                    <option data-num="6" value="16:00">16:00</option>
+                                    <option data-num="7" value="17:00">17:00</option>
+                                    <option data-num="8" value="18:00" selected="">18:00</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required">*</span>时长</label>
+                            <div class="col-md-10">
+                                <input class="form-control" id="duration" type="text" readonly="readonly" name="duration">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required">*</span>修改备注</label>
+                            <div class="col-md-10">
+                                <textarea class="form-control" id="remark" name="remark" style="height: 100px"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button class="btn btn-success btn-examine" type="submit">确定</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="skins/js/month/monthPicker.js"></script>
+<script type="text/javascript" src="skins/js/calendarrecord/calendarrecord.js"></script>
+<script type="text/javascript" src="project/workAttendance.js"></script>

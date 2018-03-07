@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.news.PortalLikesMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.news.PortalLikes" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="ref_id" property="refId" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="isvalid" property="isvalid" jdbcType="INTEGER" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, user_name, ref_id, type, isvalid, add_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from portal_likes
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from portal_likes
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.news.PortalLikes" >
+    insert into portal_likes (id, user_id, user_name, 
+      ref_id, type, isvalid, 
+      add_time, update_time)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{refId,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{isvalid,jdbcType=INTEGER}, 
+      #{addTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.news.PortalLikes" >
+    insert into portal_likes
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="refId != null" >
+        ref_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="isvalid != null" >
+        isvalid,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="refId != null" >
+        #{refId,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="isvalid != null" >
+        #{isvalid,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.news.PortalLikes" >
+    update portal_likes
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="refId != null" >
+        ref_id = #{refId,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="isvalid != null" >
+        isvalid = #{isvalid,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByUserAndRef" parameterType="com.ecaray.ecms.entity.news.PortalLikes" >
+    update portal_likes set isvalid = #{isvalid},update_time = #{updateTime}
+    where user_id = #{userId,jdbcType=VARCHAR} and ref_id = #{refId} and type = #{type}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.news.PortalLikes" >
+    update portal_likes
+    set user_id = #{userId,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      ref_id = #{refId,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      isvalid = #{isvalid,jdbcType=INTEGER},
+      add_time = #{addTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+    <resultMap id="VoBaseResultMap" type="com.ecaray.ecms.entity.news.vo.PortalLikesVo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="ref_id" property="refId" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="isvalid" property="isvalid" jdbcType="INTEGER" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  
+  <select id="selectListByVo" parameterType="com.ecaray.ecms.entity.news.vo.PortalLikesVo" resultMap="VoBaseResultMap">
+  	select * from portal_likes l left join sys_user u on l.user_id = u.id  where l.isvalid = 1 
+  	and u.is_delete = 0 and u.is_leave = 0 
+  	<if test="userName !=null">
+  		and l.user_name like #{userName}
+  	</if>
+  	<if test="refId !=null">
+  		and l.ref_id = #{refId}
+  	</if>
+  	<if test="type !=null">
+  		and l.type = #{type}
+  	</if>
+  	<if test="depList !=null">
+  		and u.dep_id in 
+  		<foreach item="ids" index="index" collection="depList" open="(" separator="," close=")">
+      		#{ids} 
+    	</foreach>
+  	</if>
+  </select>
+  <select id="selectNoReadListByVo" parameterType="com.ecaray.ecms.entity.news.vo.PortalLikesVo" resultType="java.lang.String">
+  	select id from sys_user where id not in  
+  	(select user_id from portal_likes where isvalid = 1 and ref_id = #{refId} and type = 1) 
+  	 and is_delete = 0 and is_leave = 0  
+  	 <if test="userName !=null">
+  		and real_name like #{userName}
+  	</if>
+  	<if test="depList !=null">
+  		and dep_id in 
+  		<foreach item="ids" index="index" collection="depList" open="(" separator="," close=")">
+      		#{ids} 
+    	</foreach>
+  	</if>
+  </select>
+  <select id="selectNewsData" parameterType="com.ecaray.ecms.entity.news.PortalLikes" resultType="java.lang.Integer">
+	select count(1) from portal_likes a left join sys_user u on a.user_id = u.id where a.isvalid = 1 and a.ref_id = #{refId} and a.type = #{type} and u.is_delete = 0 and u.is_leave = 0 and u.usercode > '0000'
+  </select>
+  <select id="selectIsReadOrLike" parameterType="com.ecaray.ecms.entity.news.PortalLikes" resultType="java.lang.Integer">
+	select count(1) from portal_likes where isvalid = 1 and ref_id = #{refId} and type = #{type} and user_id = #{userId}
+  </select>
+</mapper>

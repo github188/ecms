@@ -1,0 +1,12 @@
+# 生产
+
+#正式环境文件存储路径
+file.path = /app/fileRoot/oa/filepath
+
+cwa.md5=D3029C73406221B02026B684BB00579C
+
+cwa.url=http://192.168.9.114:8090/stif/data
+
+#cwa.url=http://192.168.9.110:8010/stif/data
+
+#cwa.url=http://192.168.2.5:8080/eap/data

@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.news.NewsComMapper">
+	<resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.news.NewsCom">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="new_id" property="newId" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+		<result column="add_person_id" property="addPersonId" jdbcType="VARCHAR" />
+		<result column="add_person_name" property="addPersonName"
+			jdbcType="VARCHAR" />
+		<result column="comment_count" property="commentCount"
+			jdbcType="INTEGER" />
+		<result column="view_count" property="viewCount" jdbcType="INTEGER" />
+		<result column="voters_count" property="votersCount" jdbcType="INTEGER" />
+		<result column="is_cryptonym" property="isCryptonym" jdbcType="INTEGER" />
+		<result column="add_time" property="addTime" jdbcType="BIGINT" />
+		<result column="parentName" property="parentName" jdbcType="VARCHAR" />
+		<result column="parentUserId" property="parentUserId" jdbcType="VARCHAR" />
+		<result column="news_title" property="newTitle" jdbcType="VARCHAR" />
+		<result column="newsTypeName" property="newsTypeName" jdbcType="VARCHAR" />
+		<result column="update_time" property="updateTime" jdbcType="BIGINT" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, new_id, content, status, parent_id, add_person_id, add_person_name,
+		comment_count,
+		view_count, voters_count, is_cryptonym, add_time, update_time
+	</sql>
+	<sql id="A_Base_Column_List">
+		a.id, a.new_id, a.content, a.status, a.parent_id, a.add_person_id,
+		a.add_person_name, a.comment_count,
+		a.view_count, a.voters_count, a.is_cryptonym, a.add_time, a.update_time
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from portal_news_com
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from portal_news_com
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.ecaray.ecms.entity.news.NewsCom">
+		insert into portal_news_com (id, new_id, content,
+		status, parent_id, add_person_id,
+		add_person_name, comment_count, view_count,
+		voters_count, is_cryptonym, add_time,
+		update_time)
+		values (#{id,jdbcType=VARCHAR}, #{newId,jdbcType=VARCHAR},
+		#{content,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER}, #{parentId,jdbcType=VARCHAR}, #{addPersonId,jdbcType=VARCHAR},
+		#{addPersonName,jdbcType=VARCHAR}, #{commentCount,jdbcType=INTEGER},
+		#{viewCount,jdbcType=INTEGER},
+		#{votersCount,jdbcType=INTEGER}, #{isCryptonym,jdbcType=INTEGER}, #{addTime,jdbcType=BIGINT},
+		#{updateTime,jdbcType=BIGINT})
+	</insert>
+	<insert id="insertSelective" parameterType="com.ecaray.ecms.entity.news.NewsCom">
+		insert into portal_news_com
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="newId != null">
+				new_id,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="parentId != null">
+				parent_id,
+			</if>
+			<if test="addPersonId != null">
+				add_person_id,
+			</if>
+			<if test="addPersonName != null">
+				add_person_name,
+			</if>
+			<if test="commentCount != null">
+				comment_count,
+			</if>
+			<if test="viewCount != null">
+				view_count,
+			</if>
+			<if test="votersCount != null">
+				voters_count,
+			</if>
+			<if test="isCryptonym != null">
+				is_cryptonym,
+			</if>
+			<if test="addTime != null and addTime!=0">
+				add_time,
+			</if>
+			<if test="updateTime != null and updateTime!=0">
+				update_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="newId != null">
+				#{newId,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="parentId != null">
+				#{parentId,jdbcType=VARCHAR},
+			</if>
+			<if test="addPersonId != null">
+				#{addPersonId,jdbcType=VARCHAR},
+			</if>
+			<if test="addPersonName != null">
+				#{addPersonName,jdbcType=VARCHAR},
+			</if>
+			<if test="commentCount != null">
+				#{commentCount,jdbcType=INTEGER},
+			</if>
+			<if test="viewCount != null">
+				#{viewCount,jdbcType=INTEGER},
+			</if>
+			<if test="votersCount != null">
+				#{votersCount,jdbcType=INTEGER},
+			</if>
+			<if test="isCryptonym != null">
+				#{isCryptonym,jdbcType=INTEGER},
+			</if>
+			<if test="addTime != null and addTime!=0">
+				#{addTime,jdbcType=BIGINT},
+			</if>
+			<if test="updateTime != null and updateTime!=0">
+				#{updateTime,jdbcType=BIGINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.news.NewsCom">
+		update portal_news_com
+		<set>
+			<if test="newId != null">
+				new_id = #{newId,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				content = #{content,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="parentId != null">
+				parent_id = #{parentId,jdbcType=VARCHAR},
+			</if>
+			<if test="addPersonId != null">
+				add_person_id = #{addPersonId,jdbcType=VARCHAR},
+			</if>
+			<if test="addPersonName != null">
+				add_person_name = #{addPersonName,jdbcType=VARCHAR},
+			</if>
+			<if test="commentCount != null">
+				comment_count = #{commentCount,jdbcType=INTEGER},
+			</if>
+			<if test="viewCount != null">
+				view_count = #{viewCount,jdbcType=INTEGER},
+			</if>
+			<if test="votersCount != null">
+				voters_count = #{votersCount,jdbcType=INTEGER},
+			</if>
+			<if test="isCryptonym != null">
+				is_cryptonym = #{isCryptonym,jdbcType=INTEGER},
+			</if>
+			<if test="addTime != null and addTime!=0">
+				add_time = #{addTime,jdbcType=BIGINT},
+			</if>
+			<if test="updateTime != null and updateTime !=0">
+				update_time = #{updateTime,jdbcType=BIGINT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.news.NewsCom">
+		update portal_news_com
+		set new_id = #{newId,jdbcType=VARCHAR},
+		content = #{content,jdbcType=VARCHAR},
+		status = #{status,jdbcType=INTEGER},
+		parent_id = #{parentId,jdbcType=VARCHAR},
+		add_person_id = #{addPersonId,jdbcType=VARCHAR},
+		add_person_name = #{addPersonName,jdbcType=VARCHAR},
+		comment_count = #{commentCount,jdbcType=INTEGER},
+		view_count = #{viewCount,jdbcType=INTEGER},
+		voters_count = #{votersCount,jdbcType=INTEGER},
+		is_cryptonym = #{isCryptonym,jdbcType=INTEGER},
+		add_time = #{addTime,jdbcType=BIGINT},
+		update_time = #{updateTime,jdbcType=BIGINT}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+
+
+
+
+	<!-- 返回结果集 -->
+	<resultMap type="com.ecaray.ecms.entity.news.NewsComWithChildren"
+		id="NewsContentsResultMap">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="new_id" property="newId" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+		<result column="add_person_id" property="addPersonId" jdbcType="VARCHAR" />
+		<result column="add_person_name" property="addPersonName"
+			jdbcType="VARCHAR" />
+		<result column="comment_count" property="commentCount"
+			jdbcType="INTEGER" />
+		<result column="view_count" property="viewCount" jdbcType="INTEGER" />
+		<result column="voters_count" property="votersCount" jdbcType="INTEGER" />
+		<result column="is_cryptonym" property="isCryptonym" jdbcType="INTEGER" />
+		<result column="add_time" property="addTime" jdbcType="BIGINT" />
+		<result column="update_time" property="updateTime" jdbcType="BIGINT" />
+		<collection property="children" column="id"
+			ofType="com.ecaray.ecms.entity.news.NewsComWithChildren" select="selectNewsCommentListByPId"></collection>
+	</resultMap>
+
+	<!--查询新闻 带隐藏的 -->
+	<select id="selectNewsCommentListById" resultMap="NewsContentsResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from portal_news_com
+		where new_id = #{newId} order by add_time DESC
+	</select>
+
+	<!-- 根据父键查询 全部 -->
+	<select id="selectNewsCommentListByPId" parameterType="java.lang.String"
+		resultMap="NewsContentsResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from portal_news_com
+		where parent_id = #{id} order by add_time DESC
+	</select>
+
+
+	<!--查询新闻 只显示筛选过的 -->
+	<select id="selectComListByIdWithoutHide" resultMap="NewsContentsResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from portal_news_com
+		where new_id = #{newId} and parent_id = '0' AND status =0 order by add_time
+		desc
+	</select>
+
+	<resultMap id="XSAllBaseResultMap" type="com.ecaray.ecms.entity.news.NewsCom">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="new_id" property="newId" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+		<result column="add_person_id" property="addPersonId" jdbcType="VARCHAR" />
+		<result column="add_person_name" property="addPersonName"
+			jdbcType="VARCHAR" />
+		<result column="comment_count" property="commentCount"
+			jdbcType="INTEGER" />
+		<result column="view_count" property="viewCount" jdbcType="INTEGER" />
+		<result column="voters_count" property="votersCount" jdbcType="INTEGER" />
+		<result column="is_cryptonym" property="isCryptonym" jdbcType="INTEGER" />
+		<result column="add_time" property="addTime" jdbcType="BIGINT" />
+		<result column="update_time" property="updateTime" jdbcType="BIGINT" />
+		<result column="dep_id" property="depId" jdbcType="BIGINT" />
+	</resultMap>
+
+	<!-- 根据父键查询 只显示筛选过的 -->
+	<select id="selectComListByPIdWithoutHide" parameterType="java.lang.String"
+		resultMap="NewsContentsResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from portal_news_com
+		where new_id = #{newId} AND status =0 order by add_time desc
+	</select>
+	<select id="selectNewsCommentCount" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		select count(1) from portal_news_com where new_id = #{newId} AND status =0
+	</select>
+	<update id="updateStatusByParentId">
+		update portal_news_com set status = #{status} where parent_id = #{comId}
+	</update>
+	<select id="selectAllNewsCommentList" parameterType="java.lang.String"
+		resultMap="XSAllBaseResultMap">
+		select
+		<include refid="A_Base_Column_List" />
+		,b.dep_id
+		from portal_news_com a left join sys_user b on a.add_person_id = b.id
+		where a.new_id = #{newId}
+		<if test="addPersonName!=null">
+			and b.realname like #{addPersonName}
+		</if>
+		<if test="depList !=null">
+			and b.dep_id in
+			<foreach item="ids" index="index" collection="depList" open="("
+				separator="," close=")">
+				#{ids}
+			</foreach>
+		</if>
+		and b.is_delete = 0 and b.is_leave = 0 and b.usercode > '0000'
+		order by a.add_time desc
+	</select>
+	<select id="selectNewsComByUserId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select a.*,b.add_person_name as parentName,n.news_title,p.name as newsTypeName from portal_news_com
+		a left join portal_news_com b on a.parent_id = b.id left join
+		portal_news n on a.new_id = n.id
+		left join sys_parameter p on n.news_type = p.value and p.code = 'portal_type'
+		WHERE (a.add_person_id = #{userId} AND a.status = 0 and n.is_publish = 0 ) OR (b.add_person_id = #{userId} AND b.status = 0 and n.is_publish = 0 )
+		order by a.add_time desc
+		
+	</select>
+	
+	<select id="selectNewsComById" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select a.*,b.add_person_name as parentName,b.add_person_id as parentUserId from portal_news_com
+		a left join portal_news_com b on a.parent_id = b.id 
+		where a.id = #{id} and a.status = 0 and b.status = 0
+	</select>
+</mapper>

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="imspmo:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="imspmo.war">
+      <element id="artifact" artifact-name="imspmo:war exploded" />
+    </root>
+  </artifact>
+</component>

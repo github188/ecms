@@ -1,0 +1,348 @@
+package com.ecaray.ecms.services.cwa.process;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ecaray.ecms.commons.constant.ValiResult;
+import com.ecaray.ecms.commons.exception.ProcessSubmitException;
+import com.ecaray.ecms.commons.utils.DataUtil;
+import com.ecaray.ecms.commons.utils.DateUtil;
+import com.ecaray.ecms.commons.utils.StrUtils;
+import com.ecaray.ecms.dao.mapper.cwa.CwaExceptionMapper;
+import com.ecaray.ecms.dao.mapper.cwa.CwaRetroactiveMapper;
+import com.ecaray.ecms.entity.cwa.CwaAttendance;
+import com.ecaray.ecms.entity.cwa.CwaException;
+import com.ecaray.ecms.entity.cwa.CwaLeave;
+import com.ecaray.ecms.entity.cwa.CwaProcess;
+import com.ecaray.ecms.entity.cwa.CwaRetroactive;
+import com.ecaray.ecms.entity.process.ProcessBase;
+import com.ecaray.ecms.entity.process.SysNodes;
+import com.ecaray.ecms.entity.process.SysProDone;
+import com.ecaray.ecms.entity.process.SysProcess;
+import com.ecaray.ecms.entity.process.Vo.DoneResultVo;
+import com.ecaray.ecms.services.authority.UserService;
+import com.ecaray.ecms.services.cwa.CwaProcessService;
+import com.ecaray.ecms.services.cwa.CwaUserHolidayService;
+import com.ecaray.ecms.services.processes.BaseProcessService;
+import com.ecaray.ecms.services.processes.ProcessService;
+import com.ecaray.ecms.services.processes.SpringFactory;
+import com.ecaray.ecms.services.processes.base.SysNodesService;
+
+@Service
+public class CwaExceptionProcess extends BaseProcessService {
+
+	@Autowired
+	private CwaExceptionMapper cwaExceptionMapper;
+	@Autowired
+	private SysNodesService sysNodesService;
+	@Autowired
+	private ProcessService processService;
+	@Autowired
+	private CwaPunchCardProcess cwaPunchCardProcess;
+	@Autowired
+	private CwaUserHolidayService cwaUserHolidayService;
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private CwaRetroactiveMapper cwaRetroactiveMapper;
+	@Autowired
+	private CwaProcessService cwaProcessService;
+
+	private static boolean isSendTodoMail = true;
+
+	private static String title = "考勤异常";
+
+	/**
+	 * 设置流程标题
+	 */
+	public ProcessBase setTitle(ProcessBase pro) {
+		CwaException exception = (CwaException) pro;
+		String date = exception.getDate();
+		String userId = exception.getUserId();
+		String userName = userService.getUserById(userId).getRealname();
+		exception.setTitle(userName + date + title);
+		exception.setId(DataUtil.uuidData());
+		return exception;
+	}
+
+	/**
+	 * 设置待办邮件相关参数
+	 */
+	@Override
+	public SysProcess setTodoMailInfo(ProcessBase pro, SysProcess process) {
+		CwaException exception = (CwaException) pro;
+		process.setSendMail(isSendTodoMail);
+		if (isSendTodoMail) {
+			SysNodes node = sysNodesService.getNodeById(process.getNodeId());
+			if (node.getIsHead() == 1) {
+				Map<String, String> mailParam = new HashMap<String, String>();
+				String fristtime = exception.getFristtime();
+				String lasttime = exception.getLasttime();
+				Double worktime = exception.getWorktime();
+				String expName = exception.getExpName().replace("#", "");
+				mailParam.put("expName", expName);
+				mailParam.put("date", exception.getDate());
+				mailParam.put("fristtime", StrUtils.isNull(fristtime) ? "无" : fristtime);
+				mailParam.put("lasttime", StrUtils.isNull(lasttime) ? "无" : lasttime);
+				mailParam.put("worktime", (worktime == null ? 0.0 : worktime) + "");
+				mailParam.put("processId", process.getId());
+				mailParam.put("processType", process.getType() + "");
+				process.setMailParam(mailParam);
+				process.setMailKey("sysCwaException");
+				process.setSubject("系统判定您" + exception.getDate() + "日的考勤结果为" + expName + ",请及时处理");
+			} else {
+				return sendTodoMailInfo(pro, process);
+			}
+		}
+		return process;
+	}
+
+	/**
+	 * 启动流程成功回调
+	 */
+	@Override
+	@Transactional
+	public void startProcessCallBack(ProcessBase pro) throws Exception {
+		CwaException exception = (CwaException) pro;
+		saveProcessObject(exception);
+	}
+
+	/**
+	 * 获取流程流转参数
+	 */
+	@Override
+	public Map<String, Object> getProcessRotaParam(SysProDone done, SysProcess process) throws Exception {
+		String refId = process.getRelId();
+		String userId = process.getUserId();
+		CwaException exception = getCwaExceptionById(refId);
+		SysNodes node = sysNodesService.getNodeById(done.getNodeId());
+		int nodeProcessType = node.getProcessType();
+		Map<String, Object> map = new HashMap<>();
+		if (node.getIsHead() == 2 && process.getType() == nodeProcessType) {
+			int resultType = done.getResult();
+			String id;
+			if (resultType != 0) {
+				Map<String, Object> paramap = done.getProcess();
+				String str1 = processService.getProcessPath(done.getResult());
+				BaseProcessService service = SpringFactory.getBean(str1);
+				ProcessBase base = service.bindingParamByMap(paramap);
+				if (resultType != 8) {
+					ValiResult v = cwaProcessService.validateTimeForException((CwaProcess) base);
+					if (!v.getCode()) {
+						throw new ProcessSubmitException(v.getMsg());
+					}
+				}
+				base.setStatus(-1);
+				base.setUserId(userId);
+				id = service.saveProcessObject(base);
+				if (resultType != 8 && resultType != 0) {
+					cwaAttendanceService.translateCwaToAttendance((CwaProcess) base);
+				}
+				if (base.getProcessType() == 1) { // 扣掉假期
+					CwaLeave leave = (CwaLeave) base;
+					cwaUserHolidayService.updateUserHoliday(leave);
+				}
+			} else {
+				id = done.getOpinion();
+				if (exception.getExpType() == 3 && exception.getWorktime() >= 4) {
+					String date = exception.getDate();
+					String uId = exception.getUserId();
+					CwaAttendance att = new CwaAttendance();
+					att.setDate(date);
+					att.setProcessType(2);
+					att.setUserId(uId);
+					att.setTime(0.5);
+					long starttime = DateUtil.parse(date + " " + exception.getFristtime(), "yyyy-MM-dd HH:mm").getTime();
+					long endtime = DateUtil.parse(date + " " + exception.getLasttime(), "yyyy-MM-dd HH:mm").getTime();
+					att.setStartTime(starttime);
+					att.setEndTime(endtime);
+					cwaAttendanceService.updateCwaAttendanceByUserDateType(att);
+					cwaAttendanceService.valiAttendanceAndPunchCard(uId, date);
+				}
+			}
+			exception.setResultId(id);
+			exception.setResultType(resultType);
+			updateCwaException(exception);
+		}
+		if (process.getType() != nodeProcessType) {
+			String exceptionId = process.getRelId();
+			String str1 = processService.getProcessPath(exception.getResultType());
+			BaseProcessService service = SpringFactory.getBean(str1);
+			process.setRelId(exception.getResultId());
+			map = service.getProcessRotaParam(done, process);
+			process.setRelId(exceptionId);
+		}
+		return map;
+	}
+
+	/**
+	 * 获取异常单详情
+	 * 
+	 */
+	@Override
+	public ProcessBase getObjectByProcess(SysProcess process) throws Exception {
+		return getCwaExceptionById(process.getRelId());
+	}
+
+	/**
+	 * 已驳回
+	 * 
+	 */
+	@Override
+	public void rejectProcessCallBack(SysProDone done, ProcessBase pro, SysProcess process) throws Exception {
+		CwaException exception = (CwaException) pro;
+		updateCwaException(exception);
+		int type = exception.getResultType();
+		if (type != 8 && type != 0) {
+			String str1 = processService.getProcessPath(type);
+			String baseId = exception.getResultId();
+			BaseProcessService service = SpringFactory.getBean(str1);
+			ProcessBase base = service.getObjectById(baseId);
+			if (base.getProcessType() == 1) {
+				CwaLeave leave = (CwaLeave) base;
+				leave.setTimeLength(leave.getTimeLength() * -1);
+				cwaUserHolidayService.updateUserHoliday(leave);
+			}
+			cwaAttendanceService.deleteCwaAttendanceByRefId(baseId);
+		}
+		sendResultMail(done, process, "被驳回");
+	}
+
+	/**
+	 * 已通过
+	 */
+	@Override
+	@Transactional
+	public void agreeProcessCallBack(SysProDone done, ProcessBase pro, SysProcess process) throws Exception {
+		CwaException exception = (CwaException) pro;
+		updateCwaException(exception);
+		Integer resultType = exception.getResultType();
+		if (resultType != 0) {
+			String cwaId = exception.getCwaId();
+			if (StrUtils.isNotNull(cwaId)) {
+				cwaAttendanceService.deleteCwaAttendanceById(cwaId);
+			}
+			String refId = exception.getResultId();
+			if (resultType != 8) {
+				CwaAttendance att = new CwaAttendance();
+				att.setRefId(refId);
+				att.setStatus(2);
+				cwaAttendanceService.updateCwaAttendanceByRefId(att);
+			}
+			if (resultType == 8) {
+				CwaRetroactive r = cwaRetroactiveMapper.selectByPrimaryKey(refId);
+				cwaPunchCardProcess.addUserPunchCardRecord(r);
+			}
+			String userId = exception.getUserId();
+			cwaAttendanceService.valiAttendanceAndPunchCard(userId, exception.getDate());
+		}
+		sendResultMail(done, process, "通过");
+	}
+
+	/**
+	 * 已取消
+	 */
+	@Transactional
+	@Override
+	public void cancelProcessCallBack(ProcessBase pro, SysProcess process) {
+		
+	}
+
+	/**
+	 * 审批中
+	 */
+	@Override
+	public void rotaingProcessCallBack(ProcessBase pro, SysProcess process) {
+		CwaException exception = (CwaException) pro;
+		updateCwaException(exception);
+	}
+
+	/**
+	 * 获取请假对象
+	 * 
+	 * @throws Exception
+	 */
+	public CwaException getCwaExceptionById(String id) throws Exception {
+		CwaException exception = cwaExceptionMapper.selectByPrimaryKey(id);
+		Integer resultType = exception.getResultType();
+		if (resultType != null) {
+			if (resultType != 0) {
+				String str1 = processService.getProcessPath(exception.getResultType());
+				BaseProcessService service = SpringFactory.getBean(str1);
+				SysProcess process = new SysProcess();
+				process.setRelId(exception.getResultId());
+				ProcessBase base = service.getObjectByProcess(process);
+				exception.setResultObj(base);
+			} else {
+				CwaLeave leave = new CwaLeave();
+				leave.setReason(exception.getResultId());
+				exception.setResultObj(leave);
+			}
+		}
+		if (exception.getExpType() == 3 && !exception.getExpName().contains("#")) {
+			String time = "";
+			if (exception.getExpName().length() >= 7) {
+				time = exception.getExpName().substring(4, 7);
+			}
+			exception.setExpName("加班异常#" + time);
+		}
+		exception.setUserName(userService.getUserById(exception.getUserId()).getRealname());
+		return exception;
+	}
+
+	/**
+	 * 保存考勤异常
+	 */
+	public String saveProcessObject(ProcessBase pro) {
+		CwaException cwaException = (CwaException) pro;
+		Long now = DateUtil.nowTime();
+		cwaException.setAddTime(now);
+		cwaException.setUpdateTime(now);
+		String id = cwaException.getId();
+		if (StrUtils.isNull(id)) {
+			id = DataUtil.uuidData();
+			cwaException.setId(id);
+		}
+		cwaExceptionMapper.insertSelective(cwaException);
+		return id;
+	}
+
+	@Transactional
+	public void updateCwaException(CwaException cwaException) {
+		cwaException.setUpdateTime(DateUtil.nowTime());
+		cwaExceptionMapper.updateByPrimaryKeySelective(cwaException);
+	}
+
+	public List<DoneResultVo> countUserHandlerRecord(String userId, String month) {
+		CwaException cwaException = new CwaException();
+		cwaException.setUserId(userId);
+		cwaException.setDate("%" + month + "%");
+		return cwaExceptionMapper.countUserHandlerRecord(cwaException);
+	}
+
+	public static void main(String[] args) {
+		System.out.println(20 / 10 + (20 % 10 == 0 ? 0 : 1));
+	}
+
+	public CwaException getCwaExceptionByResultId(String resultId) {
+		return cwaExceptionMapper.selectByResultId(resultId);
+	}
+
+	public List<CwaException> getCwaException(String userId, String date, int i) {
+		return cwaExceptionMapper.selectByUserDateType(userId, date, i);
+	}
+
+	public List<CwaException> getCwaException(String userId, String date) {
+		return cwaExceptionMapper.selectByUserDate(userId, date);
+	}
+
+	public CwaException getCwaExceptionByCwaId(String cwaId) {
+		return cwaExceptionMapper.selectCwaExceptionByCwaId(cwaId);
+	}
+}

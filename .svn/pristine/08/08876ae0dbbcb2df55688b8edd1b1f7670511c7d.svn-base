@@ -1,0 +1,622 @@
+package com.ecaray.ecms.services.authority;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.ecaray.ecms.commons.constant.PageResult;
+import com.ecaray.ecms.commons.constant.Result;
+import com.ecaray.ecms.commons.utils.ChineseCharToEn;
+import com.ecaray.ecms.commons.utils.DataUtil;
+import com.ecaray.ecms.commons.utils.DateUtil;
+import com.ecaray.ecms.commons.utils.EncryptUtil;
+import com.ecaray.ecms.commons.utils.ExcelUtils;
+import com.ecaray.ecms.commons.utils.HttpUtil;
+import com.ecaray.ecms.commons.utils.ParaMap;
+import com.ecaray.ecms.commons.utils.StrUtils;
+import com.ecaray.ecms.dao.mapper.authority.DeptMapper;
+import com.ecaray.ecms.dao.mapper.authority.UserMapper;
+import com.ecaray.ecms.entity.authority.Dept;
+import com.ecaray.ecms.entity.authority.User;
+import com.ecaray.ecms.entity.authority.UserRole;
+import com.ecaray.ecms.entity.authority.Vo.BatchUserVo;
+import com.ecaray.ecms.entity.authority.Vo.DepTree;
+import com.ecaray.ecms.entity.authority.Vo.DeptVo;
+import com.ecaray.ecms.entity.authority.Vo.UserBaseInfo;
+import com.ecaray.ecms.entity.authority.Vo.UserDeptTreeVo;
+import com.ecaray.ecms.entity.authority.Vo.UserDetailVo;
+import com.ecaray.ecms.entity.authority.Vo.UserFilter;
+import com.ecaray.ecms.entity.authority.Vo.UserSubTreeVo;
+import com.ecaray.ecms.entity.authority.Vo.UserTree;
+import com.ecaray.ecms.entity.cwa.CwaPunchCard;
+import com.ecaray.ecms.entity.news.PictureMsg;
+import com.ecaray.ecms.services.common.FileService;
+import com.ecaray.ecms.services.cwa.CwaUserHolidayService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+/**
+ * com.ecaray.authority.services
+ * Author ：zhxy
+ * 2017/1/14 14:51
+ * 说明：用户服务
+ */
+@Service
+public class UserService {
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private DeptMapper deptMapper;
+    @Autowired
+    private DeptService deptService;
+
+    @Value("${file.path}")
+    private String path;
+    @Value("${mail.corpid}")
+    private String corpId;
+    @Value("${mail.logincorpsecret}")
+    private String loginSecret;
+    @Value("${mail.toreadcorpsecret}")
+    private String toReadSecret;
+
+    @Autowired
+    private FileService fileService;
+    
+    @Autowired
+    private UserRoleService userRoleService;
+    
+    @Autowired
+    private CwaUserHolidayService cwaUserHolidayService;
+
+    Logger logger = LoggerFactory.getLogger(UserService.class);
+
+    /**
+     * Author ：zhxy
+     * 说明：选取用户列表
+     */
+    public PageResult selectUserList(int pageNum, int pageSize){
+        Page<?> page = PageHelper.startPage(pageNum,pageSize);
+        return PageResult.success().addObject(userMapper.selectAllUsers()).addPageInfo(page,pageNum);
+    }
+    
+    public Result selectUserDetailById(String id){
+        UserDetailVo udv = userMapper.selectUserDetailById(id);
+        if (udv.getIsDelete() == 1 || udv.getIsLeave() == 1 ) {
+        	return Result.failed("该用户已被停用");
+        }
+        Long createtime = udv.getCreateTime();
+        udv.setDepName(deptService.getAllDept(new StringBuffer(), Long.parseLong(udv.getDepId())));;
+        udv.setJoindate(DateUtil.getSubYearMonthDay(createtime));
+        return Result.success().addObject(udv);
+    }
+    
+    /**
+     * Author ：zhxy
+     */
+    public Result selectUserBaseInfoList(){
+        List<UserBaseInfo> userBaseInfos = userMapper.selectUserBaseInfos();
+        return Result.success().addObject(userBaseInfos);
+    }
+
+    /**
+    * Author ：zhxy
+    * 说明：添加用户
+    */
+    public Result addUser(User user){
+        if(StringUtils.isEmpty(user.getUsername())){
+            return Result.failed("新增失败,此账号已存在!");
+        }
+        user.setId(DataUtil.randomId());
+        String password;
+        try {
+            password = EncryptUtil.getMd5("Ecar" + user.getIdcard().replace("-", "")).toLowerCase();
+        } catch (Exception e) {
+            password ="e10adc3949ba59abbe56e057f20f883e";//写死123456
+        } 
+        user.setPassword(password);
+        long time= DateUtil.nowTime();
+        user.setEmail(user.getUsername());
+        user.setCreateTime(time);
+        user.setUpdateTime(time);
+        user.setIsDelete(0);
+        userMapper.insertSelective(user);
+        userMapper.insertTotmp(user);
+        //添加年假
+        cwaUserHolidayService.addNewUserHoliday(user.getId());
+        //添加普通员工权限
+        userRoleService.addNormalRole(user.getId());
+        
+        return Result.success();
+    }
+    /**
+     * Author ：zhxy
+     * 说明：更新用户
+     */
+    public Result updateUser(User user) {
+        logger.info(user.toString());
+        if(user.getId()==null ||"".equals(user.getId())){
+            return Result.failed("用户ID为空");
+        }
+
+        userMapper.updateByPrimaryKeySelective(user);
+        return Result.success();
+    }
+
+    /**
+     * Author ：zhxy
+     * 说明：删除用户
+     */
+    public Result delUser(String id){
+        User user = new User();
+        user.setId(id);
+        user.setIsDelete(1);
+        userMapper.updateByPrimaryKeySelective(user);
+        return Result.success();
+    }
+
+    /**
+     * Author ：zhxy
+     * 说明：根据depid选择用户列表
+     */
+    public PageResult selectUserByDeptId(String depid,int pageNum,int pageSize,String queryInfo){
+    	//List<User> users = userMapper.selectUserByDeptId(depid);
+    	//return Result.success().addObject(users);
+        if(StringUtils.isEmpty(queryInfo)){
+            queryInfo=null;
+        }else{
+            queryInfo ="%"+ queryInfo.trim()+"%";
+        }
+
+        List<DeptVo> depts = deptMapper.selectDeptChildrenById(depid);
+        List<String> deptids =  buildTreeList(depts,new ArrayList<String>());
+        Page<?> page  = PageHelper.startPage(pageNum,pageSize);
+        List<User> users =  userMapper.selectUserByDeptId(deptids,queryInfo);
+        for (User user : users) {
+        	user.setDepName(deptService.getAllDept(new StringBuffer(), Long.parseLong(user.getDepId())));
+        }
+        //根据可是id查询到
+        return PageResult.success().addObject(users).addPageInfo(page,pageNum);
+    }
+    
+    public List<String> listUserIdByDepId(String depId) {
+    	 List<DeptVo> depts = deptMapper.selectDeptChildrenById(depId);
+         List<String> deptids =  buildTreeList(depts,new ArrayList<String>());
+         return userMapper.selectUserListByDepId(deptids);
+    }
+
+    public void exportUserList(String depid,String queryInfo,
+                               HttpServletResponse response,
+                               HttpServletRequest request){
+        logger.info("导出项目人员列表："+depid+",info:"+queryInfo);
+        String filePath=null;
+        try {
+            if (StringUtils.isEmpty(queryInfo)) {
+                queryInfo = null;
+            } else {
+                queryInfo = "%" + queryInfo.trim() + "%";
+            }
+
+            List<DeptVo> depts = deptMapper.selectDeptChildrenById(depid);
+            List<String> deptids = buildTreeList(depts, new ArrayList<String>());
+            List<User> users = userMapper.selectUserByDeptId(deptids, queryInfo);
+
+
+            String fileName = System.currentTimeMillis() + ".xls";
+            filePath = path + "/userExcel/" + fileName;
+            try {
+                ExcelUtils.writeExcel(users, User.class, filePath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            fileService.getFile("userExcel",fileName,null,request,response);
+        }catch (Exception e){
+
+        }finally {
+            if(filePath!=null) {
+                File file = new File(filePath);
+                file.deleteOnExit();
+            }
+        }
+    }
+
+    /**
+     * Author ：zhxy
+     * 说明：递归转化Vo为实体
+     */
+    public List<String> buildTreeList( List<DeptVo> depts,List<String> deptConver){
+        for(DeptVo deptVo:depts){
+            List<DeptVo> childrens = deptVo.getChildrens();
+            if(childrens.size()<1){
+                deptConver.add(deptVo.getId()+"");
+            }else{
+                deptConver.add(deptVo.getId()+"");
+                buildTreeList(childrens,deptConver);
+            }
+        }
+
+        return deptConver;
+
+    }
+
+    public User selectUserByAccount(String username) {
+        return userMapper.selectUserByAccount(username);
+    }
+
+    public User getUserById(String userId) {
+    	User user = userMapper.selectUserById(userId);
+    	Dept dep = deptMapper.selectByPrimaryKey(Long.parseLong(user.getDepId()));
+    	if(dep == null) {
+    		user.setDepName("");
+    	}
+    	else{
+    		user.setDepName(dep.getName());
+    	}
+        return user;
+    }
+    public User getUserByIdNoPassWord(String userId) {
+    	User user = userMapper.selectUserByIdNoPassWord(userId);
+    	Dept dep = deptMapper.selectByPrimaryKey(Long.parseLong(user.getDepId()));
+    	if(dep == null) {
+    		user.setDepName("");
+    	}
+    	else{
+    		long depId = dep.getId();
+    		String oneName = deptService.getOneLevalDep(depId).getName();
+    		user.setDepName(oneName);
+    	}
+    	return user;
+    }
+    
+    public List<User> getAllUserList() {
+    	List<User> list = userMapper.getAllUserList();
+    	for (User user :list) {
+    		Dept dep = deptMapper.selectByPrimaryKey(Long.parseLong(user.getDepId()));
+        	if(dep == null) {
+        		user.setDepName("");
+        	}
+        	else{
+        		long depId = dep.getId();
+        		String oneName = deptService.getOneLevalDep(depId).getName();
+        		user.setDepName(oneName);
+        	}
+    	}
+		return list;
+	}
+    
+    public List<User> selectAllUserList() {
+    	
+		return userMapper.selectAllUserList();
+	}
+    
+    /**
+     * Author ：zhxy
+     * 说明：获取科室和用户树列表
+     */
+    public Result selectUserTreeWithDept(String nocheck) {
+        List<UserDeptTreeVo> userDeptTrees;
+        if("nocheck".equals(nocheck)){
+            userDeptTrees = userMapper.selectUserTreeWithDeptNocheck();
+        }else{
+            userDeptTrees =  userMapper.selectUserTreeWithDept();
+        }
+
+        if(userDeptTrees!=null && userDeptTrees.get(0)!=null)
+            userDeptTrees.get(0).setOpen(true);
+        return Result.success().addObject(userDeptTrees);
+    }
+
+    public Result selectUserContacts(String usersArray) {
+        String[] userArray = usersArray.split(",");
+        return Result.success().addObject(userMapper.selectUserContacts(userArray));
+    }
+
+    public PageResult selectUsersByNameOrDept(String queryInfo, int pageNum, int pageSize) {
+        Page<?> page = PageHelper.startPage(pageNum,pageSize);
+        if(StringUtils.isEmpty(queryInfo)){
+            queryInfo = null;
+        }else{
+            queryInfo = "%"+queryInfo+"%";
+        }
+        List<UserDetailVo> userdvs = userMapper.selectUsersByNameOrDept(queryInfo);
+        for(UserDetailVo vo : userdvs) {
+        	String depId = vo.getDepId();
+        	if (depId.equals("151090019935163")){
+        		System.out.println(1111);
+        	}
+        	Dept dep = deptService.getOneLevalDep(Long.parseLong(depId));
+        	vo.setDepId(dep.getId() + "");
+        	vo.setDepName(dep.getName());
+        }
+        return PageResult.success().addObject(userdvs).addPageInfo(page,pageNum);
+    }
+
+    public Result springUpload(String range, HttpServletRequest request) {
+        Result result = null;
+
+        try {
+            result  =  fileService.springUpload(range,request);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        PictureMsg np =null;
+        if(result !=null) {
+            np = new PictureMsg(result.getContent() == null ? null : result.getContent().toString());
+        }
+        return Result.success().addObject(np);
+    }
+
+    /**
+     * Author ：zhxy
+     * 说明：查询树子集
+     */
+    public List<UserSubTreeVo> selectSubordinateTree(String userId){
+        PageHelper.startPage(0,0);
+       return  userMapper.selectSubordinateTree(userId);
+    }
+    /**
+     * Author ：zhxy
+     * 说明：查询ids
+     */
+    public List<String> selectSubordinateIds(String userId){
+        List<UserSubTreeVo> lists = selectSubordinateTree(userId);
+        List<String> idList = new ArrayList<String>();
+        if(lists!=null && !lists.isEmpty()){
+            covertUserIdsFromTree(idList,lists);
+        }
+        return idList;
+    }
+
+    /**
+     * Author ：zhxy
+     * 说明：转换为id List 集合
+     */
+    public void covertUserIdsFromTree(List<String> idLists,List<UserSubTreeVo> lists){
+        for(UserSubTreeVo userSubVo:lists){
+            idLists.add(userSubVo.getId());
+            List<UserSubTreeVo> subList = userSubVo.getChildren();
+            if(subList!=null && !subList.isEmpty()){
+                covertUserIdsFromTree(idLists,subList);
+            }
+        }
+    }
+    
+    public String getDepCode(String userId){
+    	String name = userMapper.selectDepName(userId);
+    	return ChineseCharToEn.getAllFirstLetter(name);
+    }
+    
+	public String getUserOneDepLeader(User user,String id,int type) {
+		DepTree tree = getDeptTree(user.getDepId());
+		return getOneDepLeader(tree,id,type);
+	}
+	
+	public DepTree getDeptTree(String depId) {
+    	DepTree vo = userMapper.selectDepTree(depId);
+    	return vo;
+    }
+	
+    private String getOneDepLeader(DepTree tree,String id,int type) {
+    	if(tree.getParentId().equals(id)) {
+    		if(0 == type) {
+    			return tree.getId();
+    		}else{
+    			return tree.getLeaderId();
+    		}
+    	}else{
+    		return getOneDepLeader(tree.getParent(),id,type);
+    	}
+    }
+    
+    
+    public UserTree getUserTree(String userId) {
+    	UserTree vo = userMapper.selectUserTree(userId);
+    	return vo;
+    }
+    public List<String> getUserChildList(List<String> args, List<UserTree> tree) {
+		for (UserTree c : tree) {
+			args.add(c.getId());
+			if (c.getChildren() != null) {
+				getUserChildList(args, c.getChildren());
+			}
+		}
+		return args;
+	}
+    public List<String> getUserChildList(String userId){
+    	UserTree vo = getUserTree(userId);
+    	List<String> args = new ArrayList<String>();
+    	return getUserChildList(args,vo.getChildren());
+    }
+    
+    public User getUserByrealname(String name) {
+    	User user = userMapper.selectByrealname(name);
+    	return user;
+    }
+    public User getUserByLikename(String nameKey) {
+    	User user = userMapper.getUserByLikename(nameKey);
+    	return user;
+    }
+    
+    /**
+     * 更新多个用户的直接上级，角色，部门
+     */
+    @SuppressWarnings("unchecked")
+	public void batchUpdateUserDept(BatchUserVo vo){
+    	List<String> ids = new ArrayList<String>();
+    	if(vo.getSelectAll() == 1) {
+    		PageResult s = selectUserByDeptId(vo.getQueryDepId(), 0, 0, vo.getQueryInfo());
+    		List<User> userList =(List<User>)s.getContent();
+    		for(User u : userList){
+    			ids.add(u.getId());
+    		}
+    	} else if(vo.getSelectAll() == 2){
+    		PageResult s = selectUserByDeptId(vo.getQueryDepId(), 0, 0, vo.getQueryInfo());
+    		List<User> userList =(List<User>)s.getContent();
+    		List<String> deleteIds = vo.getIds();
+    		for(User u : userList){
+    			if(!deleteIds.contains(u.getId()))
+    			ids.add(u.getId());
+    		}
+    	} else {
+    		ids = vo.getIds();
+    	}
+    	String depId = vo.getDepId();
+    	String leaderId = vo.getLeaderId();
+    	if(!StringUtils.isEmpty(depId) || !StringUtils.isEmpty(leaderId)){
+    		for(String id : ids){
+        		User bactchUser = new User();
+        		bactchUser.setId(id);
+        		bactchUser.setDepId(depId);
+        		bactchUser.setDirectLeader(leaderId);
+        		bactchUser.setUpdateTime(System.currentTimeMillis());
+        		updateUser(bactchUser);
+        	}
+    	}
+    	List<String> roleIds = vo.getRoleIds();
+    	if(roleIds != null) {
+    		List<UserRole> userRoleList = new ArrayList<>();
+    		for(String id : ids){
+        		for(String roleId : roleIds) {
+        			UserRole userRole = new UserRole();
+        			userRole.setUserId(id);
+        			userRole.setRoleId(roleId);
+        			userRoleList.add(userRole);
+        		}
+        	}
+    		userRoleService.insertUserRolesBatchNoDelete(userRoleList);
+    	}
+    }
+    
+    /**
+     * 重置密码
+     */
+    public void restartUserPassword(User u) {
+    	User user = userMapper.selectUserById(u.getId());
+    	String password = userMapper.selectUserPasswordByName(user.getRealname());
+    	user.setPassword(password);
+    	userMapper.restartUserPassword(user);
+    }
+    
+    /**
+     * 通讯录
+     */
+    public ParaMap selectUserPhoneList(UserFilter userFilter){
+    	Integer pageSize = userFilter.getPageSize();
+    	Integer pageNum = userFilter.getPageNum();
+    	userFilter.setPageNum(null);
+    	userFilter.setPageSize(null);
+    	if("{}".equals(JSON.toJSONString(userFilter))){
+    		return null;
+    	}
+    	Page<?> page = PageHelper.startPage(pageNum,pageSize);
+    	List<User> list = userMapper.selectUserPhoneList(userFilter);
+    	for(User user:list) {
+    		Long depId = Long.parseLong(user.getDepId());
+    		user.setDepName(deptService.getOneLevalDep(depId).getName());
+    	}
+		return ParaMap.getPageHelperMap(list, page);
+    }
+
+    /**
+     * 按入职月份查询User列表
+     */
+	public List<User> selectUserListByMonth(String month) {
+		return userMapper.selectUserListByMonth(month);
+	}
+	
+	/**
+	 * 查询总人数
+	 */
+	public int selectUserCount() {
+		return userMapper.selectUserCount();
+	}
+
+	public User selectUserByUsercode(String usercode) {
+		return userMapper.selectUserByUsercode(usercode);
+	}
+	
+	public Result loginExMail(User user) throws Exception {
+		String token = getToken(0);
+		if(StrUtils.isNotNull(token)) {
+			String userId = user.getEmail();
+			String loginUrl = "https://api.exmail.qq.com/cgi-bin/service/get_login_url?access_token="+token+"&userid="+userId;
+			String loginRsp =  HttpUtil.get(loginUrl);
+			JSONObject loginJson = JSON.parseObject(loginRsp);
+			if(loginJson != null && loginJson.getInteger("errcode") == 0) {
+				String loginRspUrl = loginJson.getString("login_url");
+				return Result.success().addObject(loginRspUrl);
+			}
+			return Result.failed("邮箱登陆连接获取失败，联系管理员");
+		} else {
+			return Result.failed("token获取失败，联系管理员");
+		}
+	}
+
+	private String getToken(int type) throws Exception{
+		String url = "https://api.exmail.qq.com/cgi-bin/gettoken?corpid="+corpId+"&corpsecret=";
+		if(type == 0) {
+			url = url + loginSecret;
+		}else {
+			url = url + toReadSecret;
+		}
+		String rsp = HttpUtil.get(url);
+		JSONObject json = JSON.parseObject(rsp);
+		if(json != null && StrUtils.isNotNull(json.getString("access_token"))) {
+			return json.getString("access_token");
+		} else {
+			return "";
+		}
+	}
+
+	public Result getUserMailToRead(User user) throws Exception {
+		long now = DateUtil.nowTime();
+		String startdate = "2015-01-01";
+		String nowday = DateUtil.format(now, "yyyy-MM-dd");
+		String token = getToken(1);
+		if(StrUtils.isNotNull(token)) {
+			String userId = user.getEmail();
+			String toReadUrl = "https://api.exmail.qq.com/cgi-bin/mail/newcount?access_token="+token+"&userid="+userId;
+			ParaMap map = new ParaMap();
+			map.put("begin_date", startdate);
+			map.put("end_date", nowday);
+			String loginRsp= HttpUtil.post(toReadUrl, map);
+			JSONObject loginJson = JSON.parseObject(loginRsp);
+			if(loginJson != null && loginJson.getInteger("errcode") == 0) {
+				int count = loginJson.getInteger("count");
+				return Result.success().addObject(count);
+			}
+			return Result.failed("邮箱登陆连接获取失败，联系管理员");
+		} else {
+			return Result.failed("token获取失败，联系管理员");
+		}
+	}
+
+	public List<User> getUserList(CwaPunchCard pc) {
+		String name = pc.getName();
+		if(name != null) {
+			pc.setName("%" + name + "%");
+		}
+		return userMapper.selectUserListByPc(pc);
+	}
+
+	/**
+	 * 获取用户头像
+	 */
+	public void getHeadPicture(String picId, Integer width, Integer height, HttpServletResponse response,HttpServletRequest req) throws IOException {
+		String src = "user/pic/head";
+		fileService.getImg(picId,src,width,height,response,req);
+	}
+}

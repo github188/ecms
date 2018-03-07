@@ -1,0 +1,37 @@
+@charset "UTF-8";
+.page-number{
+    text-align: center;
+}
+.page-number>a,.page-number>span{
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    display: inline-block;
+    margin-left: 15px;
+    cursor: pointer;
+    color: #ADAEB5;
+}
+.page-number>a:hover,.page-number>span:hover{
+    color: #01cd78;
+}
+.page-number>a.disabled:hover,.page-number>span.disabled:hover{
+    color: #ADAEB5;
+}
+.page-number .active{
+    border-radius: 50%;
+    color: #01cd78;
+    border: 1px solid #01cd78;
+}
+.page-number .prev,.page-number .next{
+    color: #ADAEB5;
+}
+.page-number .next{
+    
+}
+.page-number .jump-ipt{
+    border: 1px solid #ADAEB5;
+    width: 30px;
+    height: 20px;
+    outline: none;
+    text-align: center;
+}

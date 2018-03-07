@@ -1,0 +1,377 @@
+<template>
+    <el-dialog :title="title" :lock-scroll="true" :visible.sync="modal" size="full" id="postCreate">
+      <el-form ref="postForm" :model="form" :rules="rules" label-width="100px" label-position="right">
+        <el-form-item label="标题：" :maxlength="50" prop="newsTitle">
+          <el-input placeholder="请输入文章标题"  v-model="form.newsTitle"></el-input>
+        </el-form-item>
+        <el-form-item label="作者：" prop="newsAuthor">
+          <el-select v-model="form.newsAuthor" filterable clearable @change="choosePerson" placeholder="请输入关键字" style="width:100%;">
+            <el-option v-for="item in personList" :key="item.id" :label="item.realname" :value="getDepart(item.depName)+' '+item.realname + '-' + item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="类型：" prop="newsType">
+          <el-select style="width:100%;" v-model="form.newsType" clearable placeholder="请选择文章类型">
+            <el-option v-for="item in articleType" :key="item.id" :label="item.name.split('#')[0]" :value="item.value"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="是否置顶：">
+          <el-switch on-text="" off-text="" v-model="form.isTop"></el-switch>
+        </el-form-item>
+
+        <el-form-item label="头图：" id="postHead">
+          <el-upload :before-upload="headBeforeUpload" :on-change="changePic" :action="uploadUrl" :on-success="successPic" :on-remove="removePic" accept="image/jpeg,image/png,image/jpg" :file-list="picList" list-type="picture-card">
+            <i class="el-icon-plus"></i>
+            <div slot="tip" class="el-upload__tip" style="display:inline-block; padding-left: 20px">此处添加的图片放置在首页展示(支持jpg/jpeg/png格式,建议尺寸240*120)</div>
+          </el-upload>
+        </el-form-item>
+
+        <el-form-item label="附件：">
+          <el-upload :headers="{authorization: authorization}" :before-upload="beforeFileUpload" :on-success="successFile" :on-remove="removeFile" :file-list="fileList" :action="uploadFileUrl">
+            <el-button size="small" type="primary">点击上传</el-button>
+          </el-upload>
+        </el-form-item>
+
+        <el-form-item label="正文：" prop="content">
+        </el-form-item>
+        <VueUEditor class="editor-article-write" v-model="form.content" :ueditorConfig="ueditorConfig" @editorReady="editorReady" style="width: 100%;"></VueUEditor>
+      </el-form>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button type="success" :disabled="disable" v-if="disable">
+          <i class="el-icon-loading"></i>
+        </el-button>
+        <el-button type="success" :disabled="disable" @click="submit" v-else>保 存</el-button>
+        <router-link style="margin:0 15px;" target="_blank" to="/article/preview">
+          <el-button type="info" @click="previewArticle">预 览</el-button>
+        </router-link>
+        <el-button type="info" @click="modal = false">取 消</el-button>
+      </span>
+    </el-dialog>
+</template>
+
+<script>
+import VueUEditor from "@/components/editor/";
+import { setStore, getStore } from "@/utils/localStorage";
+export default {
+  data() {
+    return {
+      title: "新增文章",
+      modal: false,
+      personList: [],
+      fileList: [], //附件列表
+      picList: [],
+      authorization: "",
+      form: {
+        id: undefined,
+        isTop: false, //是否置顶  【0置顶，1置顶】
+        newsTitle: "", //标题
+        newsAuthor: "", //作者
+        addPersonId: "", //作者id
+        newsDepart: "",
+        newsType: "", //新闻类型
+        content: "", //新闻正文
+        pictureId: undefined, //头图id
+        attachmentName: "", // 附件地址
+        attachmentId: "" //附件id
+      },
+      rules: {
+        newsTitle: [
+          {
+            required: true,
+            message: "标题不能为空!"
+          },
+          {
+            max: 50,
+            message: "标题不能超过50个字符!"
+          }
+        ],
+        newsAuthor: [
+          {
+            required: true,
+            message: "请选择作者!"
+          }
+        ],
+        newsType: [
+          {
+            required: true,
+            message: "类型不能为空!"
+          }
+        ],
+        content: [
+          {
+            required: true,
+            message: "正文不能为空!"
+          }
+        ]
+      },
+      addPost: false, //添加文章还是编辑文章
+      editorInstance: null,
+      ueditorConfig: {}
+    };
+  },
+  components: {
+    VueUEditor
+  },
+  props: ["articleType"],
+  created() {
+    this.uploadUrl = this.domain + "/news/picture/top/upload"; //头图
+    this.uploadFileUrl = this.domain + "/news/attachment/upload"; //附件
+    this.authorization = Utils.getValue("authorization");
+    this.ueditorConfig = {
+      toolbar: [
+        " bold italic underline | justifyleft justifycenter justifyright justifyjustify | fontfamily | fontsize | forecolor | backcolor | removeformat |",
+        "insertorderedlist horizontal | link ",
+        " emotion | image video fullscreen | undo redo "
+      ],
+      imageUploadUrl: this.domain + "/news/picture/content/upload",
+      imageDownUrl: this.domain + "/news/picture/content/",
+      videoUploadUrl: this.getUploadUrl('sys','News','uploadVideoAll')
+    };
+    this.getPersonList();
+  },
+  methods: {
+    openModal(type, row) {
+      if (type) {
+        //编辑
+        this.title = "编辑文章";
+        this.addPost = false;
+        this.queryArticle(row);
+      } else {
+        this.title = "新增文章";
+        this.addPost = true;
+      }
+      this.modal = true;
+
+      this.picList = [];
+      this.fileList = [];
+      this.form.id = undefined;
+      this.form.content = "";
+      this.editorInstance && this.editorInstance.setContent("");
+      this.resetForm("postForm");
+    },
+    editorReady(editor) {
+      this.editorInstance = editor;
+      editor.addListener("contentChange", () => {
+        this.form.content = editor.getContent();
+      });
+      editor.setContent("");
+    },
+    getPersonList() {
+      this.ajax({
+        url: "/authority/user/dep/1",
+        data: {
+          pageNum: 1,
+          pageSize: 1000
+        },
+        success(data, $this) {
+          if (data.code == "success") {
+            $this.personList = data.content;
+          }
+        }
+      });
+    },
+    getDepart(name) {
+      //根据员工获取部门和职位
+      let depName = name.split("-");
+      return depName[depName.length - 1];
+    },
+    queryArticle(row) {
+      let $this = this;
+      this.ajax({
+        url: "/news/" + row.id + "/detail",
+        success(data) {
+          if (data.code == "success") {
+            $this.picList = [];
+            $this.fileList = [];
+            let {
+              id,
+              isTop,
+              newsTitle,
+              newsAuthor,
+              newsType,
+              content,
+              pictureId,
+              attachmentName,
+              attachmentId,
+              addPersonId
+            } = data.content;
+            $this.form = {
+              id,
+              addPersonId,
+              newsTitle,
+              newsAuthor: newsAuthor.replace(/\s+/g, " ") + "-" + addPersonId,
+              newsType: newsType.toString(),
+              content,
+              pictureId,
+              attachmentName,
+              attachmentId,
+              isTop: false
+            };
+            if (pictureId) {
+              $("#postHead .el-upload").css("opacity", 0);
+            } else {
+              $("#postHead .el-upload").css("opacity", 1);
+            }
+            $this.editorInstance && $this.editorInstance.setContent(content);
+            $this.dealVideo();
+            $this.form.isTop = isTop ? false : true;
+            if (pictureId && pictureId != "false") {
+              $this.picList = [
+                {
+                  name: "",
+                  url:
+                    $this.domain +
+                    "/news/picture/top/" +
+                    pictureId +
+                    "/download"
+                }
+              ];
+            }
+            if (attachmentId && attachmentId != "false") {
+              let id = attachmentId.split("#");
+              let name = attachmentName.split("#");
+              for (let i = 0; i < id.length - 1; i++) {
+                $this.fileList.push({
+                  name: name[i],
+                  url: $this.domain + "/news/picture/top/" + id[i] + "/download"
+                });
+              }
+            }
+          }
+        }
+      });
+    },
+    choosePerson(item) {
+      if (item) {
+        let _item = item.split("-");
+        this.form.addPersonId = _item[1];
+      }
+    },
+    submit() {
+      this.$refs.postForm.validate(valid => {
+        // if(!this.form.content){
+        //   this.errorTips('请输入文章内容!')
+        //   return;
+        // }
+        if (valid) {
+          this.disable = true;
+          let params = Utils.filterObjectNull(this.form);
+          let type = "post";
+          if (!params.id) { // 添加
+            type = "post";
+          }else{
+            type = "put";
+          }
+          if (params.isTop) {
+            params.isTop = 0;
+          } else {
+            params.isTop = 1;
+          }
+          params.newsAuthor = this.form.newsAuthor.split("-")[0];
+          this.ajax({
+            url: "/news",
+            type: type,
+            data: params,
+            success(data, $this) {
+              if (data.code == "success") {
+                $this.successTips("保存成功！");
+                $this.type = false;
+                if (data.content) {
+                  $this.form.id = data.content;
+                }
+                // $this.modal = false
+              } else {
+                $this.errorTips(data.message);
+              }
+            }
+          });
+        }
+      });
+    },
+    successPic(response, file) {
+      this.form.pictureId = response.content.picId;
+      $("#postHead .el-upload").css("opacity", 0);
+    },
+    removePic() {
+      this.form.pictureId = false;
+      $("#postHead .el-upload").css("opacity", 1);
+    },
+    changePic(file, fileList) {
+      this.picList = fileList;
+    },
+    successFile(response, file, list) {
+      this.form.attachmentId = "";
+      this.form.attachmentName = "";
+      for (let i = 0; i < list.length; i++) {
+        this.form.attachmentId +=
+          (list[i].response && list[i].response.content.picId + "#") ||
+          list[i].url.split("/news/picture/top/")[1].split("/download")[0] +
+            "#";
+        this.form.attachmentName += list[i].name + "#";
+      }
+    },
+    removeFile(file, list) {
+      this.form.attachmentId = "";
+      this.form.attachmentName = "";
+      for (let i = 0; i < list.length; i++) {
+        this.form.attachmentId +=
+          (list[i].response && list[i].response.content.picId + "#") ||
+          list[i].url.split("/news/picture/top/")[1].split("/download")[0] +
+            "#";
+        this.form.attachmentName += list[i].name + "#";
+      }
+    },
+    headBeforeUpload(file) {
+      if (this.picList.length > 1) {
+        this.errorTips("头图只能上传一张!");
+        return false;
+      }
+      // if (file.size / 1024 > 150) {
+      //   this.errorTips('头图大小不能超过 200kB!');
+      //   return false;
+      // }
+    },
+    beforeFileUpload(file) {
+      if (file.name.length > 30) {
+        this.errorTips("附件名称过长!");
+        return false;
+      }
+    },
+    previewArticle(e) {
+      this.$refs.postForm.validate(valid => {
+        if (valid) {
+          let author = this.form.newsAuthor.split(" ");
+          let fileList = [];
+          if (this.form.attachmentName) {
+            let attachmentName = this.form.attachmentName.split("#");
+            let attachmentId = this.form.attachmentId.split("#");
+            for (let i = 0; i < attachmentName.length - 1; i++) {
+              fileList.push({
+                fileName: attachmentName[i],
+                fileId: attachmentId[i]
+              });
+            }
+          }
+          setStore("article", {
+            newsTitle: this.form.newsTitle,
+            content: this.form.content,
+            time: new Date().getTime(),
+            files: fileList,
+            depName: author[0],
+            userName: author[1].split("-")[0],
+            type: this.articleType.filter(item => {
+              if (item.value == this.form.newsType) {
+                return item.name.split("#")[0];
+              }
+            })
+          });
+        } else {
+          e.preventDefault();
+        }
+      });
+    }
+  }
+};
+</script>
+

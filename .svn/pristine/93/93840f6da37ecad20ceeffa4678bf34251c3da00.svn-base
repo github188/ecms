@@ -1,0 +1,124 @@
+/**
+ * Created by ranchengwei on 2017/5/3 0003.
+ */
+.clear-float:before,
+.clear-float:after{
+    content: " ";
+    display: table;
+}
+.clear-float:after{
+    clear: both;
+}
+.uploadIcon{
+    width: 120px;
+    height: 120px;
+    border-radius: 4px;
+    border:1px solid #E6E9EB;
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+}
+.upload-image-icon{
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    background: url("../../skins/img/news-manage-icon.png") no-repeat -6px -6px;
+}
+.attachment-icon{
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    background: url("../../skins/img/news-manage-icon.png") no-repeat -85px -8px;
+}
+.upload-input{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom:0;
+    z-index: 100;
+    opacity: 0;
+    cursor: pointer;
+}
+.image-explain{
+    color: #B2B3B9;
+    margin-left: 12px;
+    line-height: 20px;
+    position: absolute;
+    bottom: 0;
+    left: 135px;
+}
+.relative{
+    position: relative;
+}
+.choice-file{
+    margin-left: 10px;
+    width: 80px;
+    height: 80px;
+    margin-top: 20px;
+}
+.choice-file>img{
+    max-width: 100%;
+    max-height: 100%;
+}
+.newsContentEmpty{
+    color: #EA5200;
+    display: none;
+}
+.choice-attachment{
+    margin-left: 10px;
+    margin-top: 50px;
+    color: #B2B3B9;
+}
+/*评论模块start*/
+.comment-list{
+}
+.comment-item{
+    /*border-top:1px solid #F3F3F3;*/
+    list-style: none;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #F3F3F3;
+}
+.user-img-content{
+    width: 50px;
+    height: 50px;
+}
+.user-img-content .user-img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+.comment-info{
+    /*border: 1px solid black;*/
+    margin-left: 60px;
+}
+.comment-info .user-name{
+    font-size: 14px;
+}
+.operation-bar{
+    margin-top: 10px;
+    padding-bottom: 10px;
+    padding-top: 5px;
+    padding-left: 60px;
+}
+.operation-btn{
+    margin-right: 10px;
+    padding: 5px 10px;
+    border:1px solid #F3F3F3;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.operation-btn:hover{
+    color: #01cd78;
+}
+/*评论模块end*/
+.wangeditor-container{
+    height: 200px !important;
+}
+.laydate-icon, .laydate-icon-default, .laydate-icon-danlan, .laydate-icon-dahong, .laydate-icon-molv {
+    line-height: 22px;
+    padding-right: 20px;
+    background-repeat: no-repeat;
+    background-position: 103% center;
+    outline: 0;
+}

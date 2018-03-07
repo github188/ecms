@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.cwa.CwaLeaveMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.cwa.CwaLeave" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="start_time" property="startTime" jdbcType="BIGINT" />
+    <result column="end_time" property="endTime" jdbcType="BIGINT" />
+    <result column="time_length" property="timeLength" jdbcType="DOUBLE" />
+    <result column="agent_id" property="agentId" jdbcType="VARCHAR" />
+    <result column="reason" property="reason" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="add_user" property="addUser" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, type, start_time, end_time, time_length, agent_id, reason, status, add_user, 
+    add_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from cwa_leave
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from cwa_leave
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.cwa.CwaLeave" >
+    insert into cwa_leave (id, user_id, type, 
+      start_time, end_time, time_length, 
+      agent_id, reason, status, 
+      add_user, add_time, update_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{startTime,jdbcType=BIGINT}, #{endTime,jdbcType=BIGINT}, #{timeLength,jdbcType=DOUBLE}, 
+      #{agentId,jdbcType=VARCHAR}, #{reason,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{addUser,jdbcType=VARCHAR}, #{addTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.cwa.CwaLeave" >
+    insert into cwa_leave
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="timeLength != null" >
+        time_length,
+      </if>
+      <if test="agentId != null" >
+        agent_id,
+      </if>
+      <if test="reason != null" >
+        reason,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="addUser != null" >
+        add_user,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=BIGINT},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=BIGINT},
+      </if>
+      <if test="timeLength != null" >
+        #{timeLength,jdbcType=DOUBLE},
+      </if>
+      <if test="agentId != null" >
+        #{agentId,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null" >
+        #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="addUser != null" >
+        #{addUser,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.cwa.CwaLeave" >
+    update cwa_leave
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=BIGINT},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=BIGINT},
+      </if>
+      <if test="timeLength != null" >
+        time_length = #{timeLength,jdbcType=DOUBLE},
+      </if>
+      <if test="agentId != null" >
+        agent_id = #{agentId,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null" >
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="addUser != null" >
+        add_user = #{addUser,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.cwa.CwaLeave" >
+    update cwa_leave
+    set user_id = #{userId,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      start_time = #{startTime,jdbcType=BIGINT},
+      end_time = #{endTime,jdbcType=BIGINT},
+      time_length = #{timeLength,jdbcType=DOUBLE},
+      agent_id = #{agentId,jdbcType=VARCHAR},
+      reason = #{reason,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      add_user = #{addUser,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectListByUserId" parameterType="java.lang.String" resultMap="BaseResultMap" >
+  	select * from cwa_leave where user_id = #{userId} and status != 4
+  </select>
+  <select id="selectList"  resultMap="BaseResultMap" >
+  	select * from cwa_leave where status = 2
+  </select>
+  <select id="selectUserLeavelength" parameterType="java.lang.String" resultType="java.lang.Double" >
+  	select ifnull(sum(time_length),0.0) from cwa_leave where user_id = #{userid} and status != 4 and type = 5
+  </select>
+  
+  <select id="selectUseranLeavelength" parameterType="java.lang.String" resultType="java.lang.Double" >
+  	select ifnull(sum(time_length),0.0) from cwa_leave where user_id = #{userid} and status != 4 and type = 5
+  </select>
+</mapper>

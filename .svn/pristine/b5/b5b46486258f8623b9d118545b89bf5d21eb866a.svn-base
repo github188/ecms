@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>亿车科技EAP - 首页</title>
+    <link rel="shortcut icon" type="images/x-icon" href="skins/img/short-icon.ico">
+    <meta name="keywords" content="亿车科技EAP">
+    <meta name="description" content="亿车科技EAP">
+    <link rel="bookmark" href="skins/img/logo.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="skins/img/logo.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="skins/css/bootstrap.css">
+    <link rel="stylesheet" href="skins/css/index.css">
+</head>
+
+<body>
+<div class="wrap">
+    <header class="header">
+        <div class="header-box">
+            <a href="home.html" class="logo" title="亿车科技EAP">
+                <h2>
+                    <img src="skins/img/oa_logo.png" alt="">
+                </h2>
+            </a>
+            <!--<div class="search">-->
+            <!--<input type="text" placeholder="输入关键字搜索">-->
+            <!--</div>-->
+            <div class="setting">
+                <ul>
+
+                    <li class="menu" id="emailNum">
+                        <a title="邮箱" id="emailMenu" target="_blank" class="message" href="javascript:;"></a>
+                    </li>
+                    <!--<li class="menu"><a class="setting" href="#"></a></li>-->
+
+                    <li class="menu">
+                        <!--<a href="javascript:;">设置 <em class="setting-icon"></em></a>-->
+                        <a class="setting" href="javascript:;"></a>
+                        <ol class="sub-menu">
+                            <li><a href="#" id="changePassword">修改密码</a></li>
+                            <li><a href="portals/personInfo/personInfo.html" id="changePerson">个人信息</a></li>
+                        </ol>
+                    </li>
+                    <li class="menu"><a title="退出" id="logOut" class="log-out" href="#"></a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    <div class="content">
+        <div class="content-side">
+            <div id="workmate" class="person-new carousel slide"  data-ride="carousel">
+                <p class="list-tag" style="padding-left: 24px; margin-top: -10px;">
+                    <span>新人秀</span>
+                </p>
+
+                <div class="carousel-inner" role="listbox" id="newWorkMate">
+                </div>
+
+                <div class="slide-toggle carousel-indicators">
+                    <a href="javascript:;" data-target="#workmate" data-slide-to="0" class="active"></a>
+                    <a href="javascript:;" data-target="#workmate" data-slide-to="1"></a>
+                    <a href="javascript:;" data-target="#workmate" data-slide-to="2"></a>
+                    <a href="javascript:;" data-target="#workmate" data-slide-to="3"></a>
+                    <a href="javascript:;" data-target="#workmate" data-slide-to="4"></a>
+                    <a href="javascript:;" data-target="#workmate" data-slide-to="5"></a>
+                </div>
+
+            </div>
+            <div class="entry-menu">
+                <ul id="entryMenu">
+                    <!--<li>-->
+                    <!--<a href="#">-->
+                    <!--<em class="icon icon-affairs"></em>-->
+                    <!--<span>人事平台</span>-->
+                    <!--<em class="icon-cell"></em>-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                    <!--<a href="#">-->
+                    <!--<em class="icon icon-finance"></em>-->
+                    <!--<span>财务平台</span>-->
+                    <!--<em class="icon-cell"></em>-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                    <!--<a href="#">-->
+                    <!--<em class="icon icon-learn"></em>-->
+                    <!--<span>学习平台</span>-->
+                    <!--<em class="icon-cell"></em>-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                    <!--<a href="#">-->
+                    <!--<em class="icon icon-client"></em>-->
+                    <!--<span>客户关系管理平台</span>-->
+                    <!--<em class="icon-cell"></em>-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                    <!--<a href="#">-->
+                    <!--<em class="icon icon-contract"></em>-->
+                    <!--<span>合同管理平台</span>-->
+                    <!--<em class="icon-cell"></em>-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                    <!--<a href="#">-->
+                    <!--<em class="icon icon-project"></em>-->
+                    <!--<span>项目管理平台</span>-->
+                    <!--<em class="icon-cell"></em>-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                    <!--<a href="#">-->
+                    <!--<em class="icon icon-organize"></em>-->
+                    <!--<span>组织架构管理平台</span>-->
+                    <!--<em class="icon-cell"></em>-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                    <!--<a href="#">-->
+                    <!--<em class="icon icon-oa"></em>-->
+                    <!--<span>OA首页管理</span>-->
+                    <!--<em class="icon-cell"></em>-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!--<li><a href="#"><em class="icon icon-attendance"></em><span>考勤管理</span><em class="icon-cell"></em></a></li>-->
+                </ul>
+            </div>
+        </div>
+        <div class="content-box">
+            <div class="content-l">
+                <div class="weather box">
+                    <ul>
+                        <li>
+                            <em class="icon icon-calendar"></em>
+                            <span class="weather-time"> &nbsp;&nbsp;&nbsp;&nbsp;星期 </span>
+                        </li>
+                        <li>
+                            <em class="icon icon-address"></em>
+                            <span>深圳&nbsp;&nbsp;&nbsp;&nbsp;<em style="font-style: normal" class="weather-status"> </em></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="person-info box">
+                    <a href="./portals/personInfo/personInfo.html" title="查看个人信息" target="_blank"><img class="person-avatar" alt="" src=""></a>
+                    <p class="person-name" id="userName">&nbsp;</p>
+                    <p class="person-pos">&nbsp;</p>
+                </div>
+                <div class="operation box carousel slide" id="fastEntry" data-ride="carousel">
+                    <div class="carousel-inner" role="listbox" style="height: 356px;">
+                        <ul class="active item">
+                            <!--<li>-->
+                            <!--<a href="">-->
+                            <!--<div class="operation-approval"></div>-->
+                            <!--<span>立项</span>-->
+                            <!--</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                            <!--<a href="">-->
+                            <!--<div class="operation-need"></div>-->
+                            <!--<span>提需求</span>-->
+                            <!--</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                            <!--<a href="">-->
+                            <!--<div class="operation-contract"></div>-->
+                            <!--<span>发起合同</span>-->
+                            <!--</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                            <!--<a href="">-->
+                            <!--<div class="operation-room"></div>-->
+                            <!--<span>定会议室</span>-->
+                            <!--</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                            <!--<a href="">-->
+                            <!--<div class="operation-leave"></div>-->
+                            <!--<span>请假</span>-->
+                            <!--</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                            <!--<a href="">-->
+                            <!--<div class="operation-extra "></div>-->
+                            <!--<span>加班</span>-->
+                            <!--</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                            <!--<a href="">-->
+                            <!--<div class="operation-out"></div>-->
+                            <!--<span>出差</span>-->
+                            <!--</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                            <!--<a href="">-->
+                            <!--<div class="operation-expense"></div>-->
+                            <!--<span>报销</span>-->
+                            <!--</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                            <!--<a href="">-->
+                            <!--<div class="operation-client"></div>-->
+                            <!--<span>录客户</span>-->
+                            <!--</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                            <!--<a href="">-->
+                            <!--<div class="operation-business"></div>-->
+                            <!--<span>录商机</span>-->
+                            <!--</a>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                            <!--<a href="">-->
+                            <!--<div class="operation-egress"></div>-->
+                            <!--<span>外出</span>-->
+                            <!--</a>-->
+                            <!--</li>-->
+                        </ul>
+                    </div>
+                    <div class="slide-toggle carousel-indicators" style="left: 0; display: none;">
+                        <a href="javascript:;" data-target="#fastEntry" data-slide-to="0" class="active"></a>
+                        <a href="javascript:;" data-target="#fastEntry" data-slide-to="1"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="content-r">
+                <div class="public-news">
+                    <p class="list-tag">
+                        <span>企业动态</span>
+                        <a target="_blank" href="portals/news/newsList.html">更多</a>
+                    </p>
+                    <div class="public-news-content">
+                        <div id="topNewsOne" style="display: none">
+                            <a href="#" id="topLink">
+                                <img id="public-news-img" alt="" src="">
+                                <div class="top-line">
+                                    <h2 class="top-line-title" id="topPublic"><span class="top-line-tag top-line-tag-publish">公告</span><a href="#" title="查看详情" id="topPublicTitle">&nbsp;</a> <span id="topPublicTime" class="top-line-time"> &nbsp;</span></h2>
+                                    <p id="topPublicContent" class="top-line-content">&nbsp;</p>
+                                </div>
+                            </a>
+                        </div>
+                        <ul id="topNews" class="top-line-list">
+                        </ul>
+                    </div>
+                </div>
+                <div class="my-work">
+                    <p class="list-tag">
+                        <span>我的工作台</span>
+                        <a target="_blank" href="portals/workOrder/workOrder.html">更多</a>
+                    </p>
+                    <div class="tab-menu">
+                        <a href="javascript:;" id="waitHandleTab" class="active">我的待办<span> (0) </span></a>
+                        <a href="javascript:;" id="mineAskTab">我的申请</a>
+                    </div>
+                    <div class="tab-content">
+                        <ul id="waitHandle" style="display: block;">
+
+                        </ul>
+                        <ul id="mineAsk">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="honour">
+                <p class="honour-title">亿车荣誉榜</p>
+
+                <div id="honour-carousel" class="carousel slide" data-ride="carousel" data-interval="5000000">
+                    <div class="carousel-inner" role="listbox" id="honourBox">
+                    </div>
+
+                    <a class="left carousel-control" href="#honour-carousel" role="button" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#honour-carousel" role="button" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--修改密码start-->
+<div class="modal fade" id="modifyPassword" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">修改密码</h4>
+            </div>
+            <form role="form" id="modifyPasswordForm" method="post" class="validate">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required">*</span>原密码：</label>
+                                <input id="accountname" name="accountname" type="password" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required">*</span>新密码：</label>
+                                <input id="newpwd" name="newpwd" type="password" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required">*</span>确认密码：</label>
+                                <input id="savepwd" name="savepwd" type="password" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button type="submit" class="btn btn-success" id="btnPwdSave">确定</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--修改密码end-->
+
+<script src="skins/js/jquery-1.11.1.min.js"></script>
+<script src="skins/js/bootstrap.min.js"></script>
+<script src="skins/js/jquery.validate.min.js"></script>
+<script src="skins/js/base.js"></script>
+<script src="skins/js/jquery.md5.js"></script>
+<script src="skins/js/config.js"></script>
+<script src="skins/js/header.js"></script>
+<script src="skins/js/layer/layer.js"></script>
+<script src="home.js"></script>
+</body>
+
+</html>

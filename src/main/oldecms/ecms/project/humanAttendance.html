@@ -1,0 +1,513 @@
+<meta charset="UTF-8">
+<link rel="stylesheet" href="skins/js/month/monthPicker.css">
+<link rel="stylesheet" href="skins/js/calendarrecord/style.css">
+<link href="project/css/humanAffairs.css" type="text/css" rel="stylesheet">
+
+    <div class="human-attendance">
+        <ul>
+            <li class="human-calendar">
+                <p id="layYear">2017</p>
+                <div class="human-calendar-choose">
+                    <a title="前一月" class="h-prev" href="javascript:;"></a>
+                    <span id="layDate" class="human-calendar-month">9</span><em class="human-calendar-text">月</em>
+                    <a title="后一月" class="h-next" href="javascript:;"></a>
+                </div>
+            </li>
+            <li>
+                <p>正常打卡</p>
+                <div class="human-calendar-count" id="humanNormal"></div>
+            </li>
+            <li>
+                <p>未打卡</p>
+                <div class="human-calendar-count h-red" id="humanNotCard"></div>
+            </li>
+            <li>
+                <p>未签到</p>
+                <div class="human-calendar-count h-red" id="humanNotSign"></div>
+            </li>
+            <li>
+                <p>未签退</p>
+                <div class="human-calendar-count h-red" id="humanNotRetreat"></div>
+            </li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li>
+                <p>剩余年假</p>
+                <div class="human-calendar-count" id="humanYearVacation"></div>
+            </li>
+            <li>
+                <p>剩余调休假</p>
+                <div class="human-calendar-count" id="humanRestVacation"></div>
+            </li>
+            <li style="width: 100px;">
+                <p>应出勤</p>
+                <div class="human-calendar-count" id="humanWorkDay"></div>
+            </li>
+            <li>
+                <p>正常出勤</p>
+                <div class="human-calendar-count" id="humanNormalWork"></div>
+            </li>
+            <li>
+                <p>加班</p>
+                <div class="human-calendar-count" id="humanOvertime"></div>
+            </li>
+            <li>
+                <p>出差</p>
+                <div class="human-calendar-count" id="humanAway"></div>
+            </li>
+            <li>
+                <p>外出</p>
+                <div class="human-calendar-count" id="humanBeOut"></div>
+            </li>
+            <li>
+                <p>年休假</p>
+                <div class="human-calendar-count" id="humanYearDay"></div>
+            </li>
+            <li>
+                <p>调休假</p>
+                <div class="human-calendar-count" id="humanRestDay"></div>
+            </li>
+            <li>
+                <p>病假</p>
+                <div class="human-calendar-count" id="humanSick"></div>
+            </li>
+            <li>
+                <p>事假</p>
+                <div class="human-calendar-count" id="humanAffair"></div>
+            </li>
+            <li>
+                <p>有薪假</p>
+                <div class="human-calendar-count" id="humanMoneyDay"></div>
+            </li>
+        </ul>
+
+        <div class="human-operator">
+            <button class="ask-for-leave" id="askForLeave">请假</button>
+            <button class="over-time" id="overtime">加班</button>
+            <button class="away-official" id="awayOfficial">出差</button>
+            <button class="be-out" id="beOut">外出</button>
+        </div>
+        <div style="padding: 24px;">
+            <div class="calendar-record" id="calendarTable"></div>
+        </div>
+    </div>
+
+<!-- 请假申请 -->
+<div class="modal fade" id="askForLeaveModal" data-backdrop="static" data-clear="true">
+    <div class="modal-dialog" style="width: 640px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">请假申请</h4>
+            </div>
+            <form class="form-validate" id="askForLeaveForm" role="form">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required">*</span>请假类型</label>
+                            <div class="col-md-7">
+                                <select class="form-control" name="type" id="leaveType"></select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="control-label" id="surplusDay"></label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required">*</span>开始时间</label>
+                            <div class="col-md-5" style="margin-right: 0; padding-right: 0">
+                                <input class="form-control lay-date-start" id="starDate" type="text" readonly name="startDate">
+                            </div>
+                            <div class="col-md-5" style="padding-left: 0; margin-left: 0">
+                                <select class="form-control ask-time" id="startTime" name="startTime">
+                                    <option value="">09:00</option>
+                                    <option value="">10:00</option>
+                                    <option value="">11:00</option>
+                                    <option value="">12:00</option>
+                                    <option value="">14:00</option>
+                                    <option value="">15:00</option>
+                                    <option value="">16:00</option>
+                                    <option value="">17:00</option>
+                                    <option value="">18:00</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label ask-time"><span class="required">*</span>结束时间</label>
+                            <div class="col-md-5" style="margin-right: 0; padding-right: 0">
+                                <input class="form-control lay-date-end" id="endDate" type="text" readonly name="endDate">
+                            </div>
+                            <div class="col-md-5" style="padding-left: 0; margin-left: 0">
+                                <select class="form-control ask-time" id="endTime" name="endTime">
+                                    <option value="">09:00</option>
+                                    <option value="">10:00</option>
+                                    <option value="">11:00</option>
+                                    <option value="">12:00</option>
+                                    <option value="">14:00</option>
+                                    <option value="">15:00</option>
+                                    <option value="">16:00</option>
+                                    <option value="">17:00</option>
+                                    <option value="" selected>18:00</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required">*</span>时长（天）</label>
+                            <div class="col-md-10">
+                                <input class="form-control duration-time" readonly type="text" name="durationTime">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label">工作代理人</label>
+                            <div class="col-md-10">
+                                <input class="form-control" type="text" id="agentPerson" readonly name="agentPerson">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required">*</span>请假理由</label>
+                            <div class="col-md-10">
+                                <textarea class="form-control" name="remark" style="height: 100px"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button class="btn btn-success btn-examine" type="submit">确定</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 加班申请 -->
+<div class="modal fade" id="overtimeModal" data-backdrop="static" data-clear="true">
+    <div class="modal-dialog" style="width: 640px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">加班申请</h4>
+            </div>
+            <form class="form-validate" id="overtimeForm" role="form">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required">*</span>开始时间</label>
+                            <div class="col-md-5" style="margin-right: 0; padding-right: 0">
+                                <input class="form-control lay-date-start" type="text" readonly name="startDate">
+                            </div>
+                            <div class="col-md-5" style="padding-left: 0; margin-left: 0">
+                                <select class="form-control ask-time" name="startTime">
+                                    <option value="">09:00</option>
+                                    <option value="">10:00</option>
+                                    <option value="">11:00</option>
+                                    <option value="">12:00</option>
+                                    <option value="">14:00</option>
+                                    <option value="">15:00</option>
+                                    <option value="">16:00</option>
+                                    <option value="">17:00</option>
+                                    <option value="">18:00</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label ask-time"><span class="required">*</span>结束时间</label>
+                            <div class="col-md-5" style="margin-right: 0; padding-right: 0">
+                                <input class="form-control lay-date-end"  type="text" readonly name="endDate">
+                            </div>
+                            <div class="col-md-5" style="padding-left: 0; margin-left: 0">
+                                <select class="form-control ask-time" name="endTime">
+                                    <option value="">09:00</option>
+                                    <option value="">10:00</option>
+                                    <option value="">11:00</option>
+                                    <option value="">12:00</option>
+                                    <option value="">14:00</option>
+                                    <option value="">15:00</option>
+                                    <option value="">16:00</option>
+                                    <option value="">17:00</option>
+                                    <option value="" selected>18:00</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required">*</span>时长（天）</label>
+                            <div class="col-md-10">
+                                <input class="form-control duration-time" readonly type="text" name="durationTime">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required">*</span>加班说明</label>
+                            <div class="col-md-10">
+                                <textarea class="form-control" name="remark" style="height: 100px"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button class="btn btn-success btn-examine" type="submit">确定</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 出差申请 -->
+<div class="modal fade" id="awayOfficialModal" data-backdrop="static" data-clear="true">
+    <div class="modal-dialog" style="width: 640px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">出差申请</h4>
+            </div>
+            <form class="form-validate" id="awayOfficialForm" role="form">
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required">*</span>开始时间</label>
+                            <div class="col-md-5" style="margin-right: 0; padding-right: 0">
+                                <input class="form-control lay-date-start" type="text" readonly name="startDate">
+                            </div>
+                            <div class="col-md-5" style="padding-left: 0; margin-left: 0">
+                                <select class="form-control ask-time" name="startTime">
+                                    <option value="">09:00</option>
+                                    <option value="">10:00</option>
+                                    <option value="">11:00</option>
+                                    <option value="">12:00</option>
+                                    <option value="">14:00</option>
+                                    <option value="">15:00</option>
+                                    <option value="">16:00</option>
+                                    <option value="">17:00</option>
+                                    <option value="">18:00</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label ask-time"><span class="required">*</span>结束时间</label>
+                            <div class="col-md-5" style="margin-right: 0; padding-right: 0">
+                                <input class="form-control lay-date-end"  type="text" readonly name="endDate">
+                            </div>
+                            <div class="col-md-5" style="padding-left: 0; margin-left: 0">
+                                <select class="form-control ask-time" name="endTime">
+                                    <option value="">09:00</option>
+                                    <option value="">10:00</option>
+                                    <option value="">11:00</option>
+                                    <option value="">12:00</option>
+                                    <option value="">14:00</option>
+                                    <option value="">15:00</option>
+                                    <option value="">16:00</option>
+                                    <option value="">17:00</option>
+                                    <option value="" selected>18:00</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required">*</span>时长（天）</label>
+                            <div class="col-md-3">
+                                <input class="form-control duration-time" readonly type="text" name="durationTime">
+                            </div>
+                            <div class="col-md-7 margin-t-5">
+                                如果申请日期包括周末，如有加班请另提加班申请。
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required">*</span>出发地点</label>
+                            <div class="col-md-10">
+                                <input class="form-control" type="text" name="startAddress">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required">*</span>目的地点</label>
+                            <div class="col-md-10">
+                                <input class="form-control" type="text" name="endAddress">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required">*</span>出差说明</label>
+                            <div class="col-md-10">
+                                <textarea class="form-control" name="remark" style="height: 100px"></textarea>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required">*</span>定机票服务</label>
+                            <div class="col-md-10" style="margin-top: 5px;">
+                                <label style="margin-right: 30px;">
+                                    <input value="0" class="needPlane" type="radio" name="isNeedplane" checked >&nbsp;&nbsp;不需要
+                                </label>
+                                <label>
+                                    <input value="1" class="needPlane" type="radio" name="isNeedplane" >&nbsp;&nbsp;需要
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 form-group" id="planeRemarkBox" style="display: none;">
+                            <label class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <textarea placeholder="请详细描述定机票起止地点及日期" id="planeRemark" class="form-control" name="planeRemark" style="height: 100px"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button class="btn btn-success btn-examine" type="submit">确定</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 外出申请 -->
+<div class="modal fade" id="beOutModal" data-backdrop="static" data-clear="true">
+    <div class="modal-dialog" style="width: 640px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">外出报备单</h4>
+            </div>
+            <form class="form-validate" id="beOutForm" role="form">
+                <div class="modal-body" style="padding-top: 0;">
+                    <div class="section-item fold">
+                        <div class="be-out-title">
+                            <h3 class="icon-fold">外出1</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-2 control-label"><span class="required">*</span>开始时间</label>
+                                <div class="col-md-5" style="margin-right: 0; padding-right: 0">
+                                    <input class="form-control lay-date-start" type="text" readonly name="startDate">
+                                </div>
+                                <div class="col-md-5" style="padding-left: 0; margin-left: 0">
+                                    <select class="form-control ask-time" name="startTime">
+                                        <option value="">09:00</option>
+                                        <option value="">10:00</option>
+                                        <option value="">11:00</option>
+                                        <option value="">12:00</option>
+                                        <option value="">14:00</option>
+                                        <option value="">15:00</option>
+                                        <option value="">16:00</option>
+                                        <option value="">17:00</option>
+                                        <option value="">18:00</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-2 control-label ask-time"><span class="required">*</span>结束时间</label>
+                                <div class="col-md-5" style="margin-right: 0; padding-right: 0">
+                                    <input class="form-control lay-date-end"  type="text" readonly name="endDate">
+                                </div>
+                                <div class="col-md-5" style="padding-left: 0; margin-left: 0">
+                                    <select class="form-control ask-time" name="endTime">
+                                        <option value="">09:00</option>
+                                        <option value="">10:00</option>
+                                        <option value="">11:00</option>
+                                        <option value="">12:00</option>
+                                        <option value="">14:00</option>
+                                        <option value="">15:00</option>
+                                        <option value="">16:00</option>
+                                        <option value="">17:00</option>
+                                        <option value="" selected>18:00</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-2 control-label"><span class="required">*</span>外出时长（天）</label>
+                                <div class="col-md-10">
+                                    <input class="form-control duration-time" readonly type="text" name="durationTime">
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-2 control-label"><span class="required">*</span>外出地点</label>
+                                <div class="col-md-10">
+                                    <input class="form-control address" type="text" name="address">
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                <label class="col-md-2 control-label"><span class="required">*</span>外出事由</label>
+                                <div class="col-md-10">
+                                    <textarea class="form-control remark" name="remark" style="height: 100px"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="operation-item">
+                        <button class="btn btn-turquoise add-item" type="button">新增</button>
+                    </div>
+
+
+
+                </div>
+
+
+                <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button class="btn btn-success btn-examine" type="submit">确定</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- 选择人员 -->
+<div class="modal fade" id="choosePersonModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 850px;">
+        <div class="modal-content" style="min-height: 700px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">选择人员 <span style="color:red; font-size: 12px;">(双击可选择)</span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row form-inline">
+                    <div class="form-group col-sm-12">
+                        <div class="input-group col-sm-12">
+                            <input type="text" class="form-control" placeholder="请输入员工姓名" id="queryKD">
+                            <span class="input-group-btn">
+                            <button class="btn btn-orange btn-search" type="button" id="btnSearchDepLeader">搜索</button>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <div>
+                            <!--外面套一层是为了避免分页layout错乱-->
+                            <div class="table-responsive" id="depLeaderList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="skins/js/month/monthPicker.js"></script>
+<script type="text/javascript" src="skins/js/calendarrecord/calendarrecord.js"></script>
+<script type="text/javascript" src="project/humanAttendance.js"></script>

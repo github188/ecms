@@ -1,0 +1,93 @@
+#DepartForSuperiorEditPanel {
+    width: 300px;
+    background-color: #fff;
+    border: 1px solid #666;
+    display: none;
+    position: absolute;
+    left: 106px;
+    z-index: 99;
+}
+
+#DepartForAddPerPanel, #ImmediateSuperiorPanel {
+    width: 360px;
+    background-color: #fff;
+    display: none;
+    position: fixed;
+    z-index: 500;
+    -webkit-box-shadow: 0 0 14px #999;
+    -moz-box-shadow: 0 0 14px #999;
+    box-shadow: 0 0 14px #999;
+}
+.clear-depart{
+    position: absolute;
+    right: 46px;
+    top: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 10;
+    display: none;
+}
+.close-tree-sel {
+    float: right;
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    margin: 3px 5px;
+    -webkit-transform: scale(2);
+    transform: scale(2);
+    color: #666;
+    cursor: pointer;
+}
+.tree-contain-addper-sel, .tree-contain-ImmediateSuperior-sel {
+    width: 100%;
+    height: 280px;
+    overflow-y: scroll;
+    margin-top: 35px;
+}
+.tree-contain-adddep-sel, .tree-contain-depleader-sel {
+    width: 100%;
+    height: 280px;
+    overflow-y: scroll;
+    margin-top: 35px;
+}
+
+.ztree * {
+    font-size: 14px;
+}
+
+.ztree li {
+    line-height: 22px;
+}
+
+.ztree li span {
+    line-height: 22px;
+}
+
+.ztree li a.curSelectedNode {
+    height: 22px;
+}
+
+.ztree li span.button.switch {
+    width: 18px;
+    height: 22px;
+}
+
+.ztree li span.button.ico_open {
+    vertical-align: middle;
+}
+
+.ztree li span.button.ico_docu {
+    vertical-align: text-bottom;
+}
+
+.ztree li a.tmpTargetNode_inner {
+    height: 22px;
+}
+.form-horizontal .form-group.inblock .form-control.part-clock{
+    width: 64px;
+    padding: 5px;
+    display: inline-block;
+}
+.layui-laydate .layui-this {
+    background-color: #01cd78!important;
+}

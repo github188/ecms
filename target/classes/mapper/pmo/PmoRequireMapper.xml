@@ -1,0 +1,672 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.pmo.PmoRequireMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.pmo.PmoRequire" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="req_code" property="reqCode" jdbcType="VARCHAR" />
+    <result column="pro_id" property="proId" jdbcType="VARCHAR" />
+    <result column="pro_code" property="proCode" jdbcType="VARCHAR" />
+    <result column="req_title" property="reqTitle" jdbcType="VARCHAR" />
+    <result column="req_detail" property="reqDetail" jdbcType="VARCHAR" />
+    <result column="req_emergency" property="reqEmergency" jdbcType="VARCHAR" />
+    <result column="req_status" property="reqStatus" jdbcType="VARCHAR" />
+    <result column="flow_status" property="flowStatus" jdbcType="VARCHAR" />
+    <result column="flow_name" property="flowName" jdbcType="VARCHAR" />
+    <result column="act_id" property="actId" jdbcType="VARCHAR" />
+    <result column="act_name" property="actName" jdbcType="VARCHAR" />
+    <result column="add_person_id" property="addPersonId" jdbcType="VARCHAR" />
+    <result column="add_person_name" property="addPersonName" jdbcType="VARCHAR" />
+    <result column="receive_person_id" property="receivePersonId" jdbcType="VARCHAR" />
+    <result column="receive_person_name" property="receivePersonName" jdbcType="VARCHAR" />
+    <result column="first_instance_person_id" property="firstInstancePersonId" jdbcType="VARCHAR" />
+    <result column="first_instance_person_name" property="firstInstancePersonName" jdbcType="VARCHAR" />
+    <result column="first_instance_opinion" property="firstInstanceOpinion" jdbcType="VARCHAR" />
+    <result column="first_instance_content" property="firstInstanceContent" jdbcType="VARCHAR" />
+    <result column="need_second_instance" property="needSecondInstance" jdbcType="VARCHAR" />
+    <result column="second_instance_person_id" property="secondInstancePersonId" jdbcType="VARCHAR" />
+    <result column="second_instance_person_name" property="secondInstancePersonName" jdbcType="VARCHAR" />
+    <result column="second_instance_opinion" property="secondInstanceOpinion" jdbcType="VARCHAR" />
+    <result column="second_instance_content" property="secondInstanceContent" jdbcType="VARCHAR" />
+    <result column="start_time" property="startTime" jdbcType="BIGINT" />
+    <result column="task_send_detail" property="taskSendDetail" />
+    <result column="end_time" property="endTime" jdbcType="BIGINT" />
+    <result column="cur_process_person_id" property="curProcessPersonId" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, pro_id,req_code, pro_code, req_title, req_detail, req_emergency, req_status, flow_status,
+    flow_name, act_id, act_name, add_person_id, add_person_name, receive_person_id, receive_person_name, 
+    first_instance_person_id, first_instance_person_name, first_instance_opinion, first_instance_content, 
+    need_second_instance, second_instance_person_id, second_instance_person_name, second_instance_opinion,
+    task_send_detail,
+    second_instance_content,start_time,end_time, add_time, update_time, is_delete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from pmo_requirements
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from pmo_requirements
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.pmo.PmoRequire" >
+    insert into pmo_requirements (id,req_code, pro_id, pro_code,
+      req_title, req_detail, req_emergency, 
+      req_status, flow_status, flow_name, 
+      act_id, act_name, add_person_id, 
+      add_person_name, receive_person_id, receive_person_name, 
+      first_instance_person_id, first_instance_person_name, 
+      first_instance_opinion, first_instance_content, 
+      need_second_instance, second_instance_person_id, 
+      second_instance_person_name, second_instance_opinion, 
+      second_instance_content, start_time,end_time,add_time, task_send_detail,update_time,cur_process_person_id,
+      is_delete)
+    values (#{id,jdbcType=VARCHAR}, #{reqCode,jdbcType=VARCHAR},#{proId,jdbcType=VARCHAR}, #{proCode,jdbcType=VARCHAR},
+      #{reqTitle,jdbcType=VARCHAR}, #{reqDetail,jdbcType=VARCHAR}, #{reqEmergency,jdbcType=VARCHAR}, 
+      #{reqStatus,jdbcType=VARCHAR}, #{flowStatus,jdbcType=VARCHAR}, #{flowName,jdbcType=VARCHAR}, 
+      #{actId,jdbcType=VARCHAR}, #{actName,jdbcType=VARCHAR}, #{addPersonId,jdbcType=VARCHAR}, 
+      #{addPersonName,jdbcType=VARCHAR}, #{receivePersonId,jdbcType=VARCHAR}, #{receivePersonName,jdbcType=VARCHAR}, 
+      #{firstInstancePersonId,jdbcType=VARCHAR}, #{firstInstancePersonName,jdbcType=VARCHAR}, 
+      #{firstInstanceOpinion,jdbcType=VARCHAR}, #{firstInstanceContent,jdbcType=VARCHAR}, 
+      #{needSecondInstance,jdbcType=VARCHAR}, #{secondInstancePersonId,jdbcType=VARCHAR}, 
+      #{secondInstancePersonName,jdbcType=VARCHAR}, #{secondInstanceOpinion,jdbcType=VARCHAR}, 
+      #{secondInstanceContent,jdbcType=VARCHAR}, #{startTime,jdbcType=BIGINT}, #{endTime,jdbcType=BIGINT},
+      #{addTime,jdbcType=BIGINT},#{taskSendDetail}, #{updateTime,jdbcType=BIGINT},
+      #{curProcessPersonId},
+      #{isDelete,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.pmo.PmoRequire" >
+    insert into pmo_requirements
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="reqCode != null" >
+        req_code,
+      </if>
+      <if test="proId != null" >
+        pro_id,
+      </if>
+      <if test="proCode != null" >
+        pro_code,
+      </if>
+      <if test="reqTitle != null" >
+        req_title,
+      </if>
+      <if test="reqDetail != null" >
+        req_detail,
+      </if>
+      <if test="reqEmergency != null" >
+        req_emergency,
+      </if>
+      <if test="reqStatus != null" >
+        req_status,
+      </if>
+      <if test="flowStatus != null" >
+        flow_status,
+      </if>
+      <if test="flowName != null" >
+        flow_name,
+      </if>
+      <if test="actId != null" >
+        act_id,
+      </if>
+      <if test="actName != null" >
+        act_name,
+      </if>
+      <if test="addPersonId != null" >
+        add_person_id,
+      </if>
+      <if test="addPersonName != null" >
+        add_person_name,
+      </if>
+      <if test="receivePersonId != null" >
+        receive_person_id,
+      </if>
+      <if test="receivePersonName != null" >
+        receive_person_name,
+      </if>
+      <if test="firstInstancePersonId != null" >
+        first_instance_person_id,
+      </if>
+      <if test="firstInstancePersonName != null" >
+        first_instance_person_name,
+      </if>
+      <if test="firstInstanceOpinion != null" >
+        first_instance_opinion,
+      </if>
+      <if test="firstInstanceContent != null" >
+        first_instance_content,
+      </if>
+      <if test="needSecondInstance != null" >
+        need_second_instance,
+      </if>
+      <if test="secondInstancePersonId != null" >
+        second_instance_person_id,
+      </if>
+      <if test="secondInstancePersonName != null" >
+        second_instance_person_name,
+      </if>
+      <if test="secondInstanceOpinion != null" >
+        second_instance_opinion,
+      </if>
+      <if test="secondInstanceContent != null" >
+        second_instance_content,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="curProcessPersonId != null" >
+        cur_process_person_id,
+      </if>
+      <if test="taskSendDetail != null" >
+        task_send_detail,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="reqCode != null" >
+        #{reqCode,jdbcType=VARCHAR},
+      </if>
+      <if test="proId != null" >
+        #{proId,jdbcType=VARCHAR},
+      </if>
+      <if test="proCode != null" >
+        #{proCode,jdbcType=VARCHAR},
+      </if>
+      <if test="reqTitle != null" >
+        #{reqTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="reqDetail != null" >
+        #{reqDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="reqEmergency != null" >
+        #{reqEmergency,jdbcType=VARCHAR},
+      </if>
+      <if test="reqStatus != null" >
+        #{reqStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="flowStatus != null" >
+        #{flowStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="flowName != null" >
+        #{flowName,jdbcType=VARCHAR},
+      </if>
+      <if test="actId != null" >
+        #{actId,jdbcType=VARCHAR},
+      </if>
+      <if test="actName != null" >
+        #{actName,jdbcType=VARCHAR},
+      </if>
+      <if test="addPersonId != null" >
+        #{addPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="addPersonName != null" >
+        #{addPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="receivePersonId != null" >
+        #{receivePersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="receivePersonName != null" >
+        #{receivePersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="firstInstancePersonId != null" >
+        #{firstInstancePersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="firstInstancePersonName != null" >
+        #{firstInstancePersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="firstInstanceOpinion != null" >
+        #{firstInstanceOpinion,jdbcType=VARCHAR},
+      </if>
+      <if test="firstInstanceContent != null" >
+        #{firstInstanceContent,jdbcType=VARCHAR},
+      </if>
+      <if test="needSecondInstance != null" >
+        #{needSecondInstance,jdbcType=VARCHAR},
+      </if>
+      <if test="secondInstancePersonId != null" >
+        #{secondInstancePersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="secondInstancePersonName != null" >
+        #{secondInstancePersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="secondInstanceOpinion != null" >
+        #{secondInstanceOpinion,jdbcType=VARCHAR},
+      </if>
+      <if test="secondInstanceContent != null" >
+        #{secondInstanceContent,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=BIGINT},
+      </if>
+      <if test="endTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="endTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="curProcessPersonId != null" >
+        #{curProcessPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskSendDetail != null" >
+        #{taskSendDetail},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.pmo.PmoRequire" >
+    update pmo_requirements
+    <set >
+      <if test="proId != null" >
+        pro_id = #{proId,jdbcType=VARCHAR},
+      </if>
+      <if test="reqCode != null" >
+        req_code = #{reqCode,jdbcType=VARCHAR},
+      </if>
+      <if test="proCode != null" >
+        pro_code = #{proCode,jdbcType=VARCHAR},
+      </if>
+      <if test="reqTitle != null" >
+        req_title = #{reqTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="reqDetail != null" >
+        req_detail = #{reqDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="reqEmergency != null" >
+        req_emergency = #{reqEmergency,jdbcType=VARCHAR},
+      </if>
+      <if test="reqStatus != null" >
+        req_status = #{reqStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="flowStatus != null" >
+        flow_status = #{flowStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="flowName != null" >
+        flow_name = #{flowName,jdbcType=VARCHAR},
+      </if>
+      <if test="actId != null" >
+        act_id = #{actId,jdbcType=VARCHAR},
+      </if>
+      <if test="actName != null" >
+        act_name = #{actName,jdbcType=VARCHAR},
+      </if>
+      <if test="addPersonId != null" >
+        add_person_id = #{addPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="addPersonName != null" >
+        add_person_name = #{addPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="receivePersonId != null" >
+        receive_person_id = #{receivePersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="receivePersonName != null" >
+        receive_person_name = #{receivePersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="firstInstancePersonId != null" >
+        first_instance_person_id = #{firstInstancePersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="firstInstancePersonName != null" >
+        first_instance_person_name = #{firstInstancePersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="firstInstanceOpinion != null" >
+        first_instance_opinion = #{firstInstanceOpinion,jdbcType=VARCHAR},
+      </if>
+      <if test="firstInstanceContent != null" >
+        first_instance_content = #{firstInstanceContent,jdbcType=VARCHAR},
+      </if>
+      <if test="firstInstanceTime != null" >
+        first_instance_time = #{firstInstanceTime,jdbcType=BIGINT},
+      </if>
+      <if test="needSecondInstance != null" >
+        need_second_instance = #{needSecondInstance,jdbcType=VARCHAR},
+      </if>
+      <if test="secondInstancePersonId != null" >
+        second_instance_person_id = #{secondInstancePersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="secondInstancePersonName != null" >
+        second_instance_person_name = #{secondInstancePersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="secondInstanceOpinion != null" >
+        second_instance_opinion = #{secondInstanceOpinion,jdbcType=VARCHAR},
+      </if>
+      <if test="secondInstanceContent != null" >
+        second_instance_content = #{secondInstanceContent,jdbcType=VARCHAR},
+      </if>
+      <if test="secondInstanceTime != null" >
+        second_instance_time = #{secondInstanceTime,jdbcType=BIGINT},
+      </if>
+      <if test="startTime != null and startTime !=0" >
+        start_time = #{startTime,jdbcType=BIGINT},
+      </if>
+      <if test="endTime != null and endTime !=0" >
+        end_time = #{endTime,jdbcType=BIGINT},
+      </if>
+      <if test="addTime != null and addTime != 0" >
+        add_time = #{addTime,jdbcType=BIGINT},
+      </if>
+
+      <if test="updateTime != null and  updateTime !=0" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+
+      <if test="curProcessPersonId != null" >
+        cur_process_person_id = #{curProcessPersonId},
+      </if>
+      <if test="taskSendDetail != null" >
+        task_send_detail = #{taskSendDetail},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.pmo.PmoRequire" >
+    update pmo_requirements
+    set pro_id = #{proId,jdbcType=VARCHAR},
+      req_code = #{reqCode,jdbcType=VARCHAR},
+      pro_code = #{proCode,jdbcType=VARCHAR},
+      req_title = #{reqTitle,jdbcType=VARCHAR},
+      req_detail = #{reqDetail,jdbcType=VARCHAR},
+      req_emergency = #{reqEmergency,jdbcType=VARCHAR},
+      req_status = #{reqStatus,jdbcType=VARCHAR},
+      flow_status = #{flowStatus,jdbcType=VARCHAR},
+      flow_name = #{flowName,jdbcType=VARCHAR},
+      act_id = #{actId,jdbcType=VARCHAR},
+      act_name = #{actName,jdbcType=VARCHAR},
+      add_person_id = #{addPersonId,jdbcType=VARCHAR},
+      add_person_name = #{addPersonName,jdbcType=VARCHAR},
+      receive_person_id = #{receivePersonId,jdbcType=VARCHAR},
+      receive_person_name = #{receivePersonName,jdbcType=VARCHAR},
+      first_instance_person_id = #{firstInstancePersonId,jdbcType=VARCHAR},
+      first_instance_person_name = #{firstInstancePersonName,jdbcType=VARCHAR},
+      first_instance_opinion = #{firstInstanceOpinion,jdbcType=VARCHAR},
+      first_instance_content = #{firstInstanceContent,jdbcType=VARCHAR},
+      need_second_instance = #{needSecondInstance,jdbcType=VARCHAR},
+      second_instance_person_id = #{secondInstancePersonId,jdbcType=VARCHAR},
+      second_instance_person_name = #{secondInstancePersonName,jdbcType=VARCHAR},
+      second_instance_opinion = #{secondInstanceOpinion,jdbcType=VARCHAR},
+      second_instance_content = #{secondInstanceContent,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=BIGINT},
+      end_time = #{endTime,jdbcType=BIGINT},
+      add_time = #{addTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      cur_process_person_id = #{curProcessPersonId},
+      is_delete = #{isDelete,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+
+
+  <sql id="Query_Base_Column" >
+   pp.id as project_id,pr.id as require_id,pp.pro_code,pr.req_code,
+   pr.req_title,pp.pro_name,pr.add_person_id,pr.req_emergency,
+   pr.add_person_name,pr.receive_person_id,pr.start_time,
+   pr.receive_person_name,pr.act_id,pr.act_name
+  </sql>
+
+  <resultMap id="FilterQueryResultMap" type="com.ecaray.ecms.entity.pmo.Vo.PmoRequireQueryVo" >
+    <id column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <id column="req_code" property="reqCode" jdbcType="VARCHAR" />
+    <result column="require_id" property="requireId" jdbcType="VARCHAR" />
+    <result column="pro_code" property="proCode" jdbcType="VARCHAR" />
+    <result column="req_title" property="reqTitle" jdbcType="VARCHAR" />
+    <result column="req_emergency" property="reqEmergency" jdbcType="VARCHAR" />
+    <result column="start_time" property="startTime" jdbcType="BIGINT" />
+    <result column="pro_name" property="proName" jdbcType="VARCHAR" />
+    <result column="act_id" property="actId" jdbcType="VARCHAR" />
+    <result column="act_name" property="actName" jdbcType="VARCHAR" />
+    <result column="add_person_id" property="addPersonId" jdbcType="VARCHAR" />
+    <result column="add_person_name" property="addPersonName" jdbcType="VARCHAR" />
+    <result column="receive_person_id" property="receivePersonId" jdbcType="VARCHAR" />
+    <result column="receive_person_name" property="receivePersonName" jdbcType="VARCHAR" />
+  </resultMap>
+
+
+  <select id="selectRequireList" resultMap="FilterQueryResultMap"
+          parameterType="com.ecaray.ecms.entity.pmo.Vo.RequireQueryFilter" >
+  SELECT
+  <include refid="Query_Base_Column" />
+    FROM
+    pmo_requirements pr,
+     pmo_project pp
+    WHERE
+    pr.pro_id = pp.id AND
+  <if test="proInfo != null" >
+    ( pp.pro_code like #{proInfo} AND pp.pro_name like #{proInfo} ) AND
+  </if>
+  <if test="marktId != null" >
+      pp.markt_id =#{marktId} AND
+  </if>
+  <if test="addPerson != null" >
+    pr.add_person_name like #{addPerson} AND
+  </if>
+  <if test="receivePerson != null" >
+    pr.receive_person_name like #{receivePerson} AND
+  </if>
+  <if test="actId != null" >
+    pr.act_id = #{actId} AND
+  </if>
+  <if test="startTime != null" >
+    pr.add_time = #{startTime} AND
+  </if>
+  <![CDATA[ pp.is_delete<>1 and pr.is_delete<>1 ]]>
+
+  </select>
+
+
+  <resultMap id="RequireDetailResultMap" type="com.ecaray.ecms.entity.pmo.Vo.PmoRequireDetailVo" >
+    <id column="id" property="requireId" jdbcType="VARCHAR" />
+    <id column="req_code" property="reqCode" jdbcType="VARCHAR" />
+    <id column="pro_name" property="proName" jdbcType="VARCHAR" />
+    <result column="add_person_id" property="addPersonId" jdbcType="VARCHAR" />
+    <result column="add_person_name" property="addPersonName" jdbcType="VARCHAR" />
+    <result column="req_emergency" property="reqEmergency" jdbcType="VARCHAR" />
+    <result column="start_time" property="startTime" jdbcType="BIGINT" />
+    <result column="end_time" property="endTime" jdbcType="BIGINT" />
+    <result column="req_detail" property="reqDetail" jdbcType="VARCHAR" />
+    <result column="act_id" property="actId" jdbcType="VARCHAR" />
+    <result column="act_name" property="actName" jdbcType="VARCHAR" />
+    <result column="add_person_id" property="addPersonId" jdbcType="VARCHAR" />
+    <result column="add_person_name" property="addPersonName" jdbcType="VARCHAR" />
+    <result column="receive_person_id" property="receivePersonId" jdbcType="VARCHAR" />
+    <result column="receive_person_name" property="receivePersonName" jdbcType="VARCHAR" />
+    <result column="first_instance_content" property="firstInstanceContent" jdbcType="VARCHAR" />
+    <result column="first_instance_opinion" property="firstInstanceOpinion" jdbcType="VARCHAR" />
+    <result column="first_instance_person_name" property="firstInstancePersonName" jdbcType="VARCHAR" />
+    <result column="first_instance_person_id" property="firstInstancePersonId" jdbcType="VARCHAR" />
+    <result column="first_instance_time" property="firstInstanceTime" jdbcType="BIGINT" />
+    <result column="second_instance_content" property="secondInstanceContent" jdbcType="VARCHAR" />
+    <result column="second_instance_opinion" property="secondInstanceOpinion" jdbcType="VARCHAR" />
+    <result column="second_instance_person_id" property="secondInstancePersonId" jdbcType="VARCHAR" />
+    <result column="second_instance_person_name" property="secondInstancePersonName" jdbcType="VARCHAR" />
+    <result column="second_instance_time" property="secondInstanceTime" jdbcType="BIGINT" />
+    <result column="task_send_detail" property="taskSendDetail" jdbcType="VARCHAR" />
+    <result column="cur_process_person_id" property="curProcessPersonId" jdbcType="VARCHAR" />
+  </resultMap>
+
+
+  <select id="selectByRequireId" resultMap="RequireDetailResultMap" parameterType="java.lang.String" >
+
+  SELECT
+  pr.id,
+  pr.req_code,
+  pr.pro_id,
+  pp.pro_name,
+  pr.add_person_id,
+  pr.add_person_name,
+  pr.req_emergency,
+  pr.start_time,
+  pr.end_time,
+  pr.req_detail,
+  pr.act_id,
+  pr.act_name,
+  pr.receive_person_id,
+  pr.receive_person_name,
+  pr.first_instance_content,
+  pr.first_instance_opinion,
+  pr.first_instance_person_id,
+  pr.first_instance_person_name,
+  pr.first_instance_time,
+  pr.second_instance_content,
+  pr.second_instance_opinion,
+  pr.second_instance_person_id,
+  pr.second_instance_person_name,
+  pr.second_instance_time,
+  pr.task_send_detail,
+  cur_process_person_id
+  FROM
+  pmo_requirements pr,
+  pmo_project pp
+  WHERE
+  pr.pro_id = pp.id  and pr.id =#{requireId}
+  </select>
+
+
+
+  <select id="selectPmoRequireListByUser" resultMap="FilterQueryResultMap"
+          parameterType="com.ecaray.ecms.entity.pmo.Vo.RequireQueryFilter" >
+    SELECT
+    <include refid="Query_Base_Column" />
+    FROM
+    pmo_requirements pr,
+    pmo_project pp
+    <if test="curUserId != null" >
+      INNER JOIN pmo_person per ON pp.id = per.pro_id
+    </if>
+    WHERE
+    pr.pro_id = pp.id AND
+    <if test="proInfo != null" >
+      ( pp.pro_code like #{proInfo} OR pp.pro_name like #{proInfo} ) AND
+    </if>
+    <if test="marktId != null" >
+      pp.markt_id =#{marktId} AND
+    </if>
+    <if test="curUserId != null" >
+      per.person_id = #{curUserId}   AND
+    </if>
+    <if test="addPerson != null" >
+      pr.add_person_name like #{addPerson} AND
+    </if>
+    <if test="receivePerson != null" >
+      pr.receive_person_name like #{receivePerson} AND
+    </if>
+    <if test="actId != null" >
+      pr.act_id = #{actId} AND
+    </if>
+    <if test="startTime != null" >
+    <![CDATA[  pr.add_time >= #{startTime} AND pr.add_time <= #{endTime}  AND  ]]>
+    </if>
+    <if test="addUserId != null" >
+      pr.add_person_id = #{addUserId} AND
+    </if>
+    <if test="reqEmergency != null" >
+      pr.req_emergency = #{reqEmergency} AND
+    </if>
+    <if test="todoUserId != null" >
+      ( pr.cur_process_person_id = #{todoUserId}
+       OR pr.id in(
+      select require_id from pmo_require_task pt where pt.task_person = #{todoUserId} and pt.task_status=0
+      )
+      )AND
+    </if>
+    <![CDATA[ pp.is_delete<>1 and pr.is_delete<>1 ]]>
+
+    UNION
+
+    SELECT
+    <include refid="Query_Base_Column" />
+    FROM
+    pmo_requirements pr,
+    pmo_project pp
+    <if test="curUserId != null" >
+      INNER JOIN pmo_person per ON pp.id = per.pro_id
+    </if>
+    WHERE
+    pr.pro_id = pp.id AND
+    <if test="proInfo != null" >
+      ( pp.pro_code like #{proInfo} OR pp.pro_name like #{proInfo} ) AND
+    </if>
+    <if test="marktId != null" >
+      pp.markt_id =#{marktId} AND
+    </if>
+    <if test="curUserId != null" >
+      pr.second_instance_person_id = #{curUserId} AND
+    </if>
+    <if test="addPerson != null" >
+      pr.add_person_name like #{addPerson} AND
+    </if>
+    <if test="receivePerson != null" >
+      pr.receive_person_name like #{receivePerson} AND
+    </if>
+    <if test="actId != null" >
+      pr.act_id = #{actId} AND
+    </if>
+    <if test="startTime != null" >
+      <![CDATA[  pr.add_time >= #{startTime} AND pr.add_time <= #{endTime}  AND  ]]>
+    </if>
+    <if test="addUserId != null" >
+      pr.add_person_id = #{addUserId} AND
+    </if>
+    <if test="reqEmergency != null" >
+      pr.req_emergency = #{reqEmergency} AND
+    </if>
+    <if test="todoUserId != null" >
+      ( pr.cur_process_person_id = #{todoUserId}
+      OR pr.id in(
+      select require_id from pmo_require_task pt where pt.task_person = #{todoUserId} and pt.task_status=0
+      )
+      )AND
+    </if>
+    <![CDATA[ pp.is_delete<>1 and pr.is_delete<>1 ]]>
+
+
+  </select>
+
+
+  <select id ="selectRequireCount" resultType="java.lang.Integer">
+    select count(id) counts from pmo_requirements
+  </select>
+
+  <select id="selectRequirePartCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+    select  count(1) counts from  pmo_requirements where  add_person_id = #{addUserId}
+  </select>
+
+  <select id="selectRequireTodoCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+    select count(1) counts  from pmo_requirements pr  where pr.cur_process_person_id = #{userId} or pr.id
+    in (select DISTINCT require_id from pmo_require_task where task_person =#{userId} and task_status=0)
+  </select>
+
+
+  <select id="selectMaxMonthReqCode" resultType="java.lang.String" parameterType="java.lang.String" >
+    select MAX(req_code) reqcode
+    from pmo_requirements
+    where req_code like #{reqCode}
+  </select>
+
+</mapper>

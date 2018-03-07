@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.sys.RegionMapper" >
+
+  <resultMap id="provinceResultMap" type="com.ecaray.ecms.entity.sys.Province" >
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="province_id" property="provinceId" jdbcType="INTEGER" />
+  </resultMap>
+
+  <resultMap id="cityResultMap" type="com.ecaray.ecms.entity.sys.City" >
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="city_id" property="cityId" jdbcType="INTEGER" />
+  </resultMap>
+
+  <resultMap id="areaResultMap" type="com.ecaray.ecms.entity.sys.Area" >
+    <result column="area" property="area" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="INTEGER" />
+  </resultMap>
+
+  <select id="selectProvinces" resultMap="provinceResultMap"  >
+    select
+    province,province_id
+    from sys_province order by province_id
+  </select>
+
+  <select id="selectCityByProvinceId" resultMap="cityResultMap"  parameterType="java.lang.String">
+    select
+    city,city_id
+    from sys_city where pid=#{provinceId} order by city_id
+  </select>
+
+  <select id="selctAreaByCityId" resultMap="areaResultMap"  parameterType="java.lang.String">
+    select
+    area,area_id
+    from sys_area where pid =#{cityId} order by area_id
+  </select>
+</mapper>

@@ -1,0 +1,827 @@
+<meta charset="utf-8">
+<link href="skins/js/editor/css/wangEditor.min.css" type="text/css" rel="stylesheet">
+<link href="project/css/demandManage.css" type="text/css" rel="stylesheet">
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="form-horizontal complaimOrder">
+            <div class="form-group inblock" style="width: 100%;">
+                <label class="control-label col-sm-2">&nbsp;项目归属：</label>
+                <ul class="col-sm-10 ascription clearfix" style="padding-top: 4px;padding-left: 0">
+                    <li class="active" data-state="1">全部<span class="deptnum"></span></li>
+                    <li data-state="2">我提出的<span class="pernum"></span></li>
+                    <li data-state="3" id="handleNumbers">待我处理的<span class="pertonum"></span></li>
+                </ul>
+            </div>
+            <!-- <div class="form-group inblock">
+                <label class="control-label col-sm-2">营销中心：</label>
+                <select class="form-control" name="marketlist"></select>
+            </div> -->
+            <div class="form-group inblock">
+                <label class="control-label col-sm-2">项目名称/编号</label>
+                <input class="form-control input-key" name="proname" type="text">
+            </div>
+            <div class="form-group inblock" style="position: relative;">
+                <label class="col-sm-2 control-label">发起人：</label>
+                <!--<div style="right:2px;top:-2px;cursor:pointer;display:none;" class="input_clear"><i class="Hui-iconfont f-26 c_blue" style="position: absolute;top:6px;right:46px;">X</i></div>  -->
+                <input class="form-control input-key" name="sponsor" id="sponsorKD" type="text">
+            </div>
+            <div class="form-group inblock" style="position: relative;">
+                <label class="col-sm-2 control-label">需求接收人：</label>
+               <!-- <div style="right:2px;top:-2px;cursor:pointer;display:none;" class="input_clear"><i class="Hui-iconfont f-26 c_blue" style="position: absolute;top:6px;right:46px;">X</i></div>  -->
+                <input class="form-control input-key" name="receiver" id="receiverKD" type="text" >
+            </div>
+            <div class="clearboth"></div>
+            <div class="form-group inblock">
+                <label class="control-label col-sm-2">是否紧急：</label>
+                <select class="form-control" name="isurgent">
+                    <option value="">--全部--</option>
+                    <option value="1">是</option>
+                    <option value="2">否</option>
+                </select>
+            </div>
+            <div class="form-group inblock">
+                <label class="col-sm-2 control-label">发起时间：</label>
+                <input class="form-control laydate-icon" id="createtime" name="createtime" type="text" readonly="readonly">
+            </div>
+            <div class="form-group inblock">
+                <label class="control-label col-sm-2">需求状态：</label>
+                <select class="form-control" name="reqStatus">
+                    <option value="">--全部--</option>
+                </select>
+            </div>
+            <div class="clearboth"></div>
+            <div class="button-position">
+                <button class="btn btn-orange btn-search list-search">查询</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-nopadding">
+    <div class="panel-body">
+        <div class="list-top">
+            <h4 class="list-title">需求管理</h4>
+            <div class="button-power-position">
+                <!--<button class="btn btn-turquoise btn-add">新建需求</button>-->
+               <!-- <button class="btn btn-turquoise btn-export">导出需求</button>-->
+            </div>
+        </div>
+        <input class="hide" name="pagesCount" type="hidden">
+        <div class="table-responsive" id="datalist"></div>
+    </div>
+</div>
+
+<!-- 新增需求弹窗 -->
+<div class="modal fade" id="demandEditPanel" data-backdrop="static" data-clear="true">
+    <div class="modal-dialog" style="width: 640px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">新建需求</h4>
+            </div>
+            <form class="formvalidate form-validate" id="demandEditForm" method="post" enctype="multipart/form-data" role="form">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required" aria-required="true">*</span>项目名称</label>
+                            <div class="col-md-10">
+                                <div class="search-boxs errorPlacement">
+                                    <input class="form-control" name="proInfo" type="text" autocomplete="off" readonly="readonly">
+                                    <div class="renew-search-content pro-search">
+                                        <div class="renew-search-border"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required" aria-required="true">*</span>需求接收人</label>
+                            <div class="col-md-10">
+                                <div class="search-boxs errorPlacement">
+                                    <input class="form-control" id="receivePerson" name="receivePerson" type="text" autocomplete="off" readonly="readonly">
+                                    <!--<div class="renew-search-content user-search">-->
+                                        <!--<div class="renew-search-border"></div>-->
+                                    <!--</div>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group errorPlacement">
+                            <label class="col-md-2 control-label"><span class="required" aria-required="true">*</span>是否紧急</label>
+                            <div class="col-md-10 radio">
+                            	<label class="radio-inline">
+                                    <input name="reqEmergency" type="radio" value="2" checked="checked">
+                                    <span class="lbl"></span><span class="radio-text">否</span>
+                                </label>
+                                <label class="radio-inline">
+                                    <input name="reqEmergency" type="radio" value="1" >
+                                    <span class="lbl"></span><span class="radio-text">是</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group chuliren">
+                            <label class="col-md-2 control-label"><span class="required" aria-required="true">*</span>需求标题</label>
+                            <div class="col-md-10">
+                                <input class="form-control" name="reqtitle" type="text">
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label class="col-md-2 control-label"><span class="required" aria-required="true">*</span>需求详情</label>
+                            <div class="col-md-10">
+                                <div class="wangeditor-container" id="reqDetail"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button class="btn btn-success btn-examine" type="submit" id="btnToAddDMD">确定</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- 新增需求弹窗 -->
+
+<!-- 人员组织架构，单选 -->
+<div class="modal fade" id="sglperchoose">
+    <div class="modal-dialog" style="width: 600px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">选择人员</h4>
+            </div>
+            <div class="modal-body">
+                <!--<div class="col-sm-12">
+                            <div class="input-group col-sm-8">
+                                <input type="text" class="form-control input-key" id="perkwsgl" placeholder="Search for...">
+                                <span class="input-group-btn">
+                                        <button type="button" class="btn btn-success" id="btnSearchsgl">搜索</button>
+                                    </span>
+                            </div>
+                        </div>-->
+                <ul id="treeDemo" class="ztree tree-contain"></ul>
+            </div>
+            <div class="modal-footer">
+                <div class="modal-msg"></div>
+                <button type="submit" class="btn btn-success" id="btnChoosePersgl">确定</button>
+                <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 人员组织架构，多选 -->
+<div class="modal fade" id="dblperchoose">
+    <div class="modal-dialog" style="width: 600px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">选择人员 <span style="color:red; font-size: 12px;">(双击可选择)</span></h4>
+            </div>
+            <div class="modal-body">
+                <!--<div class="col-sm-12">
+                            <div class="input-group col-sm-8">
+                                <input type="text" class="form-control input-key" id="perkwdbl" placeholder="Search for...">
+                                <span class="input-group-btn">
+                                        <button type="button" class="btn btn-success" id="btnSearchdbl">搜索</button>
+                                    </span>
+                            </div>
+                        </div>-->
+                <ul id="treeDemodbl" class="ztree tree-contain"></ul>
+            </div>
+            <div class="modal-footer">
+                <div class="modal-msg"></div>
+                <button type="submit" class="btn btn-success" id="btnChoosePerdbl">确定</button>
+                <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 详情--需求一审 -->
+<div class="modal fade" id="auditOneModal">
+    <div class="modal-dialog" style="width: 780px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">需求详情</h4><!--加了权限之后，如果当前登录人不是项目经理，就显示这个标题（默认这个标题）-->
+            </div>
+            <form method="post" class="validate" id="auditOneForm">
+                <div class="modal-body">
+                    <div class="row form-inline audit-row">
+                        <div id="detailADTOne">
+                            <div class="form-group col-sm-5">
+                                <label class="control-label">项目名称：</label>
+                                <span class="dmd-proname"></span>
+                            </div>
+                            <div class="form-group col-sm-7">
+                                <label class="control-label">需求发起人：</label>
+                                <span class="dmd-promoter"></span>
+                            </div>
+                            <div class="form-group col-sm-5">
+                                <label class="control-label">需求接收人：</label>
+                                <span class="dmd-receiver"></span>
+                            </div>
+                            <div class="form-group col-sm-7">
+                                <label class="control-label">是否紧急：</label>
+                                <span class="dmd-emergency"></span>
+                            </div>
+                            <div class="form-group col-sm-5">
+                                <label class="control-label">发起时间：</label>
+                                <span class="dmd-promoterdate"></span>
+                            </div>
+                            <div class="form-group col-sm-7">
+                                <label class="control-label">需求状态：</label>
+                                <span class="dmd-status"></span>
+                            </div>
+                            <div class="form-group col-sm-12">
+                                <label class="control-label">需求详细描述：</label>
+                                <div class="col-sm-12 adt-desc dmd-desc breakword"></div>
+                            </div>
+                        </div>
+                        <div id="auditPanel" class="display-none">
+                            <div class="form-group col-sm-12">
+                                <label class="control-label">一审意见：</label>
+                                <select class="form-control adt-sel" id="adtOneIsAgree" name="adtOneIsAgree">
+                                    <option value="">请选择</option>
+                                    <option value="1">同意</option>
+                                    <option value="2">驳回</option>
+                                </select>
+                                <span class="error-msg"></span>
+                            </div>
+                            <div class="form-group col-sm-12">
+                                <textarea rows="5" class="form-control adt-one-desc" maxlength="200" id="adtOneDesc" name="adtOneDesc" placeholder="请输入具体批注"></textarea>
+                            </div>
+                            <div id="adtIsNeedTwoLayout">
+                                <div class="form-group col-sm-12">
+                                    <label class="control-label">是否需要二审：</label>
+                                    <select class="form-control adt-sel" id="adtIsNeedTwoadt" name="adtIsNeedTwoadt">
+                                        <option value="">请选择</option>
+                                        <option value="1">是</option>
+                                        <option value="2">否</option>
+                                    </select>
+                                    <span class="error-msg"></span>
+                                </div>
+                                <div class="form-group col-sm-12 display-none" id="twoAdtContain">
+                                    <input type="text" class="form-control" id="twoAdtMeb" name="twoAdtMeb" readonly placeholder="请选择二审人员"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer display-none">
+                    <div class="modal-msg"></div>
+                    <button type="submit" class="btn btn-success" id="btnAdtOne">提交</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 详情--需求二审 -->
+<div class="modal fade" id="auditTwoModal">
+    <div class="modal-dialog" style="width: 780px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">需求详情及一审情况</h4><!--加了权限之后，如果当前登录人不是此需求的二审人，就显示这个标题（默认这个标题）-->
+            </div>
+            <form method="post" class="validate" id="auditTwoForm">
+                <div class="modal-body">
+                    <div class="row form-inline audit-row">
+                        <div id="detailADTTwo">
+                            <div class="form-group col-sm-5">
+                                <label class="control-label">项目名称：</label>
+                                <span class="dmd-proname"></span>
+                            </div>
+                            <div class="form-group col-sm-7">
+                                <label class="control-label">需求发起人：</label>
+                                <span class="dmd-promoter"></span>
+                            </div>
+                            <div class="form-group col-sm-5">
+                                <label class="control-label">需求接收人：</label>
+                                <span class="dmd-receiver"></span>
+                            </div>
+                            <div class="form-group col-sm-7">
+                                <label class="control-label">是否紧急：</label>
+                                <span class="dmd-emergency"></span>
+                            </div>
+                            <div class="form-group col-sm-5">
+                                <label class="control-label">发起时间：</label>
+                                <span class="dmd-promoterdate"></span>
+                            </div>
+                            <div class="form-group col-sm-7">
+                                <label class="control-label">需求状态：</label>
+                                <span class="dmd-status"></span>
+                            </div>
+                            <div class="form-group col-sm-12">
+                                <label class="control-label">需求详细描述：</label>
+                                <div class="col-sm-12 adt-desc dmd-desc breakword"></div>
+                            </div>
+                            <div class="adtone-datablock">
+                                <div class="form-group col-sm-12">
+                                    <label class="control-label">一审意见：</label>
+                                    <span class="adt-desc dm-isagree-txt"></span>
+                                    <span class="adt-desc dm-pername"></span>
+                                    <span class="adt-desc dm-time"></span>
+                                    <span class="col-sm-12 adt-desc dm-adtdesc breakword"></span>
+                                </div>
+                            </div>
+                            <div id="adtTwoPanel" class="display-none">
+                                <div class="form-group col-sm-12">
+                                    <label class="control-label">二审意见：</label>
+                                    <select class="form-control adt-sel" id="adtTwoIsAgree" name="adtTwoIsAgree">
+                                        <option value="">请选择</option>
+                                        <option value="1">同意</option>
+                                        <option value="2">驳回</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-sm-12">
+                                    <textarea rows="5" class="form-control adt-one-desc" maxlength="200" name="adtTwoDesc" id="adtTwoDesc" placeholder="请输入具体批注"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer display-none">
+                        <div class="modal-msg"></div>
+                        <button type="submit" class="btn btn-success" id="btnAdtTwo">提交</button>
+                        <button type="reset" class="btn btn-white" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 详情--待分配任务 -->
+<div class="modal fade" id="beforeAssignModal">
+    <div class="modal-dialog" style="width: 780px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">待分配任务</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row form-inline audit-row">
+                    <div id="detailBA">
+                        <div class="form-group col-sm-5">
+                            <label class="control-label">项目名称：</label>
+                            <span class="dmd-proname"></span>
+                        </div>
+                        <div class="form-group col-sm-7">
+                            <label class="control-label">需求发起人：</label>
+                            <span class="dmd-promoter"></span>
+                        </div>
+                        <div class="form-group col-sm-5">
+                            <label class="control-label">需求接收人：</label>
+                            <span class="dmd-receiver"></span>
+                        </div>
+                        <div class="form-group col-sm-7">
+                            <label class="control-label">是否紧急：</label>
+                            <span class="dmd-emergency"></span>
+                        </div>
+                        <div class="form-group col-sm-5">
+                            <label class="control-label">发起时间：</label>
+                            <span class="dmd-promoterdate"></span>
+                        </div>
+                        <div class="form-group col-sm-7">
+                            <label class="control-label">需求状态：</label>
+                            <span class="dmd-status"></span>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <label class="control-label">需求详细描述：</label>
+                            <div class="col-sm-12 adt-desc dmd-desc breakword"></div>
+                        </div>
+                    </div>
+                    <div class="adtone-datablock">
+                        <div class="form-group col-sm-12">
+                            <label class="control-label">一审意见：</label>
+                            <span class="adt-desc dm-isagree-txt"></span>
+                            <span class="adt-desc dm-pername"></span>
+                            <span class="adt-desc dm-time"></span>
+                            <span class="col-sm-12 adt-desc dm-adtdesc breakword"></span>
+                        </div>
+                    </div>
+                    <div class="adttwo-datablock">
+                        <div class="form-group col-sm-12">
+                            <label class="control-label">二审意见：</label>
+                            <span class="adt-desc dm-isagree-txt"></span>
+                            <span class="adt-desc dm-pername"></span>
+                            <span class="adt-desc dm-time"></span>
+                            <span class="col-sm-12 adt-desc dm-adtdesc breakword"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" id="beforeAssignBtnsBlock">
+                    <div class="modal-msg"></div>
+                    <button type="submit" class="btn btn-success" id="btnBeforeAssign">分配任务</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">暂不分配</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 详情--已驳回-->
+<div class="modal fade" id="rejectModal">
+    <div class="modal-dialog" style="width: 780px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">待分配任务</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row form-inline audit-row">
+                    <div id="detailRJ">
+                        <div class="form-group col-sm-5">
+                            <label class="control-label">项目名称：</label>
+                            <span class="dmd-proname"></span>
+                        </div>
+                        <div class="form-group col-sm-7">
+                            <label class="control-label">需求发起人：</label>
+                            <span class="dmd-promoter"></span>
+                        </div>
+                        <div class="form-group col-sm-5">
+                            <label class="control-label">需求接收人：</label>
+                            <span class="dmd-receiver"></span>
+                        </div>
+                        <div class="form-group col-sm-7">
+                            <label class="control-label">是否紧急：</label>
+                            <span class="dmd-emergency"></span>
+                        </div>
+                        <div class="form-group col-sm-5">
+                            <label class="control-label">发起时间：</label>
+                            <span class="dmd-promoterdate"></span>
+                        </div>
+                        <div class="form-group col-sm-7">
+                            <label class="control-label">需求状态：</label>
+                            <span class="dmd-status"></span>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <label class="control-label">需求详细描述：</label>
+                            <div class="col-sm-12 adt-desc dmd-desc breakword"></div>
+                        </div>
+                    </div>
+                    <div class="adtone-datablock">
+                        <div class="form-group col-sm-12">
+                            <label class="control-label">一审意见：</label>
+                            <span class="adt-desc dm-isagree-txt"></span>
+                            <span class="adt-desc dm-pername"></span>
+                            <span class="adt-desc dm-time"></span>
+                            <span class="col-sm-12 adt-desc dm-adtdesc breakword"></span>
+                        </div>
+                    </div>
+                    <div class="adttwo-datablock">
+                        <div class="form-group col-sm-12">
+                            <label class="control-label">二审意见：</label>
+                            <span class="adt-desc dm-isagree-txt"></span>
+                            <span class="adt-desc dm-pername"></span>
+                            <span class="adt-desc dm-time"></span>
+                            <span class="col-sm-12 adt-desc dm-adtdesc breakword"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 分配任务 -->
+<div class="modal fade" id="assignTaskModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 780px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">分配任务</h4>
+            </div>
+            <form method="post" class="validate" id="assignTaskForm">
+                <div class="modal-body">
+                    <div class="row form-inline">
+                        <div class="form-group col-sm-6">
+                            <label class="control-label"><span class="required">*</span>任务启动日期：</label>
+                            <input type="text" class="form-control laydate-icon" name="taskStartTime" id="taskStartTime" readonly placeholder="请选择日期"/>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="control-label"><span class="required">*</span>任务截止日期：</label>
+                            <input type="text" class="form-control laydate-icon" name="taskEndTime" id="taskEndTime" readonly placeholder="请选择日期"/>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <label class="control-label"><span class="required">*</span>任务相关成员：</label>
+                            <input type="text" class="form-control input-key" name="taskOfMebs" id="taskOfMebs" readonly placeholder="请选择任务相关人员"/>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label class="control-label"><span class="required" aria-required="true">*</span>任务说明：</label>
+                            <div class="editor-wrap">
+                                <div class="wangeditor-container" id="taskDesc" style="height:220px"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button type="submit" class="btn btn-success" id="btnAssignTask">提交</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 详情--有任务待处理 -->
+<div class="modal fade" id="pendingModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 780px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">有任务待处理</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row form-inline audit-row">
+                    <div id="detailPending">
+                        <div class="form-group col-sm-5">
+                            <label class="control-label">项目名称：</label>
+                            <span class="dmd-proname"></span>
+                        </div>
+                        <div class="form-group col-sm-7">
+                            <label class="control-label">需求发起人：</label>
+                            <span class="dmd-promoter"></span>
+                        </div>
+                        <div class="form-group col-sm-5">
+                            <label class="control-label">需求接收人：</label>
+                            <span class="dmd-receiver"></span>
+                        </div>
+                        <div class="form-group col-sm-7">
+                            <label class="control-label">是否紧急：</label>
+                            <span class="dmd-emergency"></span>
+                        </div>
+                        <div class="form-group col-sm-5">
+                            <label class="control-label">发起时间：</label>
+                            <span class="dmd-promoterdate"></span>
+                        </div>
+                        <div class="form-group col-sm-7">
+                            <label class="control-label">需求状态：</label>
+                            <span class="dmd-status"></span>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <label class="control-label">需求详细描述：</label>
+                            <div class="col-sm-12 adt-desc dmd-desc breakword"></div>
+                        </div>
+                    </div>
+                    <div class="adtone-datablock">
+                        <div class="form-group col-sm-12">
+                            <label class="control-label">一审意见：</label>
+                            <span class="adt-desc dm-isagree-txt"></span>
+                            <span class="adt-desc dm-pername"></span>
+                            <span class="adt-desc dm-time"></span>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <span class="col-sm-12 adt-desc dm-adtdesc breakword"></span>
+                        </div>
+                    </div>
+                    <div class="adttwo-datablock">
+                        <div class="form-group col-sm-12">
+                            <label class="control-label">二审意见：</label>
+                            <span class="adt-desc dm-isagree-txt"></span>
+                            <span class="adt-desc dm-pername"></span>
+                            <span class="adt-desc dm-time"></span>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <span class="col-sm-12 adt-desc dm-adtdesc breakword"></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-5">
+                        <label class="control-label">任务启动日期：</label>
+                        <span class="dmd-taskstartdate"></span>
+                    </div>
+                    <div class="form-group col-sm-7">
+                        <label class="control-label">任务截止日期：</label>
+                        <span class="dmd-taskenddate"></span>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label class="control-label">指派人：</label>
+                        <span class="col-sm-12 adt-desc dmd-assignman"></span>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label class="control-label">具体任务说明：</label>
+                        <span id="taskDescTxt1" class="col-sm-12 adt-desc dmd-taskdesc"></span>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label class="control-label">反馈情况：</label>
+                        <div class="table-responsive dmd-fblist">
+                            <table class="dataTable">
+                                <thead>
+                                <tr>
+                                    <th style="width:120px">任务接收人员</th>
+                                    <th style="width:120px">派发日期</th>
+                                    <th style="width:120px">截止日期</th>
+                                    <th>反馈情况</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer display-none" id="pendingBtnsBlock">
+                <div class="modal-msg"></div>
+                <button class="btn btn-success btn-tofeedback" type="button">提交反馈</button>
+                <button type="button" class="btn btn-success btn-closedmd display-none">关闭需求</button>
+                <button type="reset" class="btn btn-white" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 添加反馈 -->
+<div class="modal fade" id="addFeedBackModal">
+    <div class="modal-dialog" style="width: 600px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">添加反馈</h4>
+            </div>
+            <form method="post" class="validate" id="addFeedBackForm">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-sm-12">
+                            <label class="control-label">反馈内容：</label>
+                            <textarea rows="5" class="form-control" maxlength="200" id="feedBackInput" name="feedBackInput" placeholder="请输入反馈内容"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button type="submit" class="btn btn-success" id="btnAddFeedBack">确定</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 详情--任务已反馈,结束流程 -->
+<div class="modal fade" id="feedBackedModal">
+    <div class="modal-dialog" style="width: 780px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">任务已反馈</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row form-inline audit-row">
+                    <div id="detailFB">
+                        <div class="form-group col-sm-5">
+                            <label class="control-label">项目名称：</label>
+                            <span class="dmd-proname"></span>
+                        </div>
+                        <div class="form-group col-sm-7">
+                            <label class="control-label">需求发起人：</label>
+                            <span class="dmd-promoter"></span>
+                        </div>
+                        <div class="form-group col-sm-5">
+                            <label class="control-label">需求接收人：</label>
+                            <span class="dmd-receiver"></span>
+                        </div>
+                        <div class="form-group col-sm-7">
+                            <label class="control-label">是否紧急：</label>
+                            <span class="dmd-emergency"></span>
+                        </div>
+                        <div class="form-group col-sm-5">
+                            <label class="control-label">发起时间：</label>
+                            <span class="dmd-promoterdate"></span>
+                        </div>
+                        <div class="form-group col-sm-7">
+                            <label class="control-label">需求状态：</label>
+                            <span class="dmd-status"></span>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <label class="control-label">需求详细描述：</label>
+                            <div class="col-sm-12 adt-desc dmd-desc breakword"></div>
+                        </div>
+                    </div>
+                    <div class="adtone-datablock">
+                        <div class="form-group col-sm-12">
+                            <label class="control-label">一审意见：</label>
+                            <span class="adt-desc dm-isagree-txt"></span>
+                            <span class="adt-desc dm-pername"></span>
+                            <span class="adt-desc dm-time"></span>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <span class="col-sm-12 adt-desc dm-adtdesc breakword"></span>
+                        </div>
+                    </div>
+                    <div class="adttwo-datablock">
+                        <div class="form-group col-sm-12">
+                            <label class="control-label">二审意见：</label>
+                            <span class="adt-desc dm-isagree-txt"></span>
+                            <span class="adt-desc dm-pername"></span>
+                            <span class="adt-desc dm-time"></span>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <span class="col-sm-12 adt-desc dm-adtdesc breakword"></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-5">
+                        <label class="control-label">任务启动日期：</label>
+                        <span class="dmd-taskstartdate"></span>
+                    </div>
+                    <div class="form-group col-sm-7">
+                        <label class="control-label">任务截止日期：</label>
+                        <span class="dmd-taskenddate"></span>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label class="control-label">指派人：</label>
+                        <span class="col-sm-12 adt-desc dmd-assignman"></span>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label class="control-label">具体任务说明：</label>
+                        <div id="taskDescTxt2" class="col-sm-12 adt-desc dmd-taskdesc breakword"></div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label class="control-label">反馈情况：</label>
+                        <div class="table-responsive dmd-fblist">
+                            <table class="dataTable">
+                                <thead>
+                                <tr>
+                                    <th style="width:120px">任务接收人员</th>
+                                    <th style="width:120px">派发日期</th>
+                                    <th style="width:120px">截止日期</th>
+                                    <th>反馈情况</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="choosePersonModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 850px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">选择人员</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row form-inline">
+                    <div class="form-group col-sm-12">
+                        <div class="input-group col-sm-12">
+                            <input type="text" class="form-control" placeholder="请输入员工姓名" id="queryKD">
+                            <span class="input-group-btn">
+                            <button class="btn btn-orange btn-search" type="button" id="btnSearchDepLeader">搜索</button>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <div>
+                            <!--外面套一层是为了避免分页layout错乱-->
+                            <div class="table-responsive" id="depLeaderList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 导出 -->
+<div class="modal fade" id="exportExclePanel" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">导出信息确认</h4>
+            </div>
+            <div class="modal-body">
+                <div>您确定要导出数据吗？</div>
+            </div>
+            <div class="modal-footer">
+                <div class="modal-msg"></div>
+                <button type="submit" class="btn btn-success" id="export-sure">确认</button>
+                <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 导出 -->
+
+<script src="project/demandManage.js"></script>

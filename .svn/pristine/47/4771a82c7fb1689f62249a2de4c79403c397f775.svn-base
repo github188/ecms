@@ -1,0 +1,376 @@
+@charset "UTF-8";
+/*
+*** @name: humanAffairs.css
+*** @author: xiongxiaojun
+*** @date 2017/07/31
+*/
+.tree-contain-addper-sel, .tree-contain-ImmediateSuperior-sel {
+    width: 100%;
+    height: 280px;
+    overflow-y: scroll;
+    margin-top: 35px;
+}
+
+.tree-contain-adddep-sel, .tree-contain-depleader-sel {
+    width: 100%;
+    height: 280px;
+    overflow-y: scroll;
+    margin-top: 35px;
+}
+
+.ztree * {
+    font-size: 14px;
+}
+
+.ztree li {
+    line-height: 22px;
+}
+
+.ztree li span {
+    line-height: 22px;
+}
+
+.ztree li a.curSelectedNode {
+    height: 22px;
+}
+
+.ztree li span.button.switch {
+    width: 18px;
+    height: 22px;
+}
+
+.ztree li span.button.ico_open {
+    vertical-align: middle;
+}
+
+.ztree li span.button.ico_docu {
+    vertical-align: text-bottom;
+}
+
+.ztree li a.tmpTargetNode_inner {
+    height: 22px;
+}
+#treeDepart{
+    height: 550px;
+    overflow: auto;
+}
+#editAttendanceForm label.control-label{
+    text-align: right;
+}
+
+#DepartForSuperiorAddPanel, #DepartForSuperiorEditPanel, #DepLeaderForAddDepPanel, #DepLeaderForEditDepPanel {
+    width: 360px;
+    background-color: #fff;
+    border: 1px solid #666;
+    margin-left: 19.5%;
+    display: none;
+}
+
+#DepartForAddPerPanel, #ImmediateSuperiorPanel {
+    width: 360px;
+    background-color: #fff;
+    display: none;
+    position: absolute;
+    z-index: 10;
+    -webkit-box-shadow: 0 0 14px #999;
+    -moz-box-shadow: 0 0 14px #999;
+    box-shadow: 0 0 14px #999;
+}
+#DepartForAddPerPanel {
+    top: 40px;
+    left: 105px;
+}
+form .form-group .control-label{
+    margin-top: 8px;
+    text-align: right;
+}
+.close-tree-sel {
+    float: right;
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    margin: 3px 5px;
+    -webkit-transform: scale(2);
+    transform: scale(2);
+    color: #666;
+    cursor: pointer;
+}
+.be-out-title{
+    margin: 0;
+    border-bottom: 1px solid #e4e4e4;
+}
+.operation-item{
+    height: 50px;
+    border-bottom: 1px solid #e4e4e4;
+}
+.delete-item{
+    float: right;
+    margin-top: -35px;
+    margin-right: 20px;
+    padding: 10px;
+}
+.delete-item:hover{
+    color: #01cd78;
+}
+.add-item{
+    margin-top: 10px;
+}
+.be-out-title h3{
+    font-size: 16px;
+    padding: 10px 20px;
+    margin: 0;
+    cursor: pointer;
+}
+.be-out-title:hover{
+    background-color: #e5e5e5;
+}
+
+.unfold .row{
+    display: none;
+}
+.unfold .icon-fold{
+    background: url("../../skins/img/fold-icon.png") no-repeat left center;
+}
+.fold .icon-fold{
+    background: url("../../skins/img/unfold-icon.png") no-repeat left center;
+}
+
+.z-hide{
+    display: none;
+}
+.no-padding{
+    padding: 0;
+}
+.no-margin{
+    margin: 0;
+}
+/*考勤*/
+.human-attendance{
+    background: #fff;
+    padding-top: 24px;
+}
+.human-attendance ul{
+    height: 275px;
+    padding: 0;
+    border-bottom: 1px solid #e8e9e8;
+    margin: 0 24px;
+}
+.human-attendance ul li{
+    float: left;
+    width: 10%;
+    height: 110px;
+    list-style: none;
+    text-align: center;
+    margin-bottom: 24px;
+}
+.human-attendance ul li p{
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    margin: 0;
+    color: rgba(0, 0, 0, 0.6);
+}
+.human-attendance ul li .human-calendar-count{
+    line-height: 70px;
+    position: relative;
+    font-size: 22px;
+    color: #3e3e3e;
+    font-family: cursive;
+}
+.human-attendance ul li .human-calendar-count.h-red{
+    color: #f35857 !important;
+}
+.human-attendance ul li.human-calendar{
+    border: 1px solid #01cd78;
+    width: 100px;
+}
+.human-attendance ul li.human-calendar p{
+    color: #01cd78;
+    background-color: #ccffea;
+    border-bottom: 1px solid #01cd78;
+    font-size: 14px;
+}
+.human-calendar-choose{
+    line-height: 70px;
+    position: relative;
+}
+.human-calendar-choose a{
+    height: 30px;
+    width: 30px;
+    display: inline-block;
+    background: url("../../skins/img/oa-index-icon.png") no-repeat center;
+    zoom: .8;
+    top: 30px;
+    position: absolute;
+}
+.human-calendar-choose a.h-prev, .human-calendar-choose a.h-prev[disabled]:hover{
+    background-position: -212px -130px;
+    left: 10px;
+}
+.human-calendar-choose a.h-prev:hover{
+    background-position: -294px -130px;
+}
+.human-calendar-choose a.h-next, .human-calendar-choose a.h-next[disabled]:hover{
+    background-position: -250px -130px;
+    right: 10px;
+}
+.human-calendar-choose a.h-next:hover{
+    background-position: -330px -130px;
+}
+.human-calendar-choose a[disabled]{
+    cursor: not-allowed;
+}
+.human-calendar-month{
+    font-size: 24px;
+    color: #01cd78;
+    cursor: pointer;
+    display: inline-block;
+    height: 68px;
+    width: 62px;
+    z-index: 11;
+}
+.human-calendar-text{
+    font-size: 16px;
+    font-style: normal;
+    color: #222222;
+    position: relative;
+    left: -18px;
+}
+.human-operator{
+    height: 80px;
+    background: #fff;
+    float: right;
+    margin-right: 24px;
+}
+.human-operator button{
+    display: inline-block;
+    height: 32px;
+    width: 80px;
+    text-align: center;
+    color: #fff;
+    font-size: 14px;
+    margin-left: 16px;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    margin-top: 24px;
+}
+.human-operator .ask-for-leave{
+    background: #20a9f7;
+}
+.human-operator .over-time{
+    background: #f35857;
+}
+.human-operator .away-official{
+    background: #f7a039;
+}
+.human-operator .be-out{
+    background: #ca4ef0;
+}
+/*margin-top*/
+.margin-t-5{
+    margin-top: 5px;
+}
+.margin-t-10{
+    margin-top: 10px;
+}
+.margin-t-15{
+    margin-top: 15px;
+}
+.margin-t-20{
+    margin-top: 20px;
+}
+/*margin-right*/
+.margin-r-5{
+    margin-right: 5px;
+}
+.margin-r-10{
+    margin-right: 10px;
+}
+.margin-r-15{
+    margin-right: 15px;
+}
+.margin-r-20{
+    margin-right: 20px;
+}
+/*margin-bottom*/
+.margin-b-5{
+    margin-bottom: 5px;
+}
+.margin-b-10{
+    margin-bottom: 10px;
+}
+.margin-b-15{
+    margin-bottom: 15px;
+}
+.margin-b-20{
+    margin-bottom: 20px;
+}
+/*margin-left*/
+.margin-l-5{
+    margin-left: 5px;
+}
+.margin-l-10{
+    margin-left: 10px;
+}
+.margin-l-15{
+    margin-left: 15px;
+}
+.margin-l-20{
+    margin-left: 20px;
+}
+/*padding-top*/
+.padding-t-5{
+    padding-top: 5px;
+}
+.padding-t-10{
+    padding-top: 10px;
+}
+.padding-t-15{
+    padding-top: 15px;
+}
+.padding-t-20{
+    padding-top: 20px;
+}
+/*padding-right*/
+.padding-r-5{
+    padding-right: 5px;
+}
+.padding-r-10{
+    padding-right: 10px;
+}
+.padding-r-15{
+    padding-right: 15px;
+}
+.padding-r-20{
+    padding-right: 20px;
+}
+/*padding-bottom*/
+.padding-b-5{
+    padding-bottom: 5px;
+}
+.padding-b-10{
+    padding-bottom: 10px;
+}
+.padding-b-15{
+    padding-bottom: 15px;
+}
+.padding-b-20{
+    padding-bottom: 20px;
+}
+/*padding-left*/
+.padding-l-0{
+    padding-left: 0 !important;
+}
+.padding-l-5{
+    padding-left: 5px;
+}
+.padding-l-10{
+    padding-left: 10px;
+}
+.padding-l-15{
+    padding-left: 15px;
+}
+.padding-l-20{
+    padding-left: 20px;
+}

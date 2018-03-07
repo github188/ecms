@@ -1,0 +1,153 @@
+@charset "UTF-8";
+/*
+*** @name: 人事考勤
+*** @author: xiongxiaojun
+*** @date 2017/08/01
+*/
+
+/*日历开始*/
+#calendarTable{
+    border: 1px solid #e5e6e5;
+    border-bottom: none;
+    border-right: none;
+    overflow: hidden;
+    width: 100%;
+    font-size: 14px;
+}
+.calendar-list{
+    float: left;
+    width: 14.28%;
+    height: 90px;
+    border-bottom: 1px solid #e5e6e5;
+    border-right: 1px solid #e5e6e5;
+    text-align: center;
+    position: relative;
+    list-style: none;
+    background: rgba(238, 238, 238, 0.15);
+}
+.calendar-week{
+    /*font-weight: bold;*/
+    line-height: 60px;
+    height: 60px;
+    background: #fff;
+}
+.calendar-list .disabled{
+    color: #bdbdbd;
+}
+.calendar-list .disabled .name, .calendar-list .disabled .sign{
+    display: none;
+}
+.calendar-list .normal-day{
+    padding: 35px;
+}
+.calendar-list.weekend{
+    background: #f2f2f2;
+}
+.calendar-list-box, .calendar-list .enabled{
+    height: 100%;
+}
+.calendar-list-box .date, .calendar-list .disabled .date{
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    font-size: 16px;
+    font-family: cursive;
+    font-weight: bold;
+}
+.calendar-list-box .name{
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    min-width: 48px;
+    font-size: 12px;
+    border-radius: 30px;
+}
+.calendar-list-box .sign{
+    position: absolute;
+    left: 12px;
+    color: #a9a9a9;
+    font-size: 12px;
+}
+.calendar-list-box .sign.early{
+    top: 40px;
+}
+.calendar-list-box .sign.no-punch{
+    top: 52px;
+}
+.calendar-list-box .sign.night{
+    top: 64px;
+}
+.calendar-list-half .half{
+    width: 50%;
+    height: 100%;
+}
+
+.calendar-list-half .double-half{
+    width: 50%;
+    height: 100%;
+    float: left;
+    position: relative;
+}
+.calendar-list-half .double-half:first-child{
+    border-right: 1px solid #fff;
+}
+.calendar-list .edit-tag{
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+}
+.calendar-list .edit-tag:after{
+    position: absolute;
+    content: '';
+    left: -10px;
+    top: -10px;
+    height: 20px;
+    width: 20px;
+    background: #01cd78;
+    transform: rotate(-130deg);
+    -webkit-transform: rotate(-130deg);
+    -ms-transform: rotate(-130deg);
+    -o-transform: rotate(-130deg);
+    -moz-transform: rotate(-130deg);;
+
+}
+.calendar-list .edit-log{
+    padding: 20px 0;
+    width: 200%;
+    min-height: 200%;
+    box-shadow: 0 1px 6px rgba(0,0,0,.2);
+    position: absolute;
+    left: 0;
+    top: 90px;
+    background: #fff;
+    z-index: 9999;
+    display: none;
+    max-height: 280px;
+    overflow: auto;
+    color: #333;
+}
+.calendar-list .edit-log p{
+    line-height: 20px;
+    text-align: justify;
+    margin: 0;
+    margin-bottom: 8px;
+    padding: 0 10px;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+.calendar-list .edit-tag{
+    display: block;
+    height:20px;
+    width: 20px;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}

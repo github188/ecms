@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <title>亿车科技EAP</title>
+    <link rel="shortcut icon" type="images/x-icon" href="skins/img/short-icon.ico">
+    <link rel="bookmark" href="skins/img/logo.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="skins/css/fonts/linecons/css/linecons.css"/>
+    <link rel="stylesheet" href="skins/css/fonts/fontawesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_yuuxi7mh8tanstt9.css"/>
+    <link rel="stylesheet" href="skins/css/bootstrap.css"/>
+    <link rel="stylesheet" href="skins/css/xenon-core.css"/>
+    <link rel="stylesheet" href="skins/css/xenon-forms.css"/>
+    <link rel="stylesheet" href="skins/css/bootstrap-datetimepicker.min.css"/>
+    <link rel="stylesheet" href="skins/css/ztree.css"/>
+    <link href="skins/js/layer/skin/layer.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="skins/css/skin.css"/>
+    <link href="//at.alicdn.com/t/font_1mnw5khbqyy9o1or.css" type="text/css" rel="stylesheet">
+    <style>
+        /*重置样式 [[ */
+        /* .modal-dialog {
+             overflow-y: auto;
+             max-height: 90%;
+         }*/
+        .btn.btn-turquoise {
+            background-color: #fff;
+            color: #12ba4d;
+            border:1px solid #12ba4d;
+        }
+
+        .btn.btn-turquoise:active, .btn.btn-turquoise:focus {
+          /*  background-color: #38c695;
+            border-color: #38c695;*/
+        }
+
+        /*.btn.btn-turquoise:hover {
+            background-color: #38c695;
+            border-color: #38c695;
+        }*/
+
+        .list-top .list-title:before {
+            background: #12ba4d;
+        }
+
+        .sidebar-menu .main-menu > li {
+            font-size: 16px;
+        }
+
+        .sidebar-menu .main-menu > li li {
+            font-size: 14px;
+        }
+
+        .sidebar-menu .main-menu ul li a {
+            padding-left: 43px;
+        }
+
+        .page .pagenum:hover, .page .pagenum.active {
+            color: #12ba4d;
+        }
+
+        .btnPage {
+            background-color: #12ba4d;
+        }
+
+        .layui-layer-btn .layui-layer-btn0 {
+            border-color: #12ba4d !important;
+            background-color: #12ba4d !important;
+        }
+
+        .laydate_body .laydate_click {
+            background-color: #01cd78 !important;
+            color: #fff !important;
+        }
+
+        /*重置样式 ]] */
+        /*头部样式修改start*/
+        /*header.header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 13;
+            -moz-box-shadow: 0 5px 15px #888888;
+            box-shadow: 0 5px 15px #888888;
+        }
+
+        .navbar {
+            min-height: 60px;
+            margin: 0;
+            border: 0;
+        }*/
+
+        body {
+            display: none;
+        }
+
+        .user-info-navbar .user-info-menu > li .dropdown-menu.user-profile-menu {
+            position: absolute;
+            top: 60px;
+            left: 40px;
+        }
+
+        .user-info-navbar .user-info-menu > li.current-user-block > a {
+            padding: 16px 15px;
+        }
+
+        .user-info-navbar .user-info-menu > li .dropdown-menu.user-profile-menu .triangle-arrow {
+            border-color: transparent transparent #12ba4d;
+            left: 120px;
+        }
+
+        .user-info-navbar .user-info-menu > li .dropdown-menu.user-profile-menu li[onclick] {
+            background: #12ba4d;
+        }
+
+        /*头部样式修改end*/
+        .curruser-name {
+            margin: 0 5px;
+            display: inline-block;
+            vertical-align: middle;
+            color: #000;
+            font-size: 14px;
+        }
+
+        .top-bar {
+            width: 100%;
+            height: 72px;
+            line-height: 72px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+
+        .sys-logo {
+            width: 230px;
+            font-size: 20px;
+            font-weight: bold;
+            display: inline-block;
+            text-align: center;
+            text-indent: -10px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 20;
+            color: #fff;
+            background-color: #fff;
+        }
+
+        .sys-handle {
+            display: inline-block;
+            background: #fff;
+            position: absolute;
+            top: 0;
+            left: 230px;
+            z-index: 10;
+        }
+
+        .sys-handle > a {
+            display: inline-block;
+            margin-left: 15px;
+            padding: 0 10px;
+        }
+
+        .user-info-navbar {
+            float: right;
+            margin: 6px 18px 0 0;
+        }
+
+        .loader {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            z-index: 80;
+            display: none;
+        }
+
+        .loader > span {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .loader .loader-icon {
+            font-size: 70px;
+            color: #666;
+        }
+
+        .loader .load-text {
+            color: #666;
+            font-size: 26px;
+            margin-left: 20px;
+            letter-spacing: 2px;
+        }
+        .setting {
+            float: right;
+            height: 72px;
+            line-height: 72px;
+            margin-right: 30px;
+        }
+
+        .setting ul li.menu {
+            float: left;
+            width: 70px;
+            text-align: center;
+            list-style: none;
+            position: relative;
+        }
+        .setting ul li.menu a{
+            height: 72px;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .setting .menu a.message{
+            background-image: url("skins/img/message-icon.png")
+        }
+        .setting .menu a.menu-setting{
+            background-image: url("skins/img/setting-icon.png")
+        }
+        .setting .menu a.log-out{
+            background-image: url("skins/img/logout-icon.png")
+        }
+        .setting ul li:hover .setting-icon{
+            transform: rotateX(-180deg);
+            -webkit-transform: rotateX(-180deg);
+            -moz-transform: rotateX(-180deg);
+            top: -2px;
+            transition: all .5s ease;
+            -webkit-transition: all .5s ease;
+            -moz-transition: all .5s ease;
+        }
+        .setting .setting-icon{
+            display: inline-block;
+            width: 11px;
+            height: 11px;
+            background: url("skins/img/oa-index-icon.png") no-repeat -150px -140px;
+            position: relative;
+            left: 15px;
+            top: 2px;
+            transform: rotateX(0deg);
+            -webkit-transform: rotateX(0deg);
+            -moz-transform: rotateX(0deg);
+            transition: all .3s ease;
+            -webkit-transition: all .3s ease;
+            -moz-transition: all .3s ease;
+        }
+        .setting ul li.menu a {
+            color: #868f94;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .setting ul li a:hover {
+            text-decoration: none;
+        }
+
+        .setting .sub-menu {
+            list-style: none;
+            position: absolute;
+            padding: 0;
+            background: #fff;
+            width: 120px;
+            left: -20px;
+            height: 120px;
+            border-radius: 0 0 6px 6px;
+            display: none;
+            box-shadow: 0 0 10px #d4d4d4;
+            top: 70px;
+        }
+
+        .setting .sub-menu li {
+            height: 60px;
+            line-height: 60px;
+        }
+        .setting .sub-menu li:hover {
+            opacity: .8;
+        }
+        .sidebar-menu.fixed .sidebar-menu-inner{
+            top: 72px;
+        }
+        .email-num{
+            position: absolute;
+            top: 20px;
+            left: 35px;
+            height: 15px;
+            width: 22px;
+            line-height: 14px;
+            background: #fb6c2e;
+            border-radius: 14px;
+            color: #fff;
+        }
+        .email-num em{
+            font-style: normal;
+            position: relative;
+            top: -4px;
+        }
+    </style>
+
+</head>
+<body class="skin-blue">
+<div class="page-container">
+
+
+    <div class="top-bar">
+        <a href="home.html" title="首页">
+            <span class="sys-logo" id="sysLogo">
+                <img src="skins/img/oa_logo.png" alt="">
+            </span>
+        </a>
+        <div class="sys-handle">
+            <!--<a href="home.html">-->
+                <!--<img src="skins/img/fanhui_ic@2x.png" alt="">&nbsp;-->
+                <!--<span>返回首页</span>-->
+            <!--</a>-->
+
+            <div class="setting">
+                <ul>
+                    <!--<li class="menu"><a class="setting" href="#"></a></li>-->
+                    <li class="menu" id="emailNum">
+                        <a title="邮箱" id="emailMenu" target="_blank" class="message" href="javascript:;"></a>
+                    </li>
+                    <li class="menu">
+                        <!--<a href="javascript:;">设置 <em class="setting-icon"></em></a>-->
+                        <a class="menu-setting" href="#"></a>
+                        <ol class="sub-menu">
+                            <li><a href="#" id="changePassword">修改密码</a></li>
+                            <li><a href="portals/personInfo/personInfo.html" id="changePerson">个人信息</a></li>
+                        </ol>
+                    </li>
+                    <li class="menu"><a title="退出" id="logOut" class="log-out" href="#"></a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="sidebar-menu opacity0 toggle-others fixed">
+        <div class="sidebar-menu-inner opacity0">
+            <header class="logo-env">
+                <!-- logo -->
+                <div class="logo">
+                    <a class="side-new" data-toggle="sidebar">
+                        <i class="iconfont icon-daohangshouqi"></i>
+                    </a>
+                </div>
+            </header>
+            <!-- 二级菜单 如果有子级 父级要添加has-sub类，样式应用上下折叠按钮在以此为基础的伪元素上
+              子级展开应用opened类
+              子级选中应用active类-->
+            <ul id="main-menu" class="main-menu"></ul>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="new-box">
+            <div class="main-container">
+                <div class="new-main-container"></div>
+            </div>
+        </div>
+        <footer class="main-footer sticky footer-type-1">
+            <div class="footer-inner">
+                <div class="go-up">
+                    <a href="#" rel="go-top">
+                        <i class="fa-angle-up"></i>
+                    </a>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <div class='bodyload'>
+        <div class='backdrop'>
+            <div class="backfont"><i class='fa fa-spin fa-spinner asyDiv'></i></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalout" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">温馨提示</h4>
+            </div>
+            <div class="modal-body">您的账号已在其他地方上线，请重新登录！</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info logout-sure">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--修改密码start-->
+<div class="modal fade" id="modifyPassword" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">修改密码</h4>
+            </div>
+            <form role="form" id="modifyPasswordForm" method="post" class="validate">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required">*</span>原密码：</label>
+                                <input id="accountname" name="accountname" type="password" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required">*</span>新密码：</label>
+                                <input id="newpwd" name="newpwd" type="password" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required">*</span>确认密码：</label>
+                                <input id="savepwd" name="savepwd" type="password" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button type="submit" class="btn btn-success" id="btnPwdSave">确定</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--修改密码end-->
+
+<link rel="stylesheet" href="skins/css/fonts/elusive/css/elusive.css">
+
+<!-- Bottom Scripts -->
+<script src="skins/js/jquery-1.11.1.min.js"></script>
+
+<!--date-->
+<script src="skins/js/bootstrap-datepicker.js"></script>
+<script src="skins/js/bootstrap-datetimepicker.min.js"></script>
+<script src="skins/js/date/laydate.js" type="text/javascript"></script>
+<script src="skins/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="skins/js/bootstrap-colorpicker.min.js"></script>
+<!--select-->
+<script src="skins/js/select2.min.js"></script>
+<script src="skins/js/jquery-ui.min.js"></script>
+<script src="skins/js/jquery.selectBoxIt.min.js"></script>
+<script src="skins/js/bootstrap-tagsinput.min.js"></script>
+<script src="skins/js/typeahead.bundle.js"></script>
+<script src="skins/js/handlebars.min.js"></script>
+<script src="skins/js/jquery.multi-select.js"></script>
+
+
+<!--validate-->
+<script src="skins/js/jquery.validate.min.js" type="text/javascript"></script>
+<script src="skins/js/editor/js/wangEditor.js"></script>
+<script src="skins/js/editor/js/xss.js"></script>
+<!--frame-->
+<script src="skins/js/config.js"></script>
+<script src="skins/js/jquery.md5.js"></script>
+<script src="skins/js/base.js"></script>
+<script src="skins/js/ajax.js"></script>
+<script src="skins/js/datagrid.js"></script>
+<script src="skins/js/jquery.ztree.js" type="text/javascript"></script>
+<script src="http://api.map.baidu.com/api?v=2.0&ak=TKVWaNmi39SVd2QM3McBdclw" type="text/javascript"></script>
+<script src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js" type="text/javascript"></script>
+<script src="skins/js/screenfull.js"></script>
+<script src="main.js"></script>
+
+
+<script src="skins/js/bootstrap.min.js"></script>
+<script src="skins/js/TweenMax.min.js"></script>
+<script src="skins/js/resizeable.js"></script>
+<script src="skins/js/joinable.js"></script>
+<script src="skins/js/xenon-api.js"></script>
+<script src="skins/js/xenon-toggles.js"></script>
+<script src="skins/js/moment.min.js"></script>
+<script src="skins/js/daterangepicker/daterangepicker.js"></script>
+<script src="skins/js/daterangepicker/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="skins/js/xenon-custom.js"></script>
+
+<script src="skins/js/layer/layer.js"></script>
+<script src="skins/js/laydate/laydate.js"></script>
+
+<script type="text/javascript">
+    //禁止后退键 作用于Firefox、Opera
+    document.onkeypress = pageObj.banBackSpace;
+    //禁止后退键  作用于IE、Chrome
+    document.onkeydown = pageObj.banBackSpace;
+    var loginOut = function () {
+        var url = appHost + approot + "/authority/account/logout",
+            authorization = Utils.getValue("authorization");
+        Utils.clearValue();
+        window.location.href = "index.html";
+        $.ajax({
+            type: "GET",
+            url: url,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("authorization", authorization);
+            },
+            success: function (data) {
+                Utils.clearValue();
+                window.location.href = "index.html";
+            }
+        });
+    };
+
+    $('#logOut').on('click', function (event) {
+        event.stopPropagation();
+        layer.confirm('确定要退出系统吗？', {
+            btn: ['确定', '取消'] //按钮
+        }, function (index) {
+            loginOut();
+        }, function (index) {
+            layer.close(index);
+        });
+    });
+
+    $('.menu').on('mouseover', function () {
+        $(this).find('.sub-menu').stop().slideDown(200);
+    }).on('mouseout', function () {
+        $(this).find('.sub-menu').stop().slideUp(200);
+    });
+
+    /**
+     * 密码修改
+     * */
+    var  updateUserPwd = function () {
+        var userpwd = $.md5($("#accountname").val().trim());
+        var newpwd = $.md5($("#newpwd").val().trim());
+        var url = appHost + approot + "/authority/user/reset/password",
+            authorization = Utils.getValue("authorization");
+        var data={
+            oldPass:userpwd,
+            newPass:newpwd
+        };
+        $.ajax({
+            type: "PUT",
+            url: url,
+            async: true,
+            data:JSON.stringify(data),
+            contentType:'application/json; charset=UTF-8',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("authorization", authorization);
+            },
+            success: function (data) {
+                if(data.code=='success'){
+                    layer.msg('密码修改成功,即将跳转登录页！',{time: 1500}, function(){
+                        Utils.clearValue();
+                        $('#modifyPassword').modal();
+                        window.location.href = "index.html";
+                    });
+                }else{
+                    $("#modifyPassword .modal-msg").text(data.message).show();
+                }
+            }
+        });
+    };
+
+    $("#modifyPasswordForm").validate({
+        debug: true,
+        onfocusout: function (element) {
+            $(element).valid();
+        },
+        submitHandler: function () {
+            updateUserPwd();
+        },
+        rules: {
+            accountname: {
+                required: true
+            }, newpwd: {
+                required: true,
+                minlength: 6,
+                maxlength: 20,
+                pwdbox: true
+            }, savepwd: {
+                required: true,
+                equalTo: "#newpwd"
+            }
+        }, messages: {
+            accountname: {
+                required: "原密码不能为空！"
+            }, newpwd: {
+                required: "新密码不能为空！",
+                minlength: "输入密码不能小于6数字！",
+                maxlength: "输入密码不能大于20为数字！"
+            }, savepwd: {
+                required: "确认密码不能为空！",
+                equalTo: "两次输入密码不相同！"
+            }
+        }
+    });
+
+    $('#changePassword').on('click', function (event) {
+        event.stopPropagation();
+        var validator = $("#modifyPasswordForm").validate();
+        validator.resetForm();
+        $("#modifyPasswordForm")[0].reset();
+        $("#modifyPassword .modal-msg").hide();
+        $('#modifyPassword').modal();
+    });
+
+
+    var getEmailUrl = function () {
+        $.ajax({
+            type: "get",
+            url: appHost + approot + '/authority/user/mail/login',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("authorization", Utils.getValue("authorization"));
+            },
+            success: function (data) {
+                if(data.code == 'success'){
+                    $('#emailMenu').attr('href', data.content);
+                }
+            }
+        })
+    };
+    var getEmailNum = function () {
+        $.ajax({
+            type: "get",
+            url: appHost + approot +  '/authority/user/mail/toread',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("authorization", Utils.getValue("authorization"));
+            },
+            success: function (data) {
+                if(data.code == 'success'){
+                    var content = data.content;
+                    if(content > 0 && content < 100){
+                        $('#emailNum').append('<div class="email-num">'+ content +'</div>');
+                    }else if(content >= 100){
+                        $('#emailNum').append('<div class="email-num"><span style="position: relative; left: 1px;">99</span><em>+</em></div>');
+                    }
+                }
+            }
+        })
+    };
+
+    $('#emailMenu').on('click', function () {
+        getEmailUrl();
+        getEmailNum();
+    });
+    getEmailUrl();
+    getEmailNum();
+</script>
+</body>
+</html>

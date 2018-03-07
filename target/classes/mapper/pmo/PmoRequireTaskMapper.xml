@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.pmo.PmoRequireTaskMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.pmo.PmoRequireTask" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="require_id" property="requireId" jdbcType="VARCHAR" />
+    <result column="task_person" property="taskPerson" jdbcType="VARCHAR" />
+    <result column="task_person_name" property="taskPersonName" jdbcType="VARCHAR" />
+    <result column="task_status" property="taskStatus" jdbcType="VARCHAR" />
+    <result column="start_time" property="startTime" jdbcType="BIGINT" />
+    <result column="end_time" property="endTime" jdbcType="BIGINT" />
+    <result column="finish_time" property="finishTime" jdbcType="BIGINT" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ecaray.ecms.entity.pmo.PmoRequireTask" extends="BaseResultMap" >
+    <result column="fadeback_info" property="fadebackInfo" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, require_id, task_person, task_person_name, task_status, start_time, end_time, 
+    finish_time, add_time, update_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    fadeback_info
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from pmo_require_task
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from pmo_require_task
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.pmo.PmoRequireTask" >
+    insert into pmo_require_task (id, require_id, task_person, 
+      task_person_name, task_status, start_time, 
+      end_time, finish_time, add_time, 
+      update_time, fadeback_info)
+    values (#{id,jdbcType=VARCHAR}, #{requireId,jdbcType=VARCHAR}, #{taskPerson,jdbcType=VARCHAR}, 
+      #{taskPersonName,jdbcType=VARCHAR}, #{taskStatus,jdbcType=VARCHAR}, #{startTime,jdbcType=BIGINT},
+      #{endTime,jdbcType=BIGINT}, #{finishTime,jdbcType=BIGINT}, #{addTime,jdbcType=BIGINT},
+      #{updateTime,jdbcType=BIGINT}, #{fadebackInfo,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.pmo.PmoRequireTask" >
+    insert into pmo_require_task
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="requireId != null" >
+        require_id,
+      </if>
+      <if test="taskPerson != null" >
+        task_person,
+      </if>
+      <if test="taskPersonName != null" >
+        task_person_name,
+      </if>
+      <if test="taskStatus != null" >
+        task_status,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="finishTime != null" >
+        finish_time,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="fadebackInfo != null" >
+        fadeback_info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="requireId != null" >
+        #{requireId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskPerson != null" >
+        #{taskPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="taskPersonName != null" >
+        #{taskPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskStatus != null" >
+        #{taskStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=BIGINT},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=BIGINT},
+      </if>
+      <if test="finishTime != null" >
+        #{finishTime,jdbcType=BIGINT},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="fadebackInfo != null" >
+        #{fadebackInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.pmo.PmoRequireTask" >
+    update pmo_require_task
+    <set >
+      <if test="requireId != null" >
+        require_id = #{requireId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskPerson != null" >
+        task_person = #{taskPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="taskPersonName != null" >
+        task_person_name = #{taskPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskStatus != null" >
+        task_status = #{taskStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null and  startTime != 0" >
+        start_time = #{startTime,jdbcType=BIGINT},
+      </if>
+      <if test="endTime != null and endTime != 0" >
+        end_time = #{endTime,jdbcType=BIGINT},
+      </if>
+      <if test="finishTime != null and finishTime != 0" >
+        finish_time = #{finishTime,jdbcType=BIGINT},
+      </if>
+      <if test="addTime != null and addTime != 0" >
+        add_time = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null and updateTime!=0" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="fadebackInfo != null" >
+        fadeback_info = #{fadebackInfo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ecaray.ecms.entity.pmo.PmoRequireTask" >
+    update pmo_require_task
+    set require_id = #{requireId,jdbcType=VARCHAR},
+      task_person = #{taskPerson,jdbcType=VARCHAR},
+      task_person_name = #{taskPersonName,jdbcType=VARCHAR},
+      task_status = #{taskStatus,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=BIGINT},
+      end_time = #{endTime,jdbcType=BIGINT},
+      finish_time = #{finishTime,jdbcType=BIGINT},
+      add_time = #{addTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      fadeback_info = #{fadebackInfo,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.pmo.PmoRequireTask" >
+    update pmo_require_task
+    set require_id = #{requireId,jdbcType=VARCHAR},
+      task_person = #{taskPerson,jdbcType=VARCHAR},
+      task_person_name = #{taskPersonName,jdbcType=VARCHAR},
+      task_status = #{taskStatus,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=BIGINT},
+      end_time = #{endTime,jdbcType=BIGINT},
+      finish_time = #{finishTime,jdbcType=BIGINT},
+      add_time = #{addTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+  <select id="selectRequireTaskList" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from pmo_require_task
+    where require_id=#{require_id}
+  </select>
+
+
+  <insert id="insertTaskBatch" parameterType="java.util.List">
+    insert into pmo_require_task (id, require_id, task_person,
+    task_person_name, task_status, start_time,
+    end_time, finish_time, add_time,
+    update_time, fadeback_info)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.id,jdbcType=VARCHAR}, #{item.requireId,jdbcType=VARCHAR}, #{item.taskPerson,jdbcType=VARCHAR},
+      #{item.taskPersonName,jdbcType=VARCHAR}, #{item.taskStatus,jdbcType=VARCHAR}, #{item.startTime,jdbcType=BIGINT},
+      #{item.endTime,jdbcType=BIGINT}, #{item.finishTime,jdbcType=BIGINT}, #{item.addTime,jdbcType=BIGINT},
+      #{item.updateTime,jdbcType=BIGINT}, #{item.fadebackInfo,jdbcType=LONGVARCHAR})
+    </foreach>
+  </insert>
+
+</mapper>

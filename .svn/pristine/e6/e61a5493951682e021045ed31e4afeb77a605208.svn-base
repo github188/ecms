@@ -1,0 +1,109 @@
+import Login from '@/pages/login/' //登陆页面
+import Index from '@/pages/Index/' //首页
+import ModulePage from '@/pages/layout/' //功能模块入口
+
+import PersonInfo from '@/pages/index/person/' //个人信息
+
+import Trends from '@/pages/trends/' //OA首页管理
+import TrendsNews from '@/pages/trends/news/' //新闻公告管理
+import TrendsAnalyse from '@/pages/trends/news/analyse' //新闻公告数据查看
+import NewPerson from '@/pages/trends/newPerson/' //新员工设置
+import ExcellentPerson from '@/pages/trends/excellent/' //优秀员工设置
+
+import Project from '@/pages/project/' //项目管理入口
+import myWorkspace from '@/pages/project/workspace/myWorkspace' //工作台页面
+import myProject from '@/pages/project/myproject/myProject' //我的项目页面
+import projectRelate from '@/pages/project/myproject/projectRelate' //项目相关
+
+import Contract from '@/pages/contract/' //合同管理入口
+import ContractManage from '@/pages/contract/manage/' //合同管理页面
+import ContractSetting from '@/pages/contract/setting/' //合同设置页面
+
+import Attendance from '@/pages/attendance/' //考勤管理入口
+import AttendanceReport from '@/pages/attendance/report/' //考勤统计
+import AttendanceSetting from '@/pages/attendance/setting/' //考勤设置
+import AttendanceApprove from '@/pages/attendance/approve/' //考勤审批单
+import AttendancePunch from '@/pages/attendance/punch/' //打卡统计
+
+import Affairs from '@/pages/affairs/' //人事平台入口
+import AffairsContact from '@/pages/affairs/contacts/' //通讯录
+import AffairsAttendance from '@/pages/affairs/attendance/' //我的考勤
+
+import NewsIndex from '@/pages/index/news/' //新闻公告入口
+import NewsList from '@/pages/index/news/newsList' //新闻公告列表
+import NewsDetail from '@/pages/index/news/newsDetail' //新闻公告详情
+import PdfView from '@/pages/pdf/pdf' //pdf预览
+
+import Article from '@/pages/index/article/' //文章
+import ArticleWrite from '@/pages/index/article/write' //写文章
+import ArticleEdit from '@/pages/index/article/edit' //编辑文章
+import ArticlePreview from '@/pages/index/article/preview' //文章预览
+
+import WorkIndex from '@/pages/index/work/' //工单中心入口
+import WorkList from '@/pages/index/work/workList' //工单中心列表
+import WorkDetail from '@/pages/index/work/workDetail' //工单中心详情
+
+import Organize from '@/pages/organize/' //组织结构管理入口
+import OrganizePerson from '@/pages/organize/person/' //人员管理
+import OrganizeRole from '@/pages/organize/role/' //角色管理
+import OrganizeMenu from '@/pages/organize/menu/' //菜单管理
+import OrganizeSetting from '@/pages/organize/setting/' //设置
+
+import Integral from '@/pages/integral/' //个人积分入口
+import IntegralManage from '@/pages/integral/manage/' //个人积分管理
+import IntegralSetting from '@/pages/integral/setting/' //个人积分设置
+
+import Finance from '@/pages/finance/' //财务模块入口
+import FinanceProject from '@/pages/finance/project/manage/' //财务项目页面
+import FinanceProjectSetting from '@/pages/finance/project/setting/' //财务项目设置页面
+
+import Conference from '@/pages/index/conference/' //预约会议室
+export {
+  Login,
+  Index,
+  Trends,
+  TrendsNews,
+  TrendsAnalyse,
+  NewPerson,
+  ExcellentPerson,
+  PersonInfo,
+  ModulePage,
+  Project,
+  myWorkspace,
+  myProject,
+  projectRelate,
+  NewsIndex,
+  NewsList,
+  NewsDetail,
+  PdfView,
+  WorkIndex,
+  WorkList,
+  WorkDetail,
+  Attendance,
+  AttendanceReport,
+  AttendanceApprove,
+  AttendanceSetting,
+  AttendancePunch,
+  Affairs,
+  AffairsContact,
+  AffairsAttendance,
+  Organize,
+  OrganizePerson,
+  OrganizeRole,
+  OrganizeMenu,
+  OrganizeSetting,
+  Contract,
+  ContractManage,
+  ContractSetting,
+  Conference,
+  Article,
+  ArticleWrite,
+  ArticleEdit,
+  ArticlePreview,
+  Integral,
+  IntegralManage,
+  IntegralSetting,
+  Finance,
+  FinanceProject,
+  FinanceProjectSetting,
+}

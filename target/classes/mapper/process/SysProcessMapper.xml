@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.process.SysProcessMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.process.SysProcess" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="node_id" property="nodeId" jdbcType="VARCHAR" />
+    <result column="rel_id" property="relId" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, type, title, node_id, rel_id, add_time, update_time,status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_process
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_process
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.process.SysProcess" >
+    insert into sys_process (id, user_id, type, 
+      title, node_id, rel_id, 
+      add_time, update_time)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+      #{title,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR}, #{relId,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.process.SysProcess" >
+    insert into sys_process
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="nodeId != null" >
+        node_id,
+      </if>
+      <if test="relId != null" >
+        rel_id,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeId != null" >
+        #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="relId != null" >
+        #{relId,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.process.SysProcess" >
+    update sys_process
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeId != null" >
+        node_id = #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="relId != null" >
+        rel_id = #{relId,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.process.SysProcess" >
+    update sys_process
+    set user_id = #{userId,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      node_id = #{nodeId,jdbcType=VARCHAR},
+      rel_id = #{relId,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <resultMap id="queryResultMap" type="com.ecaray.ecms.entity.process.Vo.ProDoFilter" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="process_id" property="processId" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="realname" property="sponsorsName" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="node_id" property="nodeId" jdbcType="VARCHAR" />
+    <result column="node_name" property="nodesName" jdbcType="VARCHAR" />
+    <result column="handler_id" property="handlerId" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <select id="selectMyApplyList" parameterType="com.ecaray.ecms.entity.process.Vo.ProDoFilter" resultMap="queryResultMap">
+	select process.*,process.id as process_id,node.node_name,user.realname from sys_process process left join sys_user user on process.user_id = user.id 
+	left join sys_nodes node on process.node_id = node.id
+	where process.user_id = #{processId} and type != 7 and type != 11 
+	<if test="title != null" >
+     	and  process.title like #{title}
+    </if>
+  	<if test="type != null" >
+	  	<if test="type == 10" >
+	     	and  process.type in (10,5)
+	    </if>
+     	<if test="type != 10" >
+	     	and  process.type = #{type}
+	    </if>
+    </if>
+  	<if test="status != null" >
+     	and  process.status = #{status}
+    </if>
+     order by process.add_time desc
+  </select>
+  <select id="selectProcessListByNode" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select * from sys_process where node_id = #{nodeId}
+  </select>
+   <select id="selectByRefId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_process
+    where rel_id = #{refId,jdbcType=VARCHAR}
+  </select>
+   <select id="selectProcessListByNodeAndRegionId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  	 	select process.* from sys_process process left join ctm_contract_examine ex on process.rel_id = ex.id where process.node_id = #{nodeId} and ex.region_id = #{regionId}
+  </select>
+  
+  <select id="selectListByStatus" resultMap="BaseResultMap">
+  	select * from sys_process where (type &lt; 11 and type not in (4,6,8))  and title like #{month} and status = #{status}
+  </select>
+  
+    <resultMap id="CwaBaseResultMap" type="com.ecaray.ecms.entity.cwa.vo.CwaFilter" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <id column="rel_id" property="relId" jdbcType="VARCHAR" />
+    <result column="type" property="cwaType" jdbcType="VARCHAR" />
+    <result column="typeName" property="typeName" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="INTEGER" />
+    <result column="realname" property="authorName" jdbcType="VARCHAR" />
+    <result column="dep_id" property="depId" jdbcType="VARCHAR" />
+  </resultMap>
+   <select id="selectListByCwa" resultMap="CwaBaseResultMap" parameterType="com.ecaray.ecms.entity.cwa.vo.CwaFilter" >
+  	select p.id,p.rel_id,p.type,para.name as typeName,p.add_time,u.realname,u.dep_id from sys_process p 
+  	left join sys_parameter para on p.type = para.value and para.code = 'processtype' 
+  	left join sys_user u on p.user_id = u.id
+  	where (p.type &lt; 11 and p.type not in (4,6,8))
+  	<if test="cwaType != null" >
+     	and  p.type = #{cwaType}
+    </if>
+   	<if test="status != null " >
+   		<if test="status == 3" >
+   			and  p.status in (3,4)
+   		</if>
+   		<if test="status != 3" >
+   			and  p.status = #{status}
+   		</if>
+   	</if>
+  	<if test="starttime != null" >
+     	and  p.add_time &gt;= #{starttime}
+    </if>
+  	<if test="endtime != null" >
+     	and  p.add_time  &lt;= #{endtime}
+    </if>
+  	<if test="authorName != null" >
+     	and  u.realname  like #{authorName}
+    </if>
+      <if test="month != null" >
+     	and p.title like #{month}
+   	</if>
+    <if test="depIdList == null" >
+     	and u.dep_id is null
+   	</if>
+  	<if test="depIdList != null" >
+     	and u.dep_id in 
+   	 	<foreach item="item" collection="depIdList" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+   	</if>
+   	order by p.add_time desc
+  </select>
+  <select id="selectAllList" resultMap="BaseResultMap"> 
+  	select * from sys_process 
+  </select>
+</mapper>

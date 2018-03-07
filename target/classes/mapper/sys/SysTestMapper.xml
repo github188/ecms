@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.sys.SysTestMapper" >
+  <resultMap id="CtmResultMap" type="com.ecaray.ecms.entity.ctm.CtmContract" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="ctm_name" property="ctmName" jdbcType="VARCHAR" />
+    <result column="ctm_code" property="ctmCode" jdbcType="VARCHAR" />
+    <result column="cus_name" property="cusName" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="dep_id" property="depId" jdbcType="VARCHAR" />
+    <result column="dep_name" property="depName" jdbcType="VARCHAR" />
+    <result column="ctm_attr" property="ctmAttr" jdbcType="CHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="start_time" property="startTime" jdbcType="BIGINT" />
+    <result column="end_time" property="endTime" jdbcType="BIGINT" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="add_user" property="addUser" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="CwaResultMap" type="com.ecaray.ecms.entity.cwa.CwaAttReport" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="usercode" property="usercode" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="user_realname" property="userRealname" jdbcType="VARCHAR" />
+    <result column="dep_id" property="depId" jdbcType="VARCHAR" />
+    <result column="dep_name" property="depName" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="VARCHAR" />
+    <result column="normal" property="normal" jdbcType="DOUBLE" />
+    <result column="paid_day" property="paidDay" jdbcType="DOUBLE" />
+    <result column="overtime" property="overtime" jdbcType="DOUBLE" />
+    <result column="overtime_holi" property="overtimeHoli" jdbcType="DOUBLE" />
+    <result column="outside" property="outside" jdbcType="DOUBLE" />
+    <result column="travel" property="travel" jdbcType="DOUBLE" />
+    <result column="leave_0" property="leave0" jdbcType="DOUBLE" />
+    <result column="leave_1" property="leave1" jdbcType="DOUBLE" />
+    <result column="leave_2" property="leave2" jdbcType="DOUBLE" />
+    <result column="leave_3" property="leave3" jdbcType="DOUBLE" />
+    <result column="leave_4" property="leave4" jdbcType="DOUBLE" />
+    <result column="early" property="early" jdbcType="DOUBLE" />
+    <result column="absenteeism" property="absenteeism" jdbcType="DOUBLE" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+  </resultMap>
+    <resultMap id="UserFineResultMap" type="com.ecaray.ecms.entity.authority.SysUserFine" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="dep_id" property="depId" jdbcType="VARCHAR" />
+    <result column="dep_name" property="depName" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="photo" property="photo" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="VARCHAR" />
+    <result column="reason" property="reason" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="add_user" property="addUser" jdbcType="BIGINT" />
+  </resultMap>
+  
+   <resultMap id="NewsResultMap" type="com.ecaray.ecms.entity.news.News" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="news_title" property="newsTitle" jdbcType="VARCHAR" />
+    <result column="news_type" property="newsType" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="is_comment" property="isComment" jdbcType="INTEGER" />
+    <result column="news_author" property="newsAuthor" jdbcType="VARCHAR" />
+    <result column="comment_count" property="commentCount" jdbcType="INTEGER" />
+    <result column="voters_count" property="votersCount" jdbcType="INTEGER" />
+    <result column="picture_id" property="pictureId" jdbcType="VARCHAR" />
+    <result column="add_person_id" property="addPersonId" jdbcType="VARCHAR" />
+    <result column="add_person_name" property="addPersonName" jdbcType="VARCHAR" />
+    <result column="attachment_id" property="attachmentId" jdbcType="VARCHAR" />
+    <result column="attachment_name" property="attachmentName" jdbcType="VARCHAR" />
+    <result column="publish_date" property="publishDate" jdbcType="BIGINT" />
+    <result column="publish_type" property="publishType" jdbcType="INTEGER" />
+    <result column="is_publish" property="isPublish" jdbcType="INTEGER" />
+    <result column="is_top" property="isTop" jdbcType="INTEGER" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <select id="selectAllCtmContract" resultMap="CtmResultMap">
+  	select * from ctm_contract
+  </select>
+  <select id="selectAllCwaReport" resultMap="CwaResultMap">
+  	select * from cwa_att_submit
+  </select>
+  <select id="selectAllUserFine" resultMap="UserFineResultMap">
+  	select * from sys_user_fine
+  </select>
+  <select id="selectAllNews" resultMap="NewsResultMap">
+  	select * from portal_news
+  </select>
+</mapper>

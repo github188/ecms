@@ -1,0 +1,89 @@
+body,html{
+    min-width: 1150px;
+}
+body {
+    -webkit-font-smoothing: antialiased;
+    font: 12px Microsoft YaHei,tahoma,arial,Hiragino Sans GB,\\5b8b\4f53,sans-serif;
+    padding-top: 60px;
+}
+.header{
+    height: 60px;
+    line-height: 60px;
+    background: #2E3037;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right:0;
+    width: 100%;
+    z-index: 100;
+}
+.container,.header-content{
+    width: 1180px;
+}
+.container{
+    padding: 0;
+    margin-bottom: 20px;
+}
+.footer{
+    /*border: 1px solid red;*/
+    /*margin-top: 100px;*/
+}
+/*公共样式start*/
+.over-hidden{
+    overflow: hidden;
+}
+.header .header-logo{
+    background: url("../img/index-icon.png") no-repeat -11px -235px;
+}
+ul,ol{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.clear-float:before,
+.clear-float:after{
+    content: " ";
+    display: table;
+}
+.clear-float:after{
+    clear: both;
+}
+a,a:hover,a:link,a:active,a:visited{
+    color: inherit;
+    text-decoration: none;
+}
+.current-color{
+    color: #01cd78;
+}
+.margin-r20{
+    margin-right: 20px;
+}
+/*表单验证相关样式start*/
+input[class*=error], select[class*=error], textarea[class*=error] {
+    /*border: 1px solid #EA5200;*/
+}
+label[class=error] {
+    padding-top: 3px;
+    font-size: 12px;
+    float: left;
+    width: 100%;
+    color: #EA5200;
+}
+label {
+    font-weight: normal;
+}
+.modal-msg{
+    color: #EA5200;
+    margin: 5px 0 ;
+}
+/*表单验证相关样式end*/
+.btn{
+    border:none;
+    outline: none;
+    border-radius: 4px;
+}
+.btn-success,.btn-success:hover,.btn-success:active,.btn-success:focus{
+    background-color: #01cd78;
+    border: none;
+    outline: none;
+}

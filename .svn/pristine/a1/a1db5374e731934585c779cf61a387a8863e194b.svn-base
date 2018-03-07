@@ -1,0 +1,130 @@
+<meta charset="UTF-8">
+<link href="project/css/workAttendance.css" type="text/css" rel="stylesheet">
+<div class="panel">
+    <div class="tab-pane" id="approveTab">
+        <div class="approvePersonBox">
+            <div class="list-top">
+
+                <div class="form-group col-sm-12" style="margin-bottom: 20px;">
+                    <label class="col-sm-1 control-label" style="margin-left:-30px; padding-top:8px; width: 80px;">考勤设置：</label>
+                    <div class="col-sm-2 row-list">
+                        <select class="form-control" name="" id="approveType">
+                            <option value="0">审批设置</option>
+                            <option value="1">考勤管理员设置</option>
+                            <option value="2">考勤查看设置</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-success pull-right" id="approvalAdd" style="display: none">添加</button>
+                    <span id="approvalTips" style="display: none; color: red; margin-top: 8px;">可以查看所有人的考勤记录</span>
+                </div>
+
+            </div>
+            <!--<div id="approveSetting"></div>-->
+            <!--<div id="approveSettingPlane"></div>-->
+        </div>
+
+        <!--<div class="approvePersonBox">-->
+            <!--<div class="list-top"><h4 class="list-title">考勤管理员设置</h4></div>-->
+            <!--<div id="approveArea"></div>-->
+        <!--</div>-->
+        <div id="approveList" class="margin-b-20"></div>
+
+    </div>
+</div>
+<!-- 设置审批人Modal -->
+<div class="modal fade" id="approvalModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 600px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">设置</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="form-group col-sm-12">
+                            <label class="col-sm-4 text-right" style="width: 90px; margin-top: 10px">姓名：</label>
+                            <div class="col-sm-9 row-list" style="width: 445px;">
+                                <div class="input-tag">
+
+                                </div>
+                                <input type="text" readonly="" style="height:40px; cursor: pointer" class="form-control approvePerson" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button type="submit" class="btn btn-success" id="approvalPersonBtn">确定</button>
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 添加审批人Modal -->
+<!--<div class="modal fade" id="approvalAddModal" data-backdrop="static">-->
+    <!--<div class="modal-dialog" style="width: 600px">-->
+        <!--<div class="modal-content">-->
+            <!--<div class="modal-header">-->
+                <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
+                <!--<h4 class="modal-title">设置</h4>-->
+            <!--</div>-->
+            <!--<div class="modal-body">-->
+                <!--<div class="modal-body">-->
+                    <!--<div class="row">-->
+
+                        <!--<div class="form-group col-sm-12">-->
+                            <!--<label class="col-sm-4 text-right" style="width: 90px; margin-top: 10px">审批人：</label>-->
+                            <!--<div class="col-sm-9 row-list" style="width: 445px;">-->
+                                <!--<div class="input-tag">-->
+
+                                <!--</div>-->
+                                <!--<input type="text" readonly="" style="height:40px; cursor: pointer" class="form-control approvePerson" >-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="modal-footer">-->
+                    <!--<div class="modal-msg"></div>-->
+                    <!--<button type="submit" class="btn btn-success" id="approvalPersonBtn">确定</button>-->
+                    <!--<button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+<!-- 选择人员 -->
+<div class="modal fade" id="choosePersonModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 850px;">
+        <div class="modal-content" style="min-height: 700px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">选择人员 <span style="color:red; font-size: 12px;">(双击可选择)</span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row form-inline">
+                    <div class="form-group col-sm-12">
+                        <div class="input-group col-sm-12">
+                            <input type="text" class="form-control" placeholder="请输入员工姓名" id="queryKD">
+                            <span class="input-group-btn">
+                            <button class="btn btn-orange btn-search" type="button" id="btnSearchDepLeader">搜索</button>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <div>
+                            <!--外面套一层是为了避免分页layout错乱-->
+                            <div class="table-responsive" id="depLeaderList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="project/workAttendanceSetting.js"></script>

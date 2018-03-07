@@ -1,0 +1,133 @@
+package com.ecaray.ecms.commons.constant;
+
+import java.util.HashMap;
+
+/**
+ * com.ecaray.authmanager.commons
+ * Author ：zhxy
+ * 2016/11/19 20:36
+ * 说明：TODO
+ */
+public interface Constants {
+	
+    //常量
+    public static final String TOKEN_TOKEN ="token";
+    /**Token 常量值*/
+    public static final String TOKEN_VALUE ="Ecar2016";
+
+
+
+    //常数
+    /**Token 验证码*/
+    public static final String TOKEN_SIGNATURE ="signature";
+    /**Token 时间戳*/
+    public static final String TOKEN_TIMESTAMP ="timestamp";
+    /**Token 随机数*/
+    public static final String TOKEN_NONCE ="nonce";
+    /**userrole常量值*/
+    public static final String USER_ROLE = "userrole";
+
+
+    /**  项目状态 1立项 2 跟进中 3 关闭 */
+    public static final int PMO_PROJECT_STATUS_ADD = 1;
+    public static final int PMO_PROJECT_STATUS_OPER = 2;
+    public static final int PMO_PROJECT_STATUS_FINISH = 3;
+
+
+    public static final String TOKEN_AYTHORIZATION = "authorization";
+
+    public static final String TOKEN_USER_ID = "user_id";
+
+
+    public static final String FLOW_RESULT_CODE = "code";
+
+    public static final String FLOW_RESULT_MESSAGE = "message";
+
+    public static final String FLOW_RESULT_ISENDED = "ended";
+
+    public static final String FLOW_RESULT_CONTENT ="content";
+
+
+    /**查询项目范围*/
+    public static final int QUERY_PROJECT_SCOPE_ALL = 1;
+    public static final int QUERY_PROJECT_SCOPE_PART = 2;
+    public static final int QUERY_PROJECT_SCOPE_TODO = 3;
+
+    /**查询需求范围*/
+    public static final int QUREY_REQUIRE_SCOPE_ALL = 1;
+    public static final int QUREY_REQUIRE_SCOPE_PART = 2;
+    public static final int QUREY_REQUIRE_SCOPE_TODO = 3;
+
+    /**权限系统*/
+    /**
+     * 存储当前登录用户id的字段名
+     */
+    public static final String CURRENT_USER_ID = "CURRENT_USER_ID";
+
+    /**
+     * token有效期（小时）
+     */
+    public static final int TOKEN_EXPIRES_HOUR = 12;
+
+    /**
+     * 存放Authorization的header字段
+     */
+    public static final String AUTHORIZATION = "authorization";
+
+    public static final String SECRET_KEY ="ec_#@2017";
+    
+    /**
+     * 流程相关常量
+     */
+    public static final int leave_type = 1;
+    
+    public static final int overtime_type = 2;
+    
+    public static final int travel_type = 3;
+   
+    public static final int ctm_type = 4;
+    
+    public static final int outside_type = 5;
+    
+    public static final int portal_type = 6;
+    
+    
+    public static final String leave_title = "请假申请";
+    
+    public static final String overtime_title = "加班申请";
+    
+    public static final String travel_title = "出差申请";
+    
+    public static final String ctm_title = "合同审批";
+    
+    public static final String portal_title = "文章审核";
+    
+    public static final String process_result = "true";
+    
+    /**
+     * role code
+     */
+	public static final int ctm_role_saler = 100901;
+	
+	public static final int ctm_role_examiner = 100902;
+	
+	public static final int cwa_role_dept = 4;
+
+	public static final int cwa_role_ecar = 5;
+	
+	public static final int cwa_role_see = 8;
+	
+	public static final int normal_role = 3;
+    
+	/**
+	 * id
+	 */
+	public static final String dep_ecaray_id = "1";
+	
+	public static final String dep_center_id = "12";
+	
+	public static final String dep_maintain_id = "17";
+	
+	public static final String dep_increment_id = "18";
+}
+

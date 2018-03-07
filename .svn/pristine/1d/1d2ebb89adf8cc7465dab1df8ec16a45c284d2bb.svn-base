@@ -1,0 +1,523 @@
+<template>
+  <div class="honour">
+    <p class="honour-title">亿车荣誉榜</p>
+    <el-carousel trigger="click" :interval="8000" :autoplay="true" indicator-position="none" arrow="always" height="240px"  v-if="hasHonour">
+      <el-carousel-item v-for="(item, index) in honour" :key="index">
+        <ul id="honourBox">
+          <li v-for="(list, listIndex) in item" :key="listIndex">
+            <div class="honour-auto">
+             <router-link :to="'/person/'+list.userId">
+                <img :alt="list.name" :src="getUploadUrl('user', 'UserFine', 'downloadImg', list.photo)">
+              </router-link>
+              <p class="honour-name">{{list.name}}</p>
+              <p class="margin-b-10">{{list.depName.split('-')[0]}}&nbsp;&nbsp;&nbsp;{{list.title}}</p>
+              <p>{{list.depName.split('-')[1]}}</p>
+              <div class="honour-synopsis">
+                <p>
+                  <label>部门:</label> {{list.depName.split('-')[0]}}
+                </p>
+                <p>
+                  <label>岗位:</label> {{list.depName.split('-')[1]}}
+                </p>
+                <p> {{list.reason}} </p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </el-carousel-item>
+    </el-carousel>
+    <el-carousel trigger="click" :interval="8000" :autoplay="true" indicator-position="none" arrow="always" height="240px"  v-else>
+      <el-carousel-item v-for="(item, index) in honour" :key="index">
+        <ul id="honourBox">
+          <li v-for="(list, listIndex) in item" :key="listIndex">
+            <div class="honour-auto">
+              <img :alt="list.name" :src="require('./../img/honour/'+ list.src)">
+              <p class="honour-name">{{list.name}}</p>
+              <p class="margin-b-10">{{list.department}}&nbsp;&nbsp;&nbsp;{{list.honour}}</p>
+              <p>{{list.post}}</p>
+              <div class="honour-synopsis">
+                <p>
+                  <label>部门:</label> {{list.department}}
+                </p>
+                <p>
+                  <label>岗位:</label> {{list.post}}
+                </p>
+                <p> {{list.describe}} </p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </el-carousel-item>
+    </el-carousel>
+  </div>
+</template>
+<style lang="scss">
+.honour {
+  height: 300px;
+  background: #fff;
+  text-align: center;
+}
+
+.honour-title {
+  text-align: center;
+  padding: 20px 0;
+  font-size: 16px;
+  margin-bottom: 0;
+}
+
+.honour ul {
+  padding-left: 0;
+  overflow: hidden;
+  margin: 0 40px;
+}
+
+.honour ul li {
+  list-style: none;
+  float: left;
+  height: 210px;
+  width: 20%;
+  position: relative;
+  cursor: pointer;
+}
+
+.honour-auto {
+  width: 162px;
+  height: 210px;
+  margin: 0 auto;
+  border: 1px solid #e5e5e5;
+  position: relative;
+}
+
+.honour-auto:hover::before {
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+
+.honour-auto::before {
+  content: '';
+  height: 8px;
+  width: 16px;
+  z-index: 99999;
+  background: url('./../img/coll-icon.png');
+  position: absolute;
+  transform: rotate(-90deg);
+  top: 100px;
+  right: -5px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.honour ul li .honour-synopsis {
+  position: absolute;
+  width: 218px;
+  height: 210px;
+  top: -1px;
+  left: 160px;
+  background-color: #fff;
+  display: none;
+  z-index: 100;
+  border: 1px solid #e5e5e5;
+  padding: 10px;
+  text-align: left;
+  overflow: auto;
+  box-shadow: 3px 0 15px 0 #e6e6e6;
+}
+
+.honour ul li .honour-synopsis p {
+  margin-bottom: 8px;
+  line-height: 18px;
+  color: #666;
+  word-wrap: break-word;
+}
+
+.honour ul li:nth-child(5) .honour-synopsis {
+  left: -200px;
+  box-shadow: 3px 0 15px 0 #ffffff;
+}
+
+.honour ul li:nth-child(5) .honour-auto:before {
+  transform: rotate(-270deg);
+  left: -5px;
+}
+
+.honour ul li .honour-synopsis label {
+  color: #999;
+  font-weight: normal;
+}
+
+.honour ul li img {
+  height: 100px;
+  width: 100px;
+  background: #fff;
+}
+
+.honour-name {
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  border-bottom: 1px solid #e5e5e5;
+  font-size: 14px;
+  color: #3e3e3e;
+  margin: 0 10px;
+  margin-bottom: 9px;
+}
+
+.honour ul li a {
+  display: block;
+  color: #979797;
+  font-size: 12px;
+}
+</style>
+
+<script>
+export default {
+  name: 'excellent',
+  created() {
+    var honour = {
+      0: [
+        {
+          name: '吴杰秋',
+          src: 'wujieqiu.png',
+          department: '营销中心',
+          post: '售前技术经理',
+          honour: '协作之星',
+          describe: '为重大项目提供了支持，参与任丘项目投标并成功中标；在公司资质提升上，帮助公司成功申请国高、双软两项资质；同时负责改版公司宣传册、产品手册，向客户、合作伙伴展现公司最新形象、产品和服务能力。',
+        },
+        {
+          name: '王童慧智',
+          src: 'wangtonghuizhi.png',
+          department: '营销中心',
+          post: '品牌经理',
+          honour: '行动之星',
+          describe: '充分展现了在品牌工作上的专业性，积极工作，对公司具有高度认同感；帮助公司对品牌架构进行了深度的梳理及规划，参与了公司公关、信息统一、对外宣传及传播工作，工作热诚和专业性是公司品牌团队未来前行的重要保障。',
+        },
+        {
+          name: '肖云峰',
+          src: 'xiaoyunfeng.png',
+          department: '营销中心',
+          post: '区域经理',
+          honour: '业绩之星',
+          describe: '在任丘项目中，积极挖掘业主方需求，推进项目快速落地，克服招投标工作中的各项困难，成功完成投标工作，签订涵盖了路内、路外、停车诱导、安防监控、总控中心及立体车库等多类产品的总集成合同。',
+        },
+        {
+          name: '党静',
+          src: 'dangjing.png',
+          department: '营销中心',
+          post: '售前技术经理',
+          honour: '奉献之星',
+          describe:
+          '独立支撑着整个大华东的售前工作，甚至还承担了部分行政工作，也需要偶尔出差实地调研宣讲，配合兄弟们的都是重要紧急的事情。像一只辛勤的蜜蜂，高频细致地穿梭在各个项目中。本是女儿身，用成了爷们儿；担当、认真、负责、韧劲，是个大气的北方姑娘，也感谢华东有一位好丈夫默默支持我们的工作。下一站：蜂后！',
+        },
+        {
+          name: '陈春宁',
+          src: 'chenchunning.png',
+          department: '营销中心',
+          post: '区域经理',
+          honour: '突破之星',
+          describe: '在陕西复杂的市场环境中，坚持不懈地推动亿车智慧停车项目落地西安，专业能力和敬业精神受到了很多客户的高度认同和赞扬。',
+        },
+      ],
+      1: [
+        {
+          name: '陈胜',
+          src: 'chensheng.png',
+          department: '营销中心',
+          post: '客户经理',
+          honour: '进步之星',
+          describe: '年初开始负责湖南市场，勤奋、上进是你的代名词，经过两个季度的不断成长，已经完成吉首、常德、永州三个项目的落地，项目虽小，但争取了湖南市场未来更大的机会。望再接再厉，改掉不细心的毛病，争取更大的进步！',
+        },
+        {
+          name: '陈丽',
+          src: 'chenli.png',
+          department: '营销中心',
+          post: '区域经理',
+          honour: '突破之星',
+          describe: '海南作为五区最小的一个省份，在资源及影响力较弱的基础下，独立开拓并取得突破性的成绩，鼓舞了团队士气；希望后期我们团队精耕细作，打开中国南大门核心市场，让亿车的影响力在海南岛生根发芽，结出硕果！',
+        },
+        {
+          name: '刘仁义',
+          src: 'liurenyi.png',
+          department: '营销中心',
+          post: '营销中心总经理',
+          honour: '讲师之星',
+          describe: '三季度培训主题“销售漏斗培训”，课时长达5小时，学员满意度高达4.96分，参与人数多达104人。本次课程虽然时间很长，但课题和讲师的讲解、案例深深吸引着学员，使学员高度投入，反映良好。',
+        },
+        {
+          name: '李萌',
+          src: 'limeng.png',
+          department: '营销中心',
+          post: '市场总监',
+          honour: '导师之星',
+          describe: '季度内辅导1位新人转正，并参与了该新员工的前期选聘和后期工作指导，新人最终成功转正，表现优异，入职培训考试分数最高，且在较短时间内将公司品牌进行了全面梳理和建设。',
+        },
+        {
+          name: '廖应龙',
+          src: 'liaoyinglong.png',
+          department: '研发中心',
+          post: 'WEB前端工程师',
+          honour: '明日之星',
+          describe: '入职时刚好遇到部门的技术改革，利用以往的经验帮助团队少走弯路，比如在前端工程化、模块化、组件化、代码审查、编译器辅助等开发过程中提供诸多有用的建议和思路，面对辣手问题勇于挑战自己极限，同时实现stif公共平台功能开发，是一个不错的技术苗子。',
+        },
+      ],
+      2: [
+        {
+          name: '尚云冬',
+          src: 'shangyundong.png',
+          department: '研发中心',
+          post: 'JAVA开发工程师',
+          honour: '技术之星',
+          describe: '曾经负责路边订单系统和天津千千金服系统的开发和维护.尽最大能力去完善和优化相关功能，现在支付组负责各产品线千千金服的第三方接口对接和相关需求工作，尽职尽责，解决难题，努力做到最好！',
+        },
+        {
+          name: '江雅琴',
+          src: 'jiangyaqin.png',
+          department: '人资行政部',
+          post: '人才发展经理',
+          honour: '指导之星',
+          describe: '作为管理者，对下属员工能够进行细心指导，既充分授权又适当管控；保持不断学习，能够以专业服人，获得部门内部的一致好评；工作勤勉，积极主动，大多数时候都能做到高效完成！',
+        },
+        {
+          name: '陈熔',
+          src: 'chenrong.png',
+          department: '企业事业部',
+          post: '高级客户经理',
+          honour: '奉献之星',
+          describe: '自从担任行业客户B组负责人以来，全身心投入到工作中，不但自己超额完成了季度业绩，而且还带领整个团队完成了季度的指标。平时热爱生活，工作积极向上，给予团队成员强有力的方向引导与工作辅助。敢于担当，奉献自我，有你在开拓市场，我们信心倍增！',
+        },
+        {
+          name: '张祖媛',
+          src: 'zhangzuruan.png',
+          department: '企业事业部',
+          post: '软件测试工程师',
+          honour: '责任之星',
+          describe:
+          '是一个让人很放心的测试人员，工作上认真负责，踏实肯干，所负责的兰州海红项目、分时租赁、骆驼快充运营平台、骆驼快充业主平台、骆驼快充APP 等都能按时按质地完成所有的发布上线工作；测试点分析到位，bug跟踪及时，负责测试的版本基本不会出现大的失误，希望再接再厉，以点带面，成为一名资深、专业的测试精英。',
+        },
+        {
+          name: '段石振',
+          src: 'duanshizheng.png',
+          department: '企业事业部',
+          post: 'JAVA开发工程师',
+          honour: '责任之星',
+          describe: '一直负责蜜蜂停车业务的研发工作，工作认真负责，并能独立负责业务线的核心模块，每次面对时间的压力都能很好完成工作任务；不断优化负责的模块功能，大大提高了产品的扩展性和维护性。',
+        },
+      ],
+      3: [
+        {
+          name: '石马',
+          src: 'shima.png',
+          department: '企业事业部',
+          post: 'Java开发工程师',
+          honour: '进步之星',
+          describe: '自入职以来，一直在做充电相关的业务，身上一直保留着军人的品质，对待工作有一股韧劲，不怕吃苦；通过自己的不断努力，从一开始只负责充电设备协议的对接，到后面全面负责充电模块业务，每次都很好的完成版本迭代。',
+        },
+        {
+          name: '李先春',
+          src: 'lixianchun.png',
+          department: '产品中心',
+          post: 'JAVA开发工程师',
+          honour: '责任之星',
+          describe:
+          '快速熟悉蜜蜂停车相关业务，在工作中积极与同事沟通，并不断提升自身的业务和协作能力，很好地完成各项任务安排；在需求评审的时候，充分提出自己的想法和建议；在研发过程中，充分考虑代码的扩展与版本的兼容性；对自己写的代码进行充分的单元测试，确保代码质量，对蜜蜂停车做出了很大贡献。',
+        },
+        {
+          name: '张志强',
+          src: 'zhangzhiqiang.png',
+          department: '产品中心',
+          post: '产品经理',
+          honour: '明日之星',
+          describe: '具备较强的自驱力和极强的责任心，在商业化团队组建的短时间内，迅速推动了岗亭端扫码产品、小程序、蜜蜂停车商业化变现产品的规划和上线工作，希望再接再厉，做出更大贡献！',
+        },
+        {
+          name: '向娟',
+          src: 'xiangjuan.png',
+          department: '产品中心',
+          post: '产品经理',
+          honour: '奉献之星',
+          describe: '在加入政府产品组短短6个月时间内，承受着巨大的项目压力，从业务新手成长为能独挡一面的产品经理，负责所有城市的后台需求规划；用业务的快速学习证明了你的聪慧，用严谨的逻辑证明了你的专业。',
+        },
+        {
+          name: '唐利华',
+          src: 'tanglihua.png',
+          department: '财务部',
+          post: '财务经理',
+          honour: '责任之星',
+          describe: '在人手不足的情况下，顺利完成了所得税年度汇算清缴、年度结账的工作，并配合完成了A+融资、国高评审、双软认定和政府补助申请，对费用报销、凭证装订等进行改进，热心服务，坚持原则、以公司利益为重。',
+        },
+      ],
+      4: [
+        {
+          name: '刘瑞雪',
+          src: 'liuruixue.png',
+          department: '运营部',
+          post: '停车运营经理',
+          honour: '责任之星',
+          describe: '工作努力，认真负责，锐意进取，乐于助人，关心同事，与同事相处融洽，善于合作，起带头作用；全程推动石岩停车场经营权项目的业主接洽、商务谈判、协议签约，并在项目落地后管理有序正常运转；主动介绍资源给其他部门拓展蜜蜂道闸的销售。',
+        },
+        {
+          name: '杜彬',
+          src: 'dubing.png',
+          department: '运营部',
+          post: '路边经营',
+          honour: '进步之星',
+          describe: '工作认真负责，转岗至路内停车运营后，积极主动学习，通过项目实践，在专业度及工作能力上都有很大提升；长时间出差常驻任丘，参与制定、推广、实施试运营计划，进行收费员培训，制定停车场运营管理制度，得到了任丘业主及同事的一致认可。',
+        },
+        {
+          name: '杨双健',
+          src: 'yangshuangjian.png',
+          department: '战略发展部',
+          post: '战略发展经理',
+          honour: '进步之星',
+          describe: '在领导和同事的大力帮助下取得一定进步，参与了淮北市、芜湖市的智慧停车项目方案设计，合作制作了陆家嘴金融城与中信泰富项目合作PPT，进行重大技术攻关项目申报，开展武汉停车调研项目，获得众多重要一手数据并进行详尽分析。',
+        },
+        {
+          name: '陈志强',
+          src: 'chenzhiqiang.png',
+          department: '运服中心-PMO',
+          post: '项目经理',
+          honour: '责任之星',
+          describe: '负责三区所有项目的统筹，能很好的完成项目的交付工作，得到客户的认可。同时也积极配合完成市场的二次销售工作，通过不断的磨练全方位的能力都有提升，希望后续继续保持，同时做好传帮带的工作。',
+        },
+        {
+          name: '李靖',
+          src: 'lijing.png',
+          department: '运服中心-工程部',
+          post: '维护工程师',
+          honour: '进步之星',
+          describe: '对于客户反馈的问题和需求能够及时有效地解决，专业能力和沟通能力进步明显，得到了客户和同事的一致好评；同时通过各种方式和途径提升自己，对待工作认真负责，积极总结。',
+        },
+      ],
+      5: [
+        {
+          name: '汪体',
+          src: 'wangti.png',
+          department: '运服中心-工程部',
+          post: '项目实施工程师',
+          honour: '学习之星',
+          describe: '加入工程部一年多时间里，在本职工作全部完成的同时，不断地学习成长，主动学习其他相关的专业技术；参与了香港路边停车项目的地磁安装，碧湖项目全部实施完成；对于分配的项目从前期勘场至后续上线完成得到一致好评。',
+        },
+        {
+          name: '夏冲冲',
+          src: 'xiachongchong.png',
+          department: '运服中心-工程部',
+          post: '实施工程师',
+          honour: '进步之星',
+          describe: '一个人完成了今年大多数场地的实施改造工作，完成得也很出色，吃苦耐劳，进步很大；积极协助市场部同事，工程部同事把售前、售后工作做的很细致，主动跑场地，维护工作做的也很多，客户认可，反馈很好。',
+        },
+        {
+          name: '方成',
+          src: 'fangcheng.png',
+          department: '运服中心-运维部',
+          post: '应用运维工程师',
+          honour: '明日之星',
+          describe: '长期驻守任丘支持项目，工作通宵达旦，任劳任怨；在炎热的天气里，不怕酷暑，坚持调试设备；及时收集客户问题对产品优化提供建议。',
+        },
+        {
+          name: '申荣华',
+          src: 'shenronghua.png',
+          department: '运服中心-运维部',
+          post: '客服主管',
+          honour: '服务之星 ',
+          describe: '负责蜜蜂停车和骆驼快充的C端客服工作，认真负责地处理每位客户的咨询或投诉，用心服务每位用户；组织客服部建立呼叫中心系统，优化客服工作流程，提高工作效率与质量。',
+        },
+        {
+          name: '罗尚林',
+          src: 'luoshanglin.png',
+          department: '政府事业部',
+          post: 'JAVA开发工程师',
+          honour: '行动之星',
+          describe: '在入职的这半年里，从一个对业务一窍不通到现在能够主导大功能需求的开发，并且在开发过程中能够有自己的思路，现在已比其他一些先入职的同事优异，每天都在用行动和结果证明自己，已经能扛起政府事业部后台组的大梁。',
+        },
+      ],
+      6: [
+        {
+          name: '龚佑强',
+          src: 'gongyouqiang.png',
+          department: '政府事业部',
+          post: 'IOS开发工程师',
+          honour: '技术之星',
+          describe:
+          '对待工作积极主动，及时推进项目进度；对技术有着更高的追求，热衷CodeReview，保持学习新技术，把优秀的编程思想和代码理念引入到公司项目中，分享精华内容，把自身对技术的热情和喜爱通过行动感染周围的同事，让IOS团队更加有激情和凝聚力。望今后继续加油，发散出最大的能量，照亮你我！',
+        },
+        {
+          name: '肖外生',
+          src: 'xiaowaisheng.png',
+          department: '政府事业部',
+          post: '测试工程师',
+          honour: '进步之星',
+          describe: '负责JAVA项目的大部分APP测试工作，较去年今年有了很大的进步，能主动积极地对工作进行推动。工作之余也会研究一些新的测试工具来辅助测试，把好的工具推荐及分享给测试组成员，望在后面的工作中继续保持，发挥出更大的能量。',
+        },
+      ],
+    }
+    this.command('user', 'UserFine', 'listUserFine', { ispage: 0, status: 1 }).then(({ data }) => {
+      let cut = 5;
+      let page = Math.ceil(data.length / cut)
+      let arr = [];
+      for (let i = 0; i < page; i++) {
+        arr.push(data.slice(i * cut, cut * (i + 1)))
+      }
+      if (arr.length > 0) {
+        this.honour = arr
+        this.hasHonour = true
+      } else {
+        this.honour = honour
+      }
+    }).catch((error) => {
+      // this.errorTips('优秀员工获取失败!')
+    })
+    // this.honour = honour
+  },
+  data() {
+    return {
+      honour: {}, //荣誉榜
+      hasHonour: false
+    }
+  },
+  updated() {
+    this.$nextTick(() => {
+      let hbw = $('#honourBox').width() / 5
+      let haw = $('.honour-auto').width()
+      let margin = hbw - haw
+      $('#honourBox li')
+        .on('mouseover', function () {
+          $('.honour-synopsis')
+            .stop()
+            .fadeOut(100)
+            .css({
+              width: haw + margin,
+              left: hbw - margin,
+            })
+          if ($(this).index() == 4) {
+            $(this)
+              .find('.honour-synopsis')
+              .css({
+                right: hbw - margin,
+                left: 'auto',
+              })
+          }
+          $(this)
+            .find('.honour-synopsis')
+            .stop()
+            .fadeIn()
+          $(this)
+            .find('.person-honour-dpart')
+            .css('color', '#01cd78')
+        })
+        .on('mouseout', function () {
+          $('.honour-synopsis')
+            .stop()
+            .fadeOut(100)
+          $(this)
+            .find('.person-honour-dpart')
+            .css('color', 'rgba(1, 1, 1, .8)')
+        })
+      $('.honour-synopsis').niceScroll({
+        cursorcolor: 'rgba(0, 0, 0, 0.2)',
+        cursorwidth: '5px',
+        cursorborderradius: 5,
+      })
+    })
+  },
+}
+</script>
+

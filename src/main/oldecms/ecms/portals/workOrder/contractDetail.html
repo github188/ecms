@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>亿车科技EAP - 合同详情</title>
+    <link rel="shortcut icon" type="images/x-icon" href="../../skins/img/short-icon.ico">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="../skins/img/logo.ico" type="image/x-icon"/>
+    <link rel="bookmark" href="../skins/img/logo.ico" type="image/x-icon"/>
+
+    <link rel="stylesheet" href="../skins/css/common.css"/>
+    <link rel="stylesheet" href="../skins/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../../skins/css/xenon-core.css"/>
+    <link rel="stylesheet" href="../../skins/css/xenon-forms.css"/>
+    <link rel="stylesheet" href="../skins/css/header.css"/>
+    <link rel="stylesheet" href="../../skins/css/skin.css"/>
+    <link rel="stylesheet" href="./style.css">
+    <style>
+
+        .btn.btn-turquoise {
+            background-color: #fff;
+            color: #fc5f45;
+            border:1px solid #fc5f45;
+        }
+        .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+            cursor: pointer;
+        }
+        .contract-form-modal label {
+            padding-top: 7px !important;
+        }
+        .field-setting{
+            margin: 30px 0;
+            overflow: hidden;
+        }
+        .file-temp-list{
+            margin-bottom: 4px;
+            margin-right: 4px;
+            position: relative;
+        }
+        .file-temp-list em.file-remove{
+            display: none;
+            margin-left: 80px;
+            color: #01cd78;
+            font-style: normal;
+            cursor: pointer;
+
+        }
+        .file-temp-list:hover em{
+            display: inline-block;
+        }
+        .file-temp-list:hover span{
+            opacity: 1;
+            transition: all .3s ease;
+        }
+        .file-temp-list:before{
+            content: '';
+            position: absolute;
+            height: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.39);
+            transition: all .3s ease;
+        }
+        .file-box{
+            width: 90px !important;
+            height: 30px !important;
+            left: 0 !important;
+            top: 0 !important;
+            opacity: 0 !important;
+            cursor: pointer !important;
+        }
+        .file-temp-list span{
+            position: absolute;
+            bottom: 0;
+            font-size: 12px;
+            left: 0;
+            padding: 5px;
+            color: #fff;
+            opacity: 0;
+            transition: all .3s ease;
+        }
+        a:hover{
+            color: #01cd78;
+        }
+        #ctr_File .file-remove{
+            opacity: 0;
+            display: none;
+        }
+        .modal .form-group .control-label{
+            margin-top: 8px;
+        }
+        #contractDetail label{
+            width: 110px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body class="skin-blue">
+<!--头部start-->
+<header class="header">
+    <div class="header-box"  style="max-width: 1170px">
+        <a href="../../home.html" class="logo" title="亿车科技EAP系统首页">
+            <h2>
+                <img src="../../skins/img/oa_logo.png" alt="">
+            </h2>
+        </a>
+
+        <div class="setting">
+            <ul>
+                <li class="menu" id="emailNum">
+                    <a title="邮箱" id="emailMenu" target="_blank" class="message" href="javascript:;"></a>
+                </li>
+                <li class="menu">
+                    <a class="setting" href="#"></a>
+                    <ol class="sub-menu">
+                        <li><a href="#" id="changePassword">修改密码</a></li>
+                        <li><a href="../personInfo/personInfo.html" id="changePerson">个人信息</a></li>
+                    </ol>
+                </li>
+                <li class="menu"><a title="退出" id="logOut" class="log-out" href="#"></a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+<div class="crumbs-panel" style="margin-top: 72px;">
+    <div class="container">
+        <a href="../../home.html">首页 </a>&gt;
+        <a id="fastEntry" href="javascript:;">合同</a>&gt;
+        <a href="javascript:" class="current-color">合同详情</a>
+    </div>
+</div>
+
+<section class="container order-detail">
+    <!--<a class="holiday-process" href="#">查看请假流程</a>-->
+    <h2 class="order-title">&nbsp; </h2>
+    <!--<div class="order-box order-detail-header">-->
+        <!--<img class="user-avatar">-->
+        <!--<div class="user-info" style="margin-left: 0;">-->
+            <!--<span class="user-name">&nbsp;</span>-->
+            <!--<p class="user-section">&nbsp;</p>-->
+        <!--</div>-->
+        <!--<span class="order-time">.</span>-->
+    <!--</div>-->
+
+    <div class="order-box order-detail-container">
+        <!--合同详情-->
+        <ul id="contractDetail" style="display: none;">
+
+            <li>
+                <label>合同发起人：</label>
+                <span class="order-detail-control" id="ctr_salesmanName">&nbsp;</span>
+            </li>
+
+            <li>
+                <label>合同归属部门：</label>
+                <span class="order-detail-control" id="ctr_department">&nbsp;</span>
+            </li>
+
+            <li>
+                <label>关联项目：</label>
+                <span class="order-detail-control" id="ctr_projectName">&nbsp;</span>
+            </li>
+
+            <li>
+                <label>合同类型：</label>
+                <span class="order-detail-control" id="ctr_contractType">&nbsp;</span>
+            </li>
+
+            <li>
+                <label>合作方名称：</label>
+                <span class="order-detail-control" id="ctr_customerName">&nbsp;</span>
+            </li>
+
+            <li>
+                <label>合同金额：</label>
+                <span class="order-detail-control" id="ctr_amount">&nbsp;</span>
+            </li>
+
+            <li>
+                <label>合同开始日期：</label>
+                <span class="order-detail-control" id="ctr_starTime">&nbsp;</span>
+            </li>
+
+            <li>
+                <label>合同结束日期：</label>
+                <span class="order-detail-control" id="ctr_endTime">&nbsp;</span>
+            </li>
+
+            <!--<li>-->
+            <!--<label>产&nbsp;&nbsp;品&nbsp;&nbsp;线：</label>-->
+            <!--<span class="order-detail-control" id="ctr_departmentId">&nbsp;</span>-->
+            <!--</li>-->
+            <li>
+                <label>其他说明：</label>
+                <span class="order-detail-control" id="ctr_Remark" style="display: inline-block">&nbsp;</span>
+            </li>
+            <li><label style="vertical-align: top">合同附件：</label>
+                <span class="order-detail-control" id="ctr_File"></span>
+            </li>
+        </ul>
+
+    </div>
+    <div id="memo"></div>
+    <div class="order-operate"></div>
+
+   <div class="approve-box">
+       <div class="approve-record">审批记录</div>
+        <div id="approveResult"></div>
+       <ul class="approve-record-list" id="processLine"></ul>
+   </div>
+</section>
+<!--修改密码start-->
+<div class="modal fade" id="modifyPassword" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">修改密码</h4>
+            </div>
+            <form role="form" id="modifyPasswordForm" method="post" class="validate">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required">*</span>原密码：</label>
+                                <input id="accountname" name="accountname" type="password" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required">*</span>新密码：</label>
+                                <input id="newpwd" name="newpwd" type="password" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required">*</span>确认密码：</label>
+                                <input id="savepwd" name="savepwd" type="password" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button type="submit" class="btn btn-success" id="btnPwdSave">确定</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--修改密码end-->
+<!-- Bottom Scripts -->
+<script src="../skins/js/jquery-1.11.1.min.js"></script>
+<!--frame-->
+<script src="../../skins/js/config.js"></script>
+<script src="../../skins/js/base.js"></script>
+<script src="../skins/js/jquery.validate.min.js"></script>
+<script src="../skins/js/jquery.md5.js"></script>
+
+<script src="../../skins/js/ajax.js"></script>
+<script src="../../skins/js/datagrid.js"></script>
+<script src="../skins/js/bootstrap.min.js"></script>
+<script src="../skins/js/header.js"></script>
+<script src="../skins/js/plugins/pagination/pagination.js"></script>
+<script src="../../skins/js/layer/layer.js"></script>
+<script src="../../skins/js/date/laydate.js"></script>
+<script src="../../skins/js/webuploader/webuploader.js"></script>
+<script src="./contractDetail.js"></script>
+</body>
+</html>
+
+
+
+

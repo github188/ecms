@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.process.SysNodesUserMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.process.SysNodesUser" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="node_id" property="nodeId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="isvalid" property="isvalid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, node_id, user_id, add_time, update_time, isvalid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_nodes_user
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_nodes_user
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.process.SysNodesUser" >
+    insert into sys_nodes_user (id, node_id, user_id, 
+      add_time, update_time, isvalid
+      )
+    values (#{id,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, #{isvalid,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.process.SysNodesUser" >
+    insert into sys_nodes_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="nodeId != null" >
+        node_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isvalid != null" >
+        isvalid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeId != null" >
+        #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="isvalid != null" >
+        #{isvalid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.process.SysNodesUser" >
+    update sys_nodes_user
+    <set >
+      <if test="nodeId != null" >
+        node_id = #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="isvalid != null" >
+        isvalid = #{isvalid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.process.SysNodesUser" >
+    update sys_nodes_user
+    set node_id = #{nodeId,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      isvalid = #{isvalid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectNodesHandlerIdList" parameterType="java.lang.String" resultType="java.lang.String" >
+   	select user_id from sys_nodes_user where node_id = #{nodeId} and isvalid = 1
+  </select>
+
+  <resultMap id="HandlerBaseResultMap" type="com.ecaray.ecms.entity.process.Vo.ProNodeHandler" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="node_id" property="nodeId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="realname" property="realname" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectNodesHandler" resultMap="HandlerBaseResultMap" parameterType="java.lang.String">
+  	select user.realname,nu.* from sys_nodes_user nu left join sys_user user on nu.user_id = user.id where nu.isvalid = 1 and nu.node_id = #{nodeId}
+  </select>
+  <select id="selectNodesListByHanlder" resultType="java.lang.String" parameterType="java.lang.String">
+	select node_id from sys_nodes_user where user_id = #{userId}
+  </select>
+  
+  <resultMap id="ListBaseResultMap" type="com.ecaray.ecms.entity.process.SysNodesUser" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="node_id" property="nodeId" jdbcType="VARCHAR" />
+    <result column="nodeName" property="nodeName" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="userName" property="userName" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="isvalid" property="isvalid" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="selectNodeUserList" resultMap="ListBaseResultMap" >
+	select nu.id,n.node_name nodeName,n.id as node_id,u.realname userName,nu.user_id from sys_nodes n left join sys_nodes_user nu on  n.id = nu.node_id  left join sys_user u on nu.user_id = u.id where  n.process_type != 4 and n.is_setting = 1 
+  </select>
+  <select id="selectCwaUserByNodeId" resultType="java.lang.String" parameterType="java.lang.String">
+  	select user_id from sys_nodes_user where node_id = #{nodeId} and isvalid = 1
+  </select>
+  <update id="deleteByNodeId"  parameterType="java.lang.String">
+  	delete from sys_nodes_user where node_id = #{nodeId}
+  </update>
+</mapper>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.pmo.PmoFlowMsgMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.pmo.PmoFlowMsg" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="node_id" property="nodeId" jdbcType="VARCHAR" />
+    <result column="node_name" property="nodeName" jdbcType="VARCHAR" />
+    <result column="oper_person" property="operPerson" jdbcType="VARCHAR" />
+    <result column="oper_person_name" property="operPersonName" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ecaray.ecms.entity.pmo.PmoFlowMsg" extends="BaseResultMap" >
+    <result column="opinion_ content" property="opinionContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, node_id, node_name, oper_person, oper_person_name, add_time, update_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    "opinion_ content"
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from pmo_flow_msg
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from pmo_flow_msg
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.pmo.PmoFlowMsg" >
+    insert into pmo_flow_msg (id, node_id, node_name, 
+      oper_person, oper_person_name, add_time, 
+      update_time, "opinion_ content")
+    values (#{id,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR}, #{nodeName,jdbcType=VARCHAR}, 
+      #{operPerson,jdbcType=VARCHAR}, #{operPersonName,jdbcType=VARCHAR}, #{addTime,jdbcType=BIGINT},
+      #{updateTime,jdbcType=BIGINT}, #{opinionContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.pmo.PmoFlowMsg" >
+    insert into pmo_flow_msg
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="nodeId != null" >
+        node_id,
+      </if>
+      <if test="nodeName != null" >
+        node_name,
+      </if>
+      <if test="operPerson != null" >
+        oper_person,
+      </if>
+      <if test="operPersonName != null" >
+        oper_person_name,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="opinionContent != null" >
+        "opinion_ content",
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeId != null" >
+        #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeName != null" >
+        #{nodeName,jdbcType=VARCHAR},
+      </if>
+      <if test="operPerson != null" >
+        #{operPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="operPersonName != null" >
+        #{operPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="opinionContent != null" >
+        #{opinionContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.pmo.PmoFlowMsg" >
+    update pmo_flow_msg
+    <set >
+      <if test="nodeId != null" >
+        node_id = #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeName != null" >
+        node_name = #{nodeName,jdbcType=VARCHAR},
+      </if>
+      <if test="operPerson != null" >
+        oper_person = #{operPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="operPersonName != null" >
+        oper_person_name = #{operPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="opinionContent != null" >
+        "opinion_ content" = #{opinionContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ecaray.ecms.entity.pmo.PmoFlowMsg" >
+    update pmo_flow_msg
+    set node_id = #{nodeId,jdbcType=VARCHAR},
+      node_name = #{nodeName,jdbcType=VARCHAR},
+      oper_person = #{operPerson,jdbcType=VARCHAR},
+      oper_person_name = #{operPersonName,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      "opinion_ content" = #{opinionContent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.pmo.PmoFlowMsg" >
+    update pmo_flow_msg
+    set node_id = #{nodeId,jdbcType=VARCHAR},
+      node_name = #{nodeName,jdbcType=VARCHAR},
+      oper_person = #{operPerson,jdbcType=VARCHAR},
+      oper_person_name = #{operPersonName,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

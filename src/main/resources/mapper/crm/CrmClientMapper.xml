@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.crm.CrmClientMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.crm.CrmClient" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="contacts_id" property="contactsId" jdbcType="VARCHAR" />
+    <result column="contacts_name" property="contactsName" jdbcType="VARCHAR" />
+    <result column="contacts_phone" property="contactsPhone" jdbcType="VARCHAR" />
+    <result column="keeper_id" property="keeperId" jdbcType="VARCHAR" />
+    <result column="keeper_name" property="keeperName" jdbcType="VARCHAR" />
+    <result column="region_id" property="regionId" jdbcType="VARCHAR" />
+    <result column="client_type_id" property="clientTypeId" jdbcType="VARCHAR" />
+    <result column="client_status_id" property="clientStatusId" jdbcType="VARCHAR" />
+    <result column="deal_status_id" property="dealStatusId" jdbcType="VARCHAR" />
+    <result column="client_level_id" property="clientLevelId" jdbcType="VARCHAR" />
+    <result column="co_area_id" property="coAreaId" jdbcType="VARCHAR" />
+    <result column="co_mode_id" property="coModeId" jdbcType="VARCHAR" />
+    <result column="comments" property="comments" jdbcType="VARCHAR" />
+    <result column="last_flow_time" property="lastFlowTime" jdbcType="BIGINT" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="add_person_id" property="addPersonId" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, contacts_id, contacts_name, contacts_phone, keeper_id, keeper_name, region_id, 
+    client_type_id, client_status_id, deal_status_id, client_level_id, co_area_id, co_mode_id, 
+    comments, last_flow_time, address, add_person_id, add_time, update_time
+  </sql>
+  <!--根据主键获取详情-->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crm_client
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+
+
+
+  <!--根据主键删除主键信息-->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from crm_client
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <!--插入有效数据-->
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.crm.CrmClient" >
+    insert into crm_client
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="contactsId != null" >
+        contacts_id,
+      </if>
+      <if test="contactsName != null" >
+        contacts_name,
+      </if>
+      <if test="contactsPhone != null" >
+        contacts_phone,
+      </if>
+      <if test="keeperId != null" >
+        keeper_id,
+      </if>
+      <if test="keeperName != null" >
+        keeper_name,
+      </if>
+      <if test="regionId != null" >
+        region_id,
+      </if>
+      <if test="clientTypeId != null" >
+        client_type_id,
+      </if>
+      <if test="clientStatusId != null" >
+        client_status_id,
+      </if>
+      <if test="dealStatusId != null" >
+        deal_status_id,
+      </if>
+      <if test="clientLevelId != null" >
+        client_level_id,
+      </if>
+      <if test="coAreaId != null" >
+        co_area_id,
+      </if>
+      <if test="coModeId != null" >
+        co_mode_id,
+      </if>
+      <if test="comments != null" >
+        comments,
+      </if>
+      <if test="lastFlowTime != null" >
+        last_flow_time,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="addPersonId != null" >
+        add_person_id,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="contactsId != null" >
+        #{contactsId,jdbcType=VARCHAR},
+      </if>
+      <if test="contactsName != null" >
+        #{contactsName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactsPhone != null" >
+        #{contactsPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="keeperId != null" >
+        #{keeperId,jdbcType=VARCHAR},
+      </if>
+      <if test="keeperName != null" >
+        #{keeperName,jdbcType=VARCHAR},
+      </if>
+      <if test="regionId != null" >
+        #{regionId,jdbcType=VARCHAR},
+      </if>
+      <if test="clientTypeId != null" >
+        #{clientTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="clientStatusId != null" >
+        #{clientStatusId,jdbcType=VARCHAR},
+      </if>
+      <if test="dealStatusId != null" >
+        #{dealStatusId,jdbcType=VARCHAR},
+      </if>
+      <if test="clientLevelId != null" >
+        #{clientLevelId,jdbcType=VARCHAR},
+      </if>
+      <if test="coAreaId != null" >
+        #{coAreaId,jdbcType=VARCHAR},
+      </if>
+      <if test="coModeId != null" >
+        #{coModeId,jdbcType=VARCHAR},
+      </if>
+      <if test="comments != null" >
+        #{comments,jdbcType=VARCHAR},
+      </if>
+      <if test="lastFlowTime != null" >
+        #{lastFlowTime,jdbcType=BIGINT},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="addPersonId != null" >
+        #{addPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <!--更新有效数据-->
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.crm.CrmClient" >
+    update crm_client
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="contactsId != null" >
+        contacts_id = #{contactsId,jdbcType=VARCHAR},
+      </if>
+      <if test="contactsName != null" >
+        contacts_name = #{contactsName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactsPhone != null" >
+        contacts_phone = #{contactsPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="keeperId != null" >
+        keeper_id = #{keeperId,jdbcType=VARCHAR},
+      </if>
+      <if test="keeperName != null" >
+        keeper_name = #{keeperName,jdbcType=VARCHAR},
+      </if>
+      <if test="regionId != null" >
+        region_id = #{regionId,jdbcType=VARCHAR},
+      </if>
+      <if test="clientTypeId != null" >
+        client_type_id = #{clientTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="clientStatusId != null" >
+        client_status_id = #{clientStatusId,jdbcType=VARCHAR},
+      </if>
+      <if test="dealStatusId != null" >
+        deal_status_id = #{dealStatusId,jdbcType=VARCHAR},
+      </if>
+      <if test="clientLevelId != null" >
+        client_level_id = #{clientLevelId,jdbcType=VARCHAR},
+      </if>
+      <if test="coAreaId != null" >
+        co_area_id = #{coAreaId,jdbcType=VARCHAR},
+      </if>
+      <if test="coModeId != null" >
+        co_mode_id = #{coModeId,jdbcType=VARCHAR},
+      </if>
+      <if test="comments != null" >
+        comments = #{comments,jdbcType=VARCHAR},
+      </if>
+      <if test="lastFlowTime != null" >
+        last_flow_time = #{lastFlowTime,jdbcType=BIGINT},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="addPersonId != null" >
+        add_person_id = #{addPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+
+
+  <resultMap id="BaseQueryResultMap" type="com.ecaray.ecms.entity.crm.Vo.CrmClientVo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="contacts_id" property="contactsId" jdbcType="VARCHAR" />
+    <result column="contacts_name" property="contactsName" jdbcType="VARCHAR" />
+    <result column="contacts_phone" property="contactsPhone" jdbcType="VARCHAR" />
+    <result column="keeper_id" property="keeperId" jdbcType="VARCHAR" />
+    <result column="keeper_name" property="keeperName" jdbcType="VARCHAR" />
+    <result column="region_id" property="regionId" jdbcType="VARCHAR" />
+    <result column="client_type_id" property="clientTypeId" jdbcType="VARCHAR" />
+    <result column="client_status_id" property="clientStatusId" jdbcType="VARCHAR" />
+    <result column="deal_status_id" property="dealStatusId" jdbcType="VARCHAR" />
+    <result column="client_level_id" property="clientLevelId" jdbcType="VARCHAR" />
+    <result column="co_area_id" property="coAreaId" jdbcType="VARCHAR" />
+    <result column="co_mode_id" property="coModeId" jdbcType="VARCHAR" />
+    <result column="comments" property="comments" jdbcType="VARCHAR" />
+    <result column="last_flow_time" property="lastFlowTime" jdbcType="BIGINT" />
+    <result column="follow_count" property="followCount" jdbcType="BIGINT" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="add_person_id" property="addPersonId" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+
+  <select id="selectClientListQuery" resultMap="BaseQueryResultMap" parameterType="com.ecaray.ecms.entity.crm.Vo.ClientQueryFilter" >
+    select
+    <include refid="Base_Column_List" />,(select count(1) from crm_follow where client_id =  crm_client.id) as follow_count
+    from crm_client 
+    where 1=1
+    <if test="clientName != null" >
+      AND name like  #{clientName}
+    </if>
+    <if test="keeperName != null" >
+      AND  keeper_name like #{keeperName}
+    </if>
+    <if test="keeperId != null" >
+      AND keeper_id = #{keeperId}
+    </if>
+    <if test="keeperId == null" >
+      AND keeper_id IN
+      <foreach item="item" index="index" collection="keepers" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+    <if test="regionId != null" >
+      AND  region_id = #{regionId}
+    </if>
+    <if test="clientTypeId != null" >
+      AND client_type_id = #{clientTypeId}
+    </if>
+    <if test="clientStatusId != null" >
+      AND client_status_id = #{clientStatusId}
+    </if>
+    <if test="dealStatusId != null" >
+      AND deal_status_id = #{dealStatusId}
+    </if>
+    <if test="clientLevelId != null" >
+      AND client_level_id = #{clientLevelId}
+    </if>
+    <if test="coAreaId != null" >
+      AND  co_area_id = #{coAreaId}
+    </if>
+    <if test="coModeId != null" >
+      AND co_mode_id = #{coModeId}
+    </if>
+    ORDER  by add_time DESC
+  </select>
+
+
+
+  <resultMap id="BaseDetailResultMap" type="com.ecaray.ecms.entity.crm.Vo.CrmClientVo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="contacts_id" property="contactsId" jdbcType="VARCHAR" />
+    <result column="contacts_name" property="contactsName" jdbcType="VARCHAR" />
+    <result column="contacts_phone" property="contactsPhone" jdbcType="VARCHAR" />
+    <result column="keeper_id" property="keeperId" jdbcType="VARCHAR" />
+    <result column="keeper_name" property="keeperName" jdbcType="VARCHAR" />
+    <result column="region_id" property="regionId" jdbcType="VARCHAR" />
+    <result column="client_type_id" property="clientTypeId" jdbcType="VARCHAR" />
+    <result column="client_status_id" property="clientStatusId" jdbcType="VARCHAR" />
+    <result column="deal_status_id" property="dealStatusId" jdbcType="VARCHAR" />
+    <result column="client_level_id" property="clientLevelId" jdbcType="VARCHAR" />
+    <result column="co_area_id" property="coAreaId" jdbcType="VARCHAR" />
+    <result column="co_mode_id" property="coModeId" jdbcType="VARCHAR" />
+    <result column="comments" property="comments" jdbcType="VARCHAR" />
+    <result column="last_flow_time" property="lastFlowTime" jdbcType="BIGINT" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="add_person_id" property="addPersonId" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="follow_count" property="followCount" jdbcType="INTEGER" />
+    <result column="contacts_count" property="contactsCount" jdbcType="INTEGER" />
+    <result column="opp_count" property="oppCount" jdbcType="INTEGER" />
+  </resultMap>
+
+  <select id="selectDetailPrimaryKey" resultMap="BaseDetailResultMap" parameterType="com.ecaray.ecms.entity.crm.Vo.CrmClientDetailQuery" >
+    SELECT
+	cc.*,a.follow_count,b.contacts_count,c.opp_count
+FROM
+	crm_client cc
+LEFT JOIN (
+	SELECT
+		count(1) AS follow_count,
+		cf.client_id
+	FROM
+		crm_follow cf
+  where cf.client_id=#{clientId}
+	GROUP BY
+		cf.client_id
+) AS a ON cc.id = a.client_id
+LEFT JOIN (
+  SELECT
+   count(1) as contacts_count,ccc.client_id
+   FROM crm_client_contacts ccc
+   where ccc.client_id=#{clientId}
+   GROUP BY ccc.client_id
+) as b ON cc.id = b.client_id
+LEFT JOIN(
+   SELECT
+   COUNT(1) as opp_count,co.client_id
+   FROM crm_opp co
+   where co.client_id=#{clientId}
+    AND co.keeper_id IN
+    <foreach item="item" index="index" collection="keepers" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+   GROUP BY co.client_id
+) as c ON cc.id =c.client_id
+where cc.id = #{clientId}  limit 1
+  </select>
+
+
+</mapper>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.crm.CrmOppContactsMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.crm.CrmOppContacts" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="opp_id" property="oppId" jdbcType="VARCHAR" />
+    <result column="person_id" property="personId" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="comments" property="comments" jdbcType="VARCHAR" />
+    <result column="add_person_id" property="addPersonId" jdbcType="VARCHAR" />
+    <result column="add_person_name" property="addPersonName" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, opp_id, phone, title, comments, add_person_id, add_person_name, add_time, 
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crm_opp_contacts
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from crm_opp_contacts
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.crm.CrmOppContacts" >
+    insert into crm_opp_contacts (id, name, opp_id, person_id,
+      phone, title, comments, 
+      add_person_id, add_person_name, add_time, 
+      update_time)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{oppId,jdbcType=VARCHAR}, #{personId},
+      #{phone,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{comments,jdbcType=VARCHAR}, 
+      #{addPersonId,jdbcType=VARCHAR}, #{addPersonName,jdbcType=VARCHAR}, #{addTime,jdbcType=BIGINT}, 
+      #{updateTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.crm.CrmOppContacts" >
+    insert into crm_opp_contacts
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="oppId != null" >
+        opp_id,
+      </if>
+      <if test="personId != null" >
+        person_id,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="comments != null" >
+        comments,
+      </if>
+      <if test="addPersonId != null" >
+        add_person_id,
+      </if>
+      <if test="addPersonName != null" >
+        add_person_name,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="oppId != null" >
+        #{oppId,jdbcType=VARCHAR},
+      </if>
+      <if test="personId != null" >
+        #{personId},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="comments != null" >
+        #{comments,jdbcType=VARCHAR},
+      </if>
+      <if test="addPersonId != null" >
+        #{addPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="addPersonName != null" >
+        #{addPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.crm.CrmOppContacts" >
+    update crm_opp_contacts
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="oppId != null" >
+        opp_id = #{oppId,jdbcType=VARCHAR},
+      </if>
+      <if test="personId != null" >
+        person_id = #{personId},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="comments != null" >
+        comments = #{comments,jdbcType=VARCHAR},
+      </if>
+      <if test="addPersonId != null" >
+        add_person_id = #{addPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="addPersonName != null" >
+        add_person_name = #{addPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.crm.CrmOppContacts" >
+    update crm_opp_contacts
+    set name = #{name,jdbcType=VARCHAR},
+      opp_id = #{oppId,jdbcType=VARCHAR},
+      person_id = #{personId},
+      phone = #{phone,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      comments = #{comments,jdbcType=VARCHAR},
+      add_person_id = #{addPersonId,jdbcType=VARCHAR},
+      add_person_name = #{addPersonName,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+<!--批量插入商机联系人-->
+  <insert id="insertBatch" parameterType="java.util.List">
+    insert into crm_opp_contacts (id, name, opp_id,person_id,
+    phone, title, comments,
+    add_person_id, add_person_name, add_time,
+    update_time)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.id,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, #{item.oppId,jdbcType=VARCHAR},#{item.personId},
+      #{item.phone,jdbcType=VARCHAR}, #{item.title,jdbcType=VARCHAR}, #{item.comments,jdbcType=VARCHAR},
+      #{item.addPersonId,jdbcType=VARCHAR}, #{item.addPersonName,jdbcType=VARCHAR}, #{item.addTime,jdbcType=BIGINT},
+      #{item.updateTime,jdbcType=BIGINT})
+    </foreach>
+  </insert>
+
+  <delete id="deleteByOppId" parameterType="java.lang.String" >
+    delete from crm_opp_contacts
+    where opp_id = #{oppId}
+  </delete>
+
+</mapper>

@@ -1,0 +1,132 @@
+package com.ecaray.ecms.services.authority;
+
+
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ecaray.ecms.commons.constant.Constants;
+import com.ecaray.ecms.commons.constant.Result;
+import com.ecaray.ecms.dao.mapper.authority.UserRoleMapper;
+import com.ecaray.ecms.entity.authority.UserRole;
+
+/**
+ * com.ecaray.authority.services
+ * Author ：zhxy
+ * 2017/1/18 19:27
+ * 说明：TODO
+ */
+@Service
+public class UserRoleService implements Constants{
+    @Autowired
+    UserRoleMapper userRoleMapper;
+    
+    @Autowired
+    RoleService roleServce;
+    
+    /**
+     * Author ：zhxy
+     * 说明：更新用户角色授权
+     */
+    public Result insertUserRolesBatch(List<UserRole> userRoles){
+        //删除用户所有的角色授权
+        userRoleMapper.deleteUserRolesBatch(userRoles);
+        //添加所有的角色授权
+        userRoleMapper.insertUserRolesBatch(userRoles);
+        return Result.success();
+    }
+    
+    /**
+     * Author ：zhxy
+     * 说明：更新用户角色授权
+     */
+    public Result insertUserRolesBatchNoDelete(List<UserRole> userRoles){
+    	final CopyOnWriteArrayList<UserRole> cowList = new CopyOnWriteArrayList<UserRole>(userRoles);
+    	for(UserRole userRole : cowList) {
+    		String userId = userRole.getUserId();
+    		List<String> roleIds = userRoleMapper.selectUserRoleList(userId);
+    		if(roleIds.contains(userRole.getRoleId())){
+    			cowList.remove(userRole);
+    		}
+    	}
+    	if (cowList.size() > 0) {
+    		//添加所有的角色授权
+        	userRoleMapper.insertUserRolesBatch(cowList);
+    	}
+    	return Result.success();
+    }
+    
+    public List<UserRole> getUserListByRoleCode(String code){
+    	return userRoleMapper.selectUserListByRoleCode(code);
+    }
+    
+    /**
+     * 添加用户角色
+     */
+    public void addUserRole(String userId,String roleId) {
+    	List<String> list = getRoleIdListByUserId(userId);
+    	if(!list.contains(roleId)) {
+    		UserRole userRole = new UserRole();
+    		userRole.setRoleId(roleId);
+    		userRole.setUserId(userId);
+    		userRoleMapper.insertSelective(userRole);
+    	}
+    }
+    
+    /**
+     * 通过code添加用户角色
+     */
+    public void addUserRoleByCode(String userId,int roleCode) {
+    	String roleId = roleServce.getRoleIdByCode(roleCode);
+    	addUserRole(userId, roleId);
+    }
+    
+    /**
+     * 删除用户某个角色
+     */
+    public void deleteUserRole(String userId,String roleId) {
+    	List<String> list = getRoleIdListByUserId(userId);
+    	if(list.contains(roleId)) {
+    		UserRole userRole = new UserRole();
+    		userRole.setRoleId(roleId);
+    		userRole.setUserId(userId);
+    		userRoleMapper.deleteUserRole(userRole);
+    	}
+    }
+    
+    /**
+     * 通过code删除用户角色
+     */
+    public void deleteUserRoleByCode(String userId,int roleCode) {
+    	String roleId = roleServce.getRoleIdByCode(roleCode);
+    	deleteUserRole(userId, roleId);
+    }
+    
+    /**
+     * 获取用户角色列表
+     */
+	public List<String> getRoleIdListByUserId(String userId) {
+		return userRoleMapper.selectRoleIdListByUserId(userId);
+	}
+	public List<String> getRoleCodeListByUserId(String userId) {
+		return userRoleMapper.selectRoleCodeListByUserId(userId);
+	}
+	
+	public void addNormalRole(String userId) {
+		addUserRoleByCode(userId,normal_role);
+	}
+
+	public String selectByRoleCode(int code) {
+		return userRoleMapper.selectByRoleCode(code);
+	}
+
+	public void deleteUserRole(UserRole userrole) {
+		userRoleMapper.deleteUserRole(userrole);
+	}
+
+	public void add(UserRole userrole) {
+		addUserRole(userrole.getUserId(),userrole.getRoleId());
+	}
+}

@@ -1,0 +1,35 @@
+[
+  {
+    "id": "1",
+    "parentid": "0",
+    "restype": "0",
+    "menuname": "首页",
+    "url": "",
+    "icon": "icon-dingdanchuli"
+  },
+  {
+    "id": "2",
+    "parentid": "0",
+    "restype": "0",
+    "menuname": "学习平台",
+    "url": "",
+    "icon": "icon-gaikuang"
+  },
+  {
+    "id": "3",
+    "parentid": "0",
+    "restype": "0",
+    "menuname": "OA系统",
+    "url": "",
+    "icon": "icon-baobiao"
+  },
+  {
+    "id": "4",
+    "parentid": "0",
+    "restype": "0",
+    "menuname": "管理者门户",
+    "url": "",
+    "icon": "icon-jiaoyi"
+  }
+
+]

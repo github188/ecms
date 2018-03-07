@@ -1,0 +1,158 @@
+package com.ecaray.ecms.services.news;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ecaray.ecms.commons.constant.DataUtil;
+import com.ecaray.ecms.commons.utils.DateUtil;
+import com.ecaray.ecms.commons.utils.ParaMap;
+import com.ecaray.ecms.commons.utils.StrUtils;
+import com.ecaray.ecms.dao.mapper.news.PortalLikesMapper;
+import com.ecaray.ecms.entity.authority.User;
+import com.ecaray.ecms.entity.news.PortalLikes;
+import com.ecaray.ecms.entity.news.vo.PortalLikesVo;
+import com.ecaray.ecms.entity.sys.SysToread;
+import com.ecaray.ecms.services.authority.DeptService;
+import com.ecaray.ecms.services.authority.UserService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+@Service
+public class PortalLikesService {
+	
+	@Autowired
+	PortalLikesMapper portalLikesMapper;
+	
+	@Autowired
+	UserService userService;
+	@Autowired
+	DeptService deptService;
+	@Autowired
+	SysToReadService sysToReadService;
+	
+	/**
+	 * 新增
+	 * @param protalLikes
+	 * @return
+	 */
+	public String add(PortalLikes protalLikes,User user){
+		if (getIsReadOrLike(protalLikes)) {
+			return null;
+		}
+		protalLikes.setIsvalid(1);
+		protalLikes.setUserName(user.getRealname());
+		long time = DateUtil.nowTime();
+		protalLikes.setUpdateTime(time);
+		protalLikes.setAddTime(time);
+		if (StrUtils.isNull(protalLikes.getId())) {
+			protalLikes.setId(DataUtil.uuidData());
+		}
+		portalLikesMapper.insertSelective(protalLikes);
+		SysToread toread = sysToReadService.getUserToRead(user.getId(), protalLikes.getRefId());
+		if (toread != null){
+			sysToReadService.updateToRead(toread);
+		}
+		return protalLikes.getId();
+	}
+	
+	/**
+	 * 更新
+	 */
+	public void updateLikes(PortalLikes protalLikes){
+		long time = DateUtil.nowTime();
+		protalLikes.setUpdateTime(time);
+		portalLikesMapper.updateByUserAndRef(protalLikes);
+	}
+	
+	/**
+	 * 查询列表
+	 */
+	public ParaMap getPortalLikesList(PortalLikesVo vo){
+		String userName = vo.getUserName();
+		if (StrUtils.isNotNull(userName)) {
+			userName = "%" + userName + "%";
+			vo.setUserName(userName);
+		}
+		String depId = vo.getDepId();
+		if (StrUtils.isNotNull(depId)) {
+			List<String> deplist = deptService.getDepChildIdList(depId);
+			vo.setDepList(deplist);
+		}
+		Page page = PageHelper.startPage(vo.getPageNum(), vo.getPageSize());
+		List<PortalLikesVo> list = portalLikesMapper.selectListByVo(vo);
+		for (PortalLikesVo v : list) {
+			User user = userService.getUserByIdNoPassWord(v.getUserId());
+			user.setDepName(deptService.getAllDept(new StringBuffer(""),Long.parseLong(user.getDepId())));
+			v.setDepName(user.getDepName());
+		}
+		return ParaMap.getPageHelperMap(list,page);
+	}
+	
+	/**
+	 * 查询列表
+	 */
+	public ParaMap getPortalNoReadList(PortalLikesVo vo){
+		String userName = vo.getUserName();
+		if (StrUtils.isNotNull(userName)) {
+			userName = "%" + userName + "%";
+			vo.setUserName(userName);
+		}
+		String depId = vo.getDepId();
+		if (StrUtils.isNotNull(depId)) {
+			List<String> deplist = deptService.getDepChildIdList(depId);
+			vo.setDepList(deplist);
+		}
+		Page page = PageHelper.startPage(vo.getPageNum(), vo.getPageSize());
+		List<String> list = portalLikesMapper.selectNoReadListByVo(vo);
+		List<User> userList = new ArrayList<User>();
+		for (String id : list) {
+			User user = userService.getUserByIdNoPassWord(id);
+			user.setDepName(deptService.getAllDept(new StringBuffer(""),Long.parseLong(user.getDepId())));
+			userList.add(user);
+		}
+		return ParaMap.getPageHelperMap(userList,page);
+	}
+	
+	/**
+	 * 查询新闻查看数，点赞数
+	 * 1-查看，2-点赞
+	 */
+	public int getNewsData(PortalLikes likes) {
+		return portalLikesMapper.selectNewsData(likes);
+	}
+	
+	/**
+	 * 查询新闻查看数，点赞数 重载1
+	 * 1-查看，2-点赞
+	 */
+	public int getNewsData(String newsId, int type) {
+		PortalLikes p = new PortalLikes();
+		p.setRefId(newsId);
+		p.setType(type);
+		return getNewsData(p);
+	}
+	
+	/**
+	 * 查询当前人是否已看，已点赞
+	 */
+	public boolean getIsReadOrLike(PortalLikes protalLikes){
+		if(portalLikesMapper.selectIsReadOrLike(protalLikes) == 1) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * 查询当前人是否已看，已点赞
+	 */
+	public boolean getIsReadOrLike(String userId,String refId,Integer type){
+		PortalLikes p = new PortalLikes();
+		p.setUserId(userId);
+		p.setRefId(refId);
+		p.setType(type);
+		return getIsReadOrLike(p);
+	}
+}

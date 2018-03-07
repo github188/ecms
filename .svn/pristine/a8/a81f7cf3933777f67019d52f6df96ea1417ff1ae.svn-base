@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.news.PortalFilesMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.news.PortalFiles" >
+    <id column="portal_id" property="portalId" jdbcType="VARCHAR" />
+    <id column="file_id" property="fileId" jdbcType="VARCHAR" />
+    <result column="file_name" property="fileName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    portal_id, file_id, file_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.ecaray.ecms.entity.news.PortalFiles" >
+    select 
+    <include refid="Base_Column_List" />
+    from portal_files
+    where portal_id = #{portalId,jdbcType=VARCHAR}
+      and file_id = #{fileId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.ecaray.ecms.entity.news.PortalFiles" >
+    delete from portal_files
+    where portal_id = #{portalId,jdbcType=VARCHAR}
+      and file_id = #{fileId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByPoralId" parameterType="java.lang.String" >
+    delete from portal_files
+    where portal_id = #{portalId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.news.PortalFiles" >
+    insert into portal_files (portal_id, file_id, file_name)
+    values (#{portalId,jdbcType=VARCHAR}, #{fileId,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.news.PortalFiles" >
+    insert into portal_files
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="portalId != null" >
+        portal_id,
+      </if>
+      <if test="fileId != null" >
+        file_id,
+      </if>
+      <if test="fileName != null" >
+        file_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="portalId != null" >
+        #{portalId,jdbcType=VARCHAR},
+      </if>
+      <if test="fileId != null" >
+        #{fileId,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null" >
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.news.PortalFiles" >
+    update portal_files
+    <set >
+      <if test="fileName != null" >
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where portal_id = #{portalId,jdbcType=VARCHAR}
+      and file_id = #{fileId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.news.PortalFiles" >
+    update portal_files
+    set file_name = #{fileName,jdbcType=VARCHAR}
+    where portal_id = #{portalId,jdbcType=VARCHAR}
+      and file_id = #{fileId,jdbcType=VARCHAR}
+  </update>
+   <select id="selectListByPortalId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select file_id,file_name from portal_files where portal_id = #{portalId}
+  </select>
+  
+</mapper>

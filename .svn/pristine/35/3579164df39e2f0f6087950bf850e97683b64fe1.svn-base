@@ -1,0 +1,82 @@
+<template>
+  <div>
+    <div class="weather box">
+      <ul>
+        <li>
+          <em class="icon icon-calendar"></em>
+          <span>{{new Date().toDay()}}&nbsp;&nbsp;&nbsp;&nbsp;{{new Date().toWeekDay()}}</span>
+        </li>
+        <li>
+          <em class="icon icon-address"></em>
+          <span>深圳&nbsp;&nbsp;&nbsp;&nbsp;{{weather}}</span>
+        </li>
+      </ul>
+    </div>
+    <div class="person-info box" ref="personIinfo">
+      <router-link :to="'/person/'+u" title="查看个人信息">
+        <img v-if="personInfo.realname" :alt="personInfo.realname" :src="getAvatar(personInfo,{normal:false,width:144, height:144})">
+      </router-link>
+      <p class="person-name">{{personInfo.realname}}</p>
+      <p class="person-pos" ref="post">{{personInfo.depName | getDepart}}
+        <span ref="depart">{{personInfo.post}}</span>
+      </p>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      weather: '太阳', //天气
+      personInfo: {}, //个人信息
+      u: Utils.getValue('u')
+    }
+  },
+  created() {
+    this.getWeather();
+    this.getPersonInfo();
+  },
+  methods: {
+    getWeather() {
+      let that = this
+      $.ajax({
+        //设置天气
+        url: 'https://free-api.heweather.com/v5/weather?city=shenzhen&key=30ba99f5d2154ddd8e7ab25747743902',
+        success(data) {
+          that.weather = data.HeWeather5[0].now.cond.txt
+        },
+      })
+    },
+    getPersonInfo() {
+      this.ajax({
+        //获取个人信息
+        url: '/authority/user/homepage/detail',
+        success(data, $this) {
+          if (data.code == 'success') {
+            $this.personInfo = data.content
+            Utils.setValue('depName', $this.personInfo.depName)
+            Utils.setValue('depId', $this.personInfo.depId)
+          }
+        },
+      })
+    },
+  },
+  filters: {
+    getDepart(value) {
+      if (value) {
+        let depart = value.split('-')
+        return depart[depart.length - 1]
+      }
+    },
+  },
+  updated() {
+    let { depart, post, personIinfo } = this.$refs
+    console.log(personIinfo)
+    if (depart && depart.offsetWidth >= 198) {
+      depart.style.display = 'block'
+      post.style.marginTop = '-10px'
+      personIinfo.style.paddingTop = '10px'
+    }
+  }
+}
+</script>

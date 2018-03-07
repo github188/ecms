@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BPMNEditorStateService">
+    <stateFile url="file://$PROJECT_DIR$/src/main/resources/activiti/processes/yc-oa-pmo-0414.bpmn">
+      <view grid="false" />
+    </stateFile>
+    <stateFile url="file://$PROJECT_DIR$/src/main/resources/activiti/processes/test.bpmn">
+      <view grid="false" />
+    </stateFile>
+  </component>
+</project>

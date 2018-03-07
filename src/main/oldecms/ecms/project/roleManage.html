@@ -1,0 +1,117 @@
+<meta charset="UTF-8">
+<link href="project/css/roleManage.css" type="text/css" rel="stylesheet">
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="form-horizontal">
+            <div class="form-group inblock">
+                <label class="col-sm-2 control-label">角色状态：</label>
+                <div class="select-form-kind">
+                    <select class="form-control" name="Rstate" id="Rstate">
+                        <option value="">全部</option>
+                        <option value="0">启用中</option>
+                        <option value="1">已停用</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group inblock">
+                <label class="col-sm-2 control-label">角色名称：</label>
+                <input type="text" class="form-control input-key" name="Rrolename" id="Rrolename">
+            </div>
+            <div class="form-group inblock inblock-nomarginleft">
+                <button class="btn btn-orange btn-search" id="btnSearchRole">查询</button>
+                <div class="test"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-nopadding">
+    <div class="panel-body">
+        <div class="list-top">
+            <h4 class="list-title">角色管理</h4>
+            <div class="button-power-position">
+                <button class="btn btn-turquoise btn-add" id="btnAddRole">新增</button>
+            </div>
+        </div>
+        <div class="table-responsive" id="roleList"></div>
+    </div>
+</div>
+
+<!-- 编辑 [[ -->
+<div class="modal fade" id="roleEditModal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">新增角色信息</h4>
+            </div>
+            <form action="" method="post" enctype="multipart/form-data" role="form" id="roleEditForm" class="validate formvalidate">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required" aria-required="true">*</span>角色名称</label>
+                                <input type="text" class="form-control" name="rolename" id="rolename" placeholder="输入角色">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">角色备注</label>
+                                <textarea class="form-control" name="roleprofile" id="roleprofile" rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-left modal-msg"></div>
+                    <button type="submit" class="btn btn-success role-edit">保存</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <!--  data-dismiss="modal" -->
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- 编辑 ]] -->
+
+<!-- 停用、启用 [[-->
+<div class="modal fade" id="roleActionModal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">温馨提示</h4>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <div class="text-left modal-msg"></div>
+                <button type="button" class="btn btn-info role-sure">确定</button>
+                <button type="reset" class="btn btn-white" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 停用、启用 ]]-->
+
+<!-- 分配菜单 [[ -->
+<div class="modal fade" id="assignMenuModal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"></h4><!--分配菜单-->
+            </div>
+            <div class="modal-body">
+                <ul id="treeForMenu" class="ztree tree-contain"></ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success btn-assignmenu">确定</button>
+                <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 分配菜单 ]] -->
+
+<script type="text/javascript" src="project/roleManage.js"></script>

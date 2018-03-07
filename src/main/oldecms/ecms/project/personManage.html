@@ -1,0 +1,572 @@
+<meta charset="utf-8">
+<link href="project/css/personManage.css" type="text/css" rel="stylesheet">
+
+<div class="panel panel-nopadding">
+    <div class="panel-body">
+        <div class="list-top">
+            <h4 class="list-title">组织架构管理</h4>
+            <div class="button-power-position">
+                <button class="btn btn-turquoise btn-addperson">添加成员</button>
+                <!--<button class="btn btn-turquoise btn-import">批量导入成员</button>-->
+                <button class="btn btn-turquoise btn-export" id="exportPerson">导出列表</button>
+            </div>
+            <div class="input-group col-md-2 pull-right" style="margin-right: 20px;">
+                <input type="text" class="form-control" placeholder="请输入员工姓名或者手机号码" id="personKD" style="width: 220px;">
+                <span class="input-group-btn">
+                            <button class="btn btn-orange btn-search" type="button" id="btnSearchPerInMain">搜索</button>
+                        </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <button class="btn btn-turquoise btn-lg" id="btnEditDepartment">编辑部门</button>
+                <ul id="treeDepart" class="ztree tree-contain"></ul>
+            </div>
+            <div class="col-md-9">
+                <div class="list-top">
+                    <h4 class="list-title" id="currentDepMsg"></h4>
+                    <div style="margin-left: 250px; display: none;" id="manyOperate">
+                        <button class="btn btn-turquoise" id="moveDepartment">移动部门</button>
+                        <button class="btn btn-turquoise" id="appointLeader">修改直接上级</button>
+                        <button class="btn btn-turquoise" id="allocationRoles">分配角色</button>
+                    </div>
+                </div>
+                <div id="chooseAllData" style="position: relative">
+                    <!--外面套一层是为了避免分页layout错乱-->
+                    <div class="table-responsive" id="personlist"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 添加&编辑成员 -->
+<div class="modal fade" id="addPersonModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 780px; height: 90%; overflow: auto">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">添加成员信息</h4>
+            </div>
+            <form method="post" class="validate" id="addPersonForm">
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="active"><a href="#basicInfoTab" role="tab" data-toggle="tab">基本资料</a></li>
+                        <!--<li><a href="#personnelInfoTab" role="tab" data-toggle="tab">人事资料</a></li>-->
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="basicInfoTab">
+                            <div class="row col-md-8">
+                                <div class="overflow-hidden">
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label"><span class="required">*</span>姓名：</label>
+                                        <input type="text" class="form-control input-key p-name" name="pName"/>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label"><span class="required">*</span>工号：</label>
+                                        <input type="text" class="form-control input-key p-jobnum" name="pJobNum"/>
+                                    </div>
+                                </div>
+                                <div class="overflow-hidden">
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label"><span class="required">*</span>手机：</label>
+                                        <input type="text" class="form-control input-key p-tel" name="pTel" maxlength="11"/>
+                                    </div>
+
+                                    <div class="form-group col-sm-3">
+                                        <label class="control-label"><span class="required">*</span>生日：</label>
+                                        <input type="text" placeholder="01-01" class="form-control input-key p-birthday" name="pBirthday" />
+                                    </div>
+
+                                    <div class="form-group col-sm-3">
+                                        <label class="control-label"><span class="required">*</span>性别：</label>
+                                        <div class="radio form-control sex-radio">
+                                            <label class="radio-inline">
+                                                <input type="radio" name="pSex" value="1"> 男
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="pSex" value="2"> 女
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!--<div class="form-group col-sm-6">-->
+                                        <!--<label class="control-label"><span class="required">*</span>性别：</label>-->
+                                        <!--<div class="radio form-control sex-radio">-->
+                                            <!--<label class="radio-inline">-->
+                                                <!--<input type="radio" name="pSex" value="1"> 男-->
+                                            <!--</label>-->
+                                            <!--<label class="radio-inline">-->
+                                                <!--<input type="radio" name="pSex" value="2"> 女-->
+                                            <!--</label>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                </div>
+                                <div class="overflow-hidden">
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label"><span class="required">*</span>部门：</label>
+                                        <input type="text" class="form-control input-key p-depart" name="pDepart" readonly/>
+                                        <div id="DepartForAddPerPanel">
+                                            <span class="close-tree-sel" id="closeDepartForAddPer">&times;</span>
+                                            <ul id="treeDepartForAddPer" class="ztree tree-contain-addper-sel"></ul>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label"><span class="required">*</span>岗位：</label>
+                                        <input type="text" class="form-control input-key p-position" name="pPosition"/>
+                                    </div>
+                                </div>
+                                <div class="overflow-hidden">
+                                    <div class="form-group col-sm-12 email-block">
+                                        <label class="control-label"><span class="required">*</span>邮箱：</label>
+                                        <input type="text" class="form-control input-key p-email" name="pEmail"/>
+                                        <span class="email-suffix">@ecaray.com</span>
+                                    </div>
+                                </div>
+                                <div class="overflow-hidden">
+                                    <div class="form-group col-sm-12">
+                                        <label class="control-label"><span class="required">*</span>专业级别：</label>
+                                        <!--<select class="form-control p-professionalrank" name="pProfessionalRank">-->
+                                            <!--<option value="">请选择</option>-->
+                                            <!--<option value="1">初级</option>-->
+                                            <!--<option value="2">中级</option>-->
+                                            <!--<option value="3">高级</option>-->
+                                        <!--</select>-->
+                                        <input type="text" class="form-control input-key p-professionalrank" name="pProfessionalRank"/>
+                                        <!--<select class="form-control" name="pProfessionalRank" id="pProfessionalRank">-->
+                                        <!--<option value="">请选择</option>-->
+                                        <!--</select>-->
+                                    </div>
+                                </div>
+                                <div class="overflow-hidden">
+                                    <div class="form-group col-sm-12">
+                                        <label class="control-label"><span class="required">*</span>管理级别：</label>
+                                        <input type="text" class="form-control input-key p-managerank" name="pManageRank"/>
+                                        <!--<select class="form-control p-managerank" name="pManageRank">-->
+                                            <!--<option value="">请选择</option>-->
+                                            <!--<option value="1">初级</option>-->
+                                            <!--<option value="2">中级</option>-->
+                                            <!--<option value="3">高级</option>-->
+                                        <!--</select>-->
+                                    </div>
+                                </div>
+                                <div class="overflow-hidden">
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label">直接上级：</label>
+                                        <input type="text" class="form-control input-key p-superior" name="pSuperior" readonly/>
+                                        <div id="ImmediateSuperiorPanel">
+                                            <span class="close-tree-sel" id="closeImmediateSuperior">&times;</span>
+                                            <ul id="treeImmediateSuperior" class="ztree tree-contain-ImmediateSuperior-sel"></ul>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="control-label"><span class="required">*</span>常驻地：</label>
+                                        <input type="text" class="form-control input-key p-usualplace" name="pUsualPlace"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-md-offset-1 text-center">
+                                <img src="skins/img/man-default.png" alt="" class="preview-logo" id="previewLogo">
+                                <a href="javascript:void(0);" class="upload-logo">
+                                    更换图像
+                                    <input type="file" id="uploadLogo" name="uploadLogo" onchange="htmlObj.fileSelected();"><!-- accept="image/png,image/jpg,image/gif"-->
+                                </a>
+                                <div class="upload-logo-error" id="uploadLogoError">You should select valid image files only!</div>
+                            </div>
+                        </div>
+                        <!--<div class="tab-pane" id="personnelInfoTab">
+                            <div class="row col-md-12">
+                                <div class="form-group col-sm-6">
+                                    <label class="control-label">入职信息：</label>
+                                    <input type="text" class="form-control input-key p-entryinfo" name="pEntryInfo"/>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label class="control-label">身份信息：</label>
+                                    <input type="text" class="form-control input-key p-idinfo" name="pIDInfo"/>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label class="control-label">家庭信息：</label>
+                                    <input type="text" class="form-control input-key p-familyinfo" name="pFamilyInfo"/>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label class="control-label">合同信息：</label>
+                                    <input type="text" class="form-control input-key p-contractinfo" name="pContractInfo"/>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label class="control-label">学历信息：</label>
+                                    <input type="text" class="form-control input-key p-eduinfo" name="pEduInfo"/>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label class="control-label">专业证书信息：</label>
+                                    <input type="text" class="form-control input-key p-certificateinfo" name="pCertificateInfo"/>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label class="control-label">工作经历信息：</label>
+                                    <input type="text" class="form-control input-key p-workexpinfo" name="pWorkExpInfo"/>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label class="control-label">绩效考核：</label>
+                                    <input type="text" class="form-control input-key p-performanceinfo" name="pPerformanceInfo"/>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label class="control-label">人事异动：</label>
+                                    <input type="text" class="form-control input-key p-personnelchange" name="pPersonnelChange"/>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label class="control-label">奖惩记录：</label>
+                                    <input type="text" class="form-control input-key p-rewardpunish" name="pRewardPunish"/>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label class="control-label">其他信息：</label>
+                                    <input type="text" class="form-control input-key p-otherinfo" name="pOtherInfo"/>
+                                </div>
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button type="submit" class="btn btn-success" id="btnToAdd">完成</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 查看个人信息 -->
+<div class="modal fade" id="personDetailModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 880px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">个人信息详情</h4>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="active"><a href="#basicInfoPDTab" role="tab" data-toggle="tab">基本资料</a></li>
+                    <!--<li><a href="#personnelInfoPDTab" role="tab" data-toggle="tab">人事资料</a></li>-->
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="basicInfoPDTab">
+                        <div class="row form-inline col-md-10">
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">姓&#12288;&#12288;名：</label>
+                                <input type="text" class="form-control p-name" readonly/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">工&#12288;&#12288;号：</label>
+                                <input type="text" class="form-control p-jobnum" readonly/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">邮&#12288;&#12288;箱：</label>
+                                <input type="text" class="form-control p-email" readonly/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">生&#12288;&#12288;日：</label>
+                                <input type="text" class="form-control p-birthday" readonly/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">手&#12288;&#12288;机：</label>
+                                <input type="text" class="form-control p-tel" readonly/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">性&#12288;&#12288;别：</label>
+                                <input type="text" class="form-control p-sex" readonly/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">部&#12288;&#12288;门：</label>
+                                <input type="text" class="form-control p-depart" readonly/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">岗&#12288;&#12288;位：</label>
+                                <input type="text" class="form-control p-position" readonly/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">专业级别：</label>
+                                <input type="text" class="form-control p-professionalrank" readonly/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">管理级别：</label>
+                                <input type="text" class="form-control p-managerank" readonly/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">直接上级：</label>
+                                <input type="text" class="form-control p-superior" readonly/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">常&#8194;驻&#8194;地：</label>
+                                <input type="text" class="form-control p-usualplace" readonly/>
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <img src="skins/img/man-default.png" alt="" class="preview-logo" id="previewLogoPD">
+                        </div>
+                    </div>
+                    <!--<div class="tab-pane" id="personnelInfoPDTab">
+                        <div class="row form-inline col-md-12">
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">入职信息：</label>
+                                <input type="text" class="form-control p-entryinfo" readonly/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">身份信息：</label>
+                                <input type="text" class="form-control p-idinfo" readonly/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">家庭信息：</label>
+                                <input type="text" class="form-control p-familyinfo" readonly/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">合同信息：</label>
+                                <input type="text" class="form-control p-contractinfo" readonly/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">学历信息：</label>
+                                <input type="text" class="form-control p-eduinfo" readonly/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">专业证书信息：</label>
+                                <input type="text" class="form-control p-certificateinfo" readonly/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">工作经历信息：</label>
+                                <input type="text" class="form-control p-workexpinfo" readonly/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">绩效考核：</label>
+                                <input type="text" class="form-control p-performanceinfo" readonly/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">人事异动：</label>
+                                <input type="text" class="form-control p-personnelchange" readonly/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">奖惩记录：</label>
+                                <input type="text" class="form-control p-rewardpunish" readonly/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="control-label">其他信息：</label>
+                                <input type="text" class="form-control p-otherinfo" readonly/>
+                            </div>
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 部门操作Modal -->
+<div class="modal fade" id="dealDepartModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 780px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">编辑部门</h4>
+            </div>
+            <div class="modal-body">
+                <div class="list-top">
+                    <h4 class="list-title">功能操作</h4>
+                    <div class="button-power-position">
+                        <button class="btn btn-turquoise" id="btnAddDep">添加</button>
+                        <button class="btn btn-turquoise" id="btnEditDep">编辑</button>
+                        <!--<button class="btn btn-turquoise" id="btnDepUp">上移</button>-->
+                        <!--<button class="btn btn-turquoise" id="btnDepDown">下移</button>-->
+                        <button class="btn btn-turquoise" id="btnDelDep">删除</button>
+                    </div>
+                </div>
+                <ul id="treeDepartForHandle" class="ztree tree-contain" data-currentdepid="" data-currentdepname=""></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 移动到部门 -->
+<div class="modal fade" id="moveDepartModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 780px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">移动部门</h4>
+            </div>
+            <div class="modal-body">
+                <ul id="treeDepartForMove" class="ztree tree-contain" data-currentdepid="" data-currentdepname=""></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 添加部门 -->
+<div class="modal fade" id="addDepModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 550px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">添加部门</h4>
+            </div>
+            <form method="post" class="validate" id="addDepForm">
+                <div class="modal-body">
+                    <div class="row form-inline add-depblock">
+                        <div class="form-group col-sm-12">
+                            <label class="control-label"><span class="required">*</span>部门名称：</label>
+                            <input type="text" class="form-control dep-name" name="depName"/>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <label class="control-label"><span class="required">*</span>上级部门：</label>
+                            <input type="text" class="form-control dep-parentname" name="depParentName" readonly/>
+                            <div id="DepartForSuperiorAddPanel">
+                                <span class="close-tree-sel" id="closeDepartForSuperiorAdd">&times;</span>
+                                <ul id="treeDepartForSuperiorAdd" class="ztree tree-contain-adddep-sel"></ul>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <label class="control-label"><span class="required">*</span>部门负责人：</label>
+                            <input type="text" class="form-control dep-leader" name="depLeader"/>
+                            <div id="DepLeaderForAddDepPanel">
+                                <span class="close-tree-sel" id="closeDepLeaderForAddDep">&times;</span>
+                                <ul id="treeDepLeaderForAddDep" class="ztree tree-contain-depleader-sel"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button type="submit" class="btn btn-success">确定</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 编辑部门 -->
+<div class="modal fade" id="editDepModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 550px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">编辑部门</h4>
+            </div>
+            <form method="post" class="validate" id="editDepForm">
+                <div class="modal-body">
+                    <div class="row form-inline edit-depblock">
+                        <div class="form-group col-sm-12">
+                            <label class="control-label"><span class="required">*</span>部门名称：</label>
+                            <input type="text" class="form-control dep-name" name="depName"/>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <label class="control-label"><span class="required">*</span>上级部门：</label>
+                            <input type="text" class="form-control dep-parentname" name="depParentName" readonly/>
+                            <div id="DepartForSuperiorEditPanel">
+                                <span class="close-tree-sel" id="closeDepartForSuperiorEdit">&times;</span>
+                                <ul id="treeDepartForSuperiorEdit" class="ztree tree-contain-editdep-sel"></ul>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <label class="control-label"><span class="required">*</span>部门负责人：</label>
+                            <input type="text" class="form-control dep-leader" name="depLeader"/>
+                            <div id="DepLeaderForEditDepPanel">
+                                <span class="close-tree-sel" id="closeDepLeaderForEditDep">&times;</span>
+                                <ul id="treeDepLeaderForEditDep" class="ztree tree-contain-ImmediateSuperior-sel"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button type="submit" class="btn btn-success">确定</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 选择部门负责人 -->
+<div class="modal fade" id="chooseDepLeaderModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 850px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">选择部门负责人 <span style="color:red; font-size: 12px;">(双击可选择)</span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row form-inline">
+                    <div class="form-group col-sm-12">
+                        <div class="input-group col-sm-12">
+                            <input type="text" class="form-control" placeholder="请输入员工姓名或者部门名称" id="queryKD">
+                            <span class="input-group-btn">
+                            <button class="btn btn-orange btn-search" type="button" id="btnSearchDepLeader">搜索</button>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <div>
+                            <!--外面套一层是为了避免分页layout错乱-->
+                            <div class="table-responsive" id="depLeaderList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 角色权限，可查看、可搜索、可分配角色 -->
+<div class="modal fade" id="roleAuthorityModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 850px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">给此人分配角色</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row form-inline">
+                    <div class="form-group col-sm-12">
+                        <div class="input-group col-sm-12">
+                            <input type="text" class="form-control" placeholder="请输入角色名称" id="queryRole">
+                            <span class="input-group-btn">
+                            <button class="btn btn-orange btn-search" type="button" id="btnSearchRole">搜索</button>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <div>
+                            <!--外面套一层是为了避免分页layout错乱-->
+                            <div class="table-responsive" id="perRoleList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="modal-msg"></div>
+                <button type="button" class="btn btn-success btn-setrole">确定</button>
+                <button type="reset" class="btn btn-white" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 导出 [[ -->
+<div class="modal fade" id="exportExclePanel" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">导出信息确认</h4>
+            </div>
+            <div class="modal-body">
+                <div>您确定要导出数据吗？</div>
+            </div>
+            <div class="modal-footer">
+                <div class="modal-msg"></div>
+                <button type="submit" class="btn btn-success" id="export-sure">确认</button>
+                <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 导出 ]] -->
+
+<script src="project/personManage.js"></script>

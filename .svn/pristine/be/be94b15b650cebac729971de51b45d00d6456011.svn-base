@@ -1,0 +1,328 @@
+@charset "UTF-8";
+.tree-contain {
+    padding-left: 15px;
+    width: 100%;
+    height: 560px;
+    overflow-y: scroll;
+}
+
+#DepartForSuperiorAddPanel, #DepartForSuperiorEditPanel, #DepLeaderForAddDepPanel, #DepLeaderForEditDepPanel {
+    width: 360px;
+    background-color: #fff;
+    border: 1px solid #666;
+    margin-left: 19.5%;
+    display: none;
+}
+
+#DepartForAddPerPanel, #ImmediateSuperiorPanel {
+    width: 360px;
+    background-color: #fff;
+    display: none;
+    position: fixed;
+    z-index: 500;
+    -webkit-box-shadow: 0 0 14px #999;
+    -moz-box-shadow: 0 0 14px #999;
+    box-shadow: 0 0 14px #999;
+}
+
+#DepartForAddPerPanel {
+    top: 47%;
+    left: 6%;
+}
+
+#ImmediateSuperiorPanel {
+    top: 48%;
+    left: 31%;
+}
+
+.close-tree-sel {
+    float: right;
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    margin: 3px 5px;
+    -webkit-transform: scale(2);
+    transform: scale(2);
+    color: #666;
+    cursor: pointer;
+}
+
+.tree-contain-addper-sel, .tree-contain-ImmediateSuperior-sel {
+    width: 100%;
+    height: 280px;
+    overflow-y: scroll;
+    margin-top: 35px;
+}
+
+.tree-contain-adddep-sel, .tree-contain-depleader-sel {
+    width: 100%;
+    height: 280px;
+    overflow-y: scroll;
+    margin-top: 35px;
+}
+
+.ztree * {
+    font-size: 14px;
+}
+
+.ztree li {
+    line-height: 22px;
+}
+
+.ztree li span {
+    line-height: 22px;
+}
+
+.ztree li a.curSelectedNode {
+    height: 22px;
+}
+
+.ztree li span.button.switch {
+    width: 18px;
+    height: 22px;
+}
+
+.ztree li span.button.ico_open {
+    vertical-align: middle;
+}
+
+.ztree li span.button.ico_docu {
+    vertical-align: text-bottom;
+}
+
+.ztree li a.tmpTargetNode_inner {
+    height: 22px;
+}
+
+/*span.tmpzTreeMove_arrow {
+    width: 200px;
+    height: 200px;
+    display: inline-block;
+    padding: 0;
+    margin: 2px 0 0 1px;
+    border: 0 none;
+    position: fixed;
+    top:0;
+    left:0;
+    background-color: red;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-position: -110px -80px;
+}
+
+ul.ztree.zTreeDragUL {
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    top:50%;
+    width: auto;
+    height: auto;
+    overflow: hidden;
+    background-color: yellow;
+    border: 1px #00B83F dotted;
+    opacity: 0.8;
+    filter: alpha(opacity=80)
+}*/
+
+.z-index20 {
+    z-index: 20;
+}
+
+#btnEditDepartment {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.nav.nav-tabs {
+    border-bottom: 1px solid #dddddd;
+}
+
+.nav.nav-tabs > li {
+    float: left;
+    margin-bottom: -1px;
+}
+
+.nav.nav-tabs > li > a {
+    background-color: transparent;
+    padding-left: 20px;
+    padding-right: 20px;
+    border: 1px solid transparent;
+}
+
+.nav.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+    color: #555;
+    cursor: default;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+}
+
+.nav.nav-tabs > li:not(.active) > a:hover {
+    border: 1px solid transparent;
+    background-color: #ccc;
+}
+
+.nav.nav-tabs + .tab-content {
+    padding: 20px 0;
+    margin-bottom: 10px;
+}
+
+.tab-content > .tab-pane {
+    overflow: hidden;
+}
+
+.sex-radio {
+    border: 0;
+    padding: 6px 1px;
+}
+
+/*.upload-logo {
+    !* position: relative; *!
+    display: inline-block;
+    background-image:url(../../skins/img/man-default.png);
+    background-repeat:no-repeat;
+    background-size:100% 100%;
+    background-position: center center;
+    border: 1px solid #99D3F5;
+    border-radius: 100%;
+    width: 120px;
+    height: 120px;
+    !* overflow: hidden; *!
+    !* color: #1E88C7; *!
+    !* text-decoration: none; *!
+    !* text-indent: 0; *!
+    !* line-height: 20px; *!
+}
+
+.upload-logo input {
+    !* position: absolute; *!
+    !* font-size: 100px; *!
+    !* right: 0; *!
+    !* top: 0; *!
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+}*/
+
+.upload-logo-error {
+    color: red;
+    font-size: 14px;
+    display: none;
+}
+
+.preview-logo {
+    width: 120px;
+    height: 120px;
+    border-radius: 100%;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+}
+
+.upload-logo {
+    padding: 8px 10px;
+    position: relative;
+    color: #888;
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    display: block;
+    width: 100px;
+    margin: 0 auto;
+}
+
+.upload-logo input {
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    width: 100%;
+    height: 100%;
+}
+
+.upload-logo:hover {
+    color: #444;
+    background: #eee;
+    border-color: #ccc;
+    text-decoration: none
+}
+
+#basicInfoPDTab label {
+    width: 70px;
+    text-align: right;
+}
+
+#personnelInfoPDTab label {
+    width: 84px;
+    text-align: right;
+}
+
+#basicInfoPDTab input, #personnelInfoPDTab input {
+    border: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#basicInfoPDTab input {
+    min-width: 180px;
+}
+
+#personnelInfoPDTab input {
+    min-width: 222px;
+}
+
+.email-block label {
+    display: block;
+}
+
+.email-block input {
+    display: inline-block;
+    width: 195px;
+}
+
+.email-block .email-suffix {
+    font-size: 14px;
+}
+
+.add-depblock, .edit-depblock {
+    margin: 0;
+}
+
+.add-depblock label:not(.error), .edit-depblock label:not(.error) {
+    width: 85px;
+    text-align: right;
+}
+
+.add-depblock input, .edit-depblock input {
+    min-width: 280px;
+}
+
+#currentDepMsg {
+    display: none;
+}
+    .choose-all-data{
+    position: absolute;
+    left: 48px;
+    top: 12px;
+    color: #c3b7b7;
+    cursor: pointer;
+    display: block;
+    height: 30px;
+    width: 20px;
+}
+.choose-all-data:hover{
+}
+.choose-all-data a{
+    display: none;
+    background: #fff;
+    box-shadow: 0 1px 6px rgba(0,0,0,.2);
+    font-size: 12px;
+    border-radius: 5px;
+    padding: 8px;
+    position: absolute;
+    left: -26px;
+    top: 16px;
+    z-index: 100;
+    user-select: none;
+}

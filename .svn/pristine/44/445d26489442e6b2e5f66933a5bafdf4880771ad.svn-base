@@ -1,0 +1,129 @@
+
+<template>
+  <div>
+    <el-dialog @close="closeModal" title="上传视频" :visible.sync="modal" size="tiny" class="editor_modal_video">
+        <el-tabs v-model="active" type="card">
+            <el-tab-pane label="上传视频" name="upload">
+                <div>
+                    <el-upload ref="videoUpload"
+                        drag
+                        :action="uploadUrl"
+                        :on-success="successHandle"
+                        :before-upload="beforeHandle"
+                        :on-progress="progressHandle"
+                        :on-error="errorHandle">
+                        <i class="el-icon-upload"></i>
+                        <div class="el-upload__text">将视频拖到此处，或<em>点击上传</em></div>
+                    </el-upload>
+                </div>
+            </el-tab-pane>
+
+           <el-tab-pane label="插入视频" name="insert">
+                <el-input v-model.trim="videoUrl" placeholder="请输入视屏地址"></el-input>
+            </el-tab-pane>
+        </el-tabs>
+      
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="modal = false">取 消</el-button>
+        <el-button type="primary" @click="submit()">确 定</el-button>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+<style>
+.editor_modal_video .el-dialog {
+  width: 600px;
+}
+.el-upload-dragger {
+  width: 560px;
+}
+</style>
+<script>
+import Chimee from "chimee";
+let i = 0;
+let isUploading = false;
+export default {
+  name: "dialogs",
+  data() {
+    return {
+      modal: false,
+      active: "upload",
+      videoUrl: "", //输入视频链接
+      uploadUrl: "", //视频上传地址
+      downUrl: "", //视频下载地址
+      editor: {}
+    };
+  },
+  methods: {
+    closeModal() {
+      this.modal = false;
+      this.$refs.videoUpload.clearFiles()
+    },
+    openModal(editor) {
+      this.editor = editor;
+      this.uploadUrl = editor.options.videoUploadUrl; //设置上传视频地址
+      this.downUrl = editor.options.videoDownUrl; //设置下载获取地址
+      this.videoUrl = '';
+      this.modal = true;
+    },
+    beforeHandle(file) {
+      const isVideo = file.type === "video/mp4" || file.type === "video/flv";
+      const isLt1G = file.size < 1024 * 1024 * 1024;
+      if (!isVideo) {
+        this.$message({ message: "视频只能是mp4格式", type: "warning" });
+      }
+      if (!isLt1G) {
+        this.$message({ message: "视频不能大于1G!", type: "warning" });
+      }
+      return isVideo && isLt1G;
+    },
+    progressHandle() {
+      isUploading = true;
+    },
+    successHandle(response, file, fileList) {
+      if (response.code == "success") {
+        this.downUrl = this.downUrl + response.content.picId + "/download";
+      } else {
+        this.$message({ message: "视频上传出错!", type: "warning" });
+      }
+      isUploading = false;
+    },
+    errorHandle(response, file, fileList) {
+      this.$message({ message: "视频上传出错!", type: "warning" });
+      isUploading = false;
+    },
+    submit() {
+      if (isUploading) {
+        this.$message({ message: "请等待视频上传完成!", type: "warning" });
+        return;
+      } else {
+        i++;
+        let src = "";
+        if(this.active == "upload"){  //上传文件
+          src = this.downUrl
+        }else{
+          if (!this.videoUrl) {
+            this.$message({ message: "请输入视频地址!",type: "warning"});
+            return;
+          }
+          src = this.videoUrl;
+        }
+        this.editor.execCommand('inserthtml', `<div class="edui-body-video" data-src="${src}" id="edui-body-video-${i}"></div>`);
+        let chimee = new Chimee({
+          wrapper: "#edui-body-video-" + i,
+          src: src,
+          controls: true,
+          autoplay: false,
+          isLive: false,
+          events: {
+            play() {
+              console.log("play!!");
+            }
+          }
+        });
+        this.modal = false;
+      }
+    }
+  }
+};
+</script>

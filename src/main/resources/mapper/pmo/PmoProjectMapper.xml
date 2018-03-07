@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.pmo.PmoProjectMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.pmo.PmoProject" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="pro_code" property="proCode" jdbcType="VARCHAR" />
+    <result column="pro_name" property="proName" jdbcType="VARCHAR" />
+    <result column="pro_contents" property="proContents" jdbcType="VARCHAR" />
+    <result column="markt_id" property="marktId" jdbcType="VARCHAR" />
+    <result column="markt_name" property="marktName" jdbcType="VARCHAR" />
+    <result column="pro_date" property="proDate" jdbcType="VARCHAR" />
+    <result column="pro_status" property="proStatus" jdbcType="INTEGER" />
+    <result column="province_id" property="provinceId" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city_id" property="cityId" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="VARCHAR" />
+    <result column="markt_person_id" property="marktPersonId" jdbcType="VARCHAR" />
+    <result column="markt_person_name" property="marktPersonName" jdbcType="VARCHAR" />
+    <result column="manage_person_id" property="managePersonId" jdbcType="VARCHAR" />
+    <result column="manage_person_name" property="managePersonName" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, pro_code, pro_name, pro_contents, markt_id, markt_name, pro_date, pro_status,
+    province_id, province, city_id, city, area_id, area, markt_person_id, markt_person_name,
+    manage_person_id, manage_person_name, add_time, update_time, is_delete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from pmo_project
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from pmo_project
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.pmo.PmoProject" >
+    insert into pmo_project (id, pro_code, pro_name,
+    pro_contents, markt_id, markt_name,
+    pro_date, pro_status, province_id,
+    province, city_id, city,
+    area_id, area, markt_person_id,
+    markt_person_name, manage_person_id, manage_person_name,
+    add_time, update_time, is_delete
+    )
+    values (#{id,jdbcType=VARCHAR}, #{proCode,jdbcType=VARCHAR}, #{proName,jdbcType=VARCHAR},
+    #{proContents,jdbcType=VARCHAR}, #{marktId,jdbcType=VARCHAR}, #{marktName,jdbcType=VARCHAR},
+    #{proDate,jdbcType=VARCHAR}, #{proStatus,jdbcType=INTEGER}, #{provinceId,jdbcType=VARCHAR},
+    #{province,jdbcType=VARCHAR}, #{cityId,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR},
+    #{areaId,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, #{marktPersonId,jdbcType=VARCHAR},
+    #{marktPersonName,jdbcType=VARCHAR}, #{managePersonId,jdbcType=VARCHAR}, #{managePersonName,jdbcType=VARCHAR},
+    #{addTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, #{isDelete,jdbcType=INTEGER}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.pmo.PmoProject" >
+    insert into pmo_project
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="proCode != null" >
+        pro_code,
+      </if>
+      <if test="proName != null" >
+        pro_name,
+      </if>
+      <if test="proContents != null" >
+        pro_contents,
+      </if>
+      <if test="marktId != null" >
+        markt_id,
+      </if>
+      <if test="marktName != null" >
+        markt_name,
+      </if>
+      <if test="proDate != null" >
+        pro_date,
+      </if>
+      <if test="proStatus != null" >
+        pro_status,
+      </if>
+      <if test="provinceId != null" >
+        province_id,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="cityId != null" >
+        city_id,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="areaId != null" >
+        area_id,
+      </if>
+      <if test="area != null" >
+        area,
+      </if>
+      <if test="marktPersonId != null" >
+        markt_person_id,
+      </if>
+      <if test="marktPersonName != null" >
+        markt_person_name,
+      </if>
+      <if test="managePersonId != null" >
+        manage_person_id,
+      </if>
+      <if test="managePersonName != null" >
+        manage_person_name,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="proCode != null" >
+        #{proCode,jdbcType=VARCHAR},
+      </if>
+      <if test="proName != null" >
+        #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="proContents != null" >
+        #{proContents,jdbcType=VARCHAR},
+      </if>
+      <if test="marktId != null" >
+        #{marktId,jdbcType=VARCHAR},
+      </if>
+      <if test="marktName != null" >
+        #{marktName,jdbcType=VARCHAR},
+      </if>
+      <if test="proDate != null" >
+        #{proDate,jdbcType=VARCHAR},
+      </if>
+      <if test="proStatus != null" >
+        #{proStatus,jdbcType=INTEGER},
+      </if>
+      <if test="provinceId != null" >
+        #{provinceId,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="marktPersonId != null" >
+        #{marktPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="marktPersonName != null" >
+        #{marktPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="managePersonId != null" >
+        #{managePersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="managePersonName != null" >
+        #{managePersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.pmo.PmoProject" >
+    update pmo_project
+    <set >
+      <if test="proCode != null" >
+        pro_code = #{proCode,jdbcType=VARCHAR},
+      </if>
+      <if test="proName != null" >
+        pro_name = #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="proContents != null" >
+        pro_contents = #{proContents,jdbcType=VARCHAR},
+      </if>
+      <if test="marktId != null" >
+        markt_id = #{marktId,jdbcType=VARCHAR},
+      </if>
+      <if test="marktName != null" >
+        markt_name = #{marktName,jdbcType=VARCHAR},
+      </if>
+      <if test="proDate != null" >
+        pro_date = #{proDate,jdbcType=VARCHAR},
+      </if>
+      <if test="proStatus != null" >
+        pro_status = #{proStatus,jdbcType=INTEGER},
+      </if>
+      <if test="provinceId != null" >
+        province_id = #{provinceId,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null" >
+        city_id = #{cityId,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        area_id = #{areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        area = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="marktPersonId != null" >
+        markt_person_id = #{marktPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="marktPersonName != null" >
+        markt_person_name = #{marktPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="managePersonId != null" >
+        manage_person_id = #{managePersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="managePersonName != null" >
+        manage_person_name = #{managePersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.pmo.PmoProject" >
+    update pmo_project
+    set pro_code = #{proCode,jdbcType=VARCHAR},
+      pro_name = #{proName,jdbcType=VARCHAR},
+      pro_contents = #{proContents,jdbcType=VARCHAR},
+      markt_id = #{marktId,jdbcType=VARCHAR},
+      markt_name = #{marktName,jdbcType=VARCHAR},
+      pro_date = #{proDate,jdbcType=VARCHAR},
+      pro_status = #{proStatus,jdbcType=INTEGER},
+      province_id = #{provinceId,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city_id = #{cityId,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      area_id = #{areaId,jdbcType=VARCHAR},
+      area = #{area,jdbcType=VARCHAR},
+      markt_person_id = #{marktPersonId,jdbcType=VARCHAR},
+      markt_person_name = #{marktPersonName,jdbcType=VARCHAR},
+      manage_person_id = #{managePersonId,jdbcType=VARCHAR},
+      manage_person_name = #{managePersonName,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      is_delete = #{isDelete,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <select id="selectMaxMonthProCode" resultType="java.lang.String" parameterType="java.lang.String" >
+    select MAX(pro_code) procode
+    from pmo_project
+    where pro_code like #{proCode}
+  </select>
+
+  <select id="selectPmoProjectList" resultMap="BaseResultMap" parameterType="com.ecaray.ecms.entity.pmo.Vo.ProjectQueryFilter" >
+
+    SELECT
+    <include refid="Base_Column_List" />
+        FROM
+	pmo_project
+        WHERE
+      <if test="marktId != null" >
+	   markt_id = #{marktId} AND
+      </if>
+    <if test="provinceId != null" >
+       province_id = #{provinceId} AND
+    </if>
+    <if test="cityId != null" >
+       city_id = #{cityId} AND
+    </if>
+    <if test="areaId != null" >
+        area_id = #{areaId} AND
+    </if>
+    <if test="proStatus != null" >
+        pro_status = #{proStatus} AND
+    </if>
+    <if test="peopleName != null" >
+    pro_code IN (
+	      SELECT
+		    pro_code
+	      FROM
+		    pmo_person
+	      WHERE
+		    person_name
+          LIKE #{peopleName} )
+      AND
+    </if>
+    <if test="proMsg != null" >
+          (pro_code like  #{proMsg} or pro_name like #{proMsg})  AND
+    </if>
+    <![CDATA[ is_delete<>1 ]]>
+    order by pro_status asc ,update_time desc
+  </select>
+
+
+
+  <resultMap id="FilterQueryResultMap" type="com.ecaray.ecms.entity.pmo.Vo.PmoProjectQueryVo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="pro_code" property="proCode" jdbcType="VARCHAR" />
+    <result column="pro_name" property="proName" jdbcType="VARCHAR" />
+    <result column="pro_contents" property="proContents" jdbcType="VARCHAR" />
+    <result column="markt_id" property="marktId" jdbcType="VARCHAR" />
+    <result column="markt_name" property="marktName" jdbcType="VARCHAR" />
+    <result column="pro_date" property="proDate" jdbcType="VARCHAR" />
+    <result column="pro_status" property="proStatus" jdbcType="INTEGER" />
+    <result column="province_id" property="provinceId" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city_id" property="cityId" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="VARCHAR" />
+    <result column="markt_person_id" property="marktPersonId" jdbcType="VARCHAR" />
+    <result column="markt_person_name" property="marktPersonName" jdbcType="VARCHAR" />
+    <result column="manage_person_id" property="managePersonId" jdbcType="VARCHAR" />
+    <result column="manage_person_name" property="managePersonName" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="req_count" property="requireCount" />
+    <result column="task_count" property="taskCount"/>
+
+  </resultMap>
+  <sql id="PmoProjectListByUser" >
+    pp.id, pp.pro_code, pp.pro_name, pp.pro_contents, pp.markt_id, pp.markt_name, pp.pro_date, pp.pro_status,
+    pp.province_id, pp.province, pp.city_id, pp.city, pp.area_id, pp.area, pp.markt_person_id, pp.markt_person_name,
+    pp.manage_person_id, pp.manage_person_name, pp.add_time, pp.update_time
+  </sql>
+
+  <select id="selectPmoProjectListByUser"
+          resultMap="FilterQueryResultMap"
+          parameterType="com.ecaray.ecms.entity.pmo.Vo.ProjectQueryFilter" >
+    SELECT  * FROM (
+    SELECT
+    prc.req_count,tc.task_count ,pp.*
+    FROM
+    pmo_project pp
+    LEFT JOIN (
+    SELECT id as req_id,pro_id, COUNT(1) req_count,cur_process_person_id  FROM pmo_requirements GROUP BY 	pro_id
+    ) AS prc ON pp.id = prc.pro_id
+    LEFT JOIN (
+    select require_id,COUNT(1) task_count,task_person from pmo_require_task where task_status =0 GROUP BY require_id
+    ) tc ON tc.require_id = prc.req_id
+    <if test="curUserId != null" >
+    INNER JOIN pmo_person per ON pp.id = per.pro_id
+    </if>
+    WHERE
+    <if test="marktId != null" >
+      pp.markt_id = #{marktId} AND
+    </if>
+    <if test="provinceId != null" >
+      pp.province_id = #{provinceId} AND
+    </if>
+    <if test="cityId != null" >
+      pp.city_id = #{cityId} AND
+    </if>
+    <if test="areaId != null" >
+      pp.area_id = #{areaId} AND
+    </if>
+    <if test="proStatus != null" >
+      pp.pro_status = #{proStatus} AND
+    </if>
+    <if test="peopleName != null" >
+      pp.pro_code IN (
+      SELECT
+      pmop.pro_code
+      FROM
+      pmo_person pmop
+      WHERE
+      pmop.person_name
+      LIKE #{peopleName} )
+      AND
+    </if>
+    <if test="partUserId != null" >
+      (pp.markt_person_id = #{partUserId}
+      OR
+      pp.manage_person_id = #{partUserId}
+      )
+      AND
+    </if>
+    <if test="proMsg != null" >
+      (pp.pro_code like  #{proMsg} or pp.pro_name like #{proMsg})  AND
+    </if>
+    <if test="todoUserId!=null">
+      (
+      prc.cur_process_person_id=#{todoUserId} OR tc.task_person = #{todoUserId}
+      )  AND
+    </if>
+    <if test="curUserId != null" >
+      per.person_id = #{curUserId} AND
+    </if>
+    <![CDATA[ is_delete<>1 ]]>
+
+    UNION
+
+    SELECT
+    prc.req_count,tc.task_count ,pp.*
+    FROM
+    pmo_project pp
+    LEFT JOIN (
+    SELECT id as req_id,pro_id, COUNT(1) req_count,cur_process_person_id,second_instance_person_id  FROM pmo_requirements GROUP BY 	pro_id
+    ) AS prc ON pp.id = prc.pro_id
+    LEFT JOIN (
+    select require_id,COUNT(1) task_count,task_person from pmo_require_task where task_status =0 GROUP BY require_id
+    ) tc ON tc.require_id = prc.req_id
+
+    WHERE
+
+    <if test="curUserId != null" >
+     prc.second_instance_person_id =  #{curUserId} AND
+    </if>
+
+    <if test="marktId != null" >
+      pp.markt_id = #{marktId} AND
+    </if>
+    <if test="provinceId != null" >
+      pp.province_id = #{provinceId} AND
+    </if>
+    <if test="cityId != null" >
+      pp.city_id = #{cityId} AND
+    </if>
+    <if test="areaId != null" >
+      pp.area_id = #{areaId} AND
+    </if>
+    <if test="proStatus != null" >
+      pp.pro_status = #{proStatus} AND
+    </if>
+    <if test="peopleName != null" >
+      pp.pro_code IN (
+      SELECT
+      pmop.pro_code
+      FROM
+      pmo_person pmop
+      WHERE
+      pmop.person_name
+      LIKE #{peopleName} )
+      AND
+    </if>
+    <if test="partUserId != null" >
+      (pp.markt_person_id = #{partUserId}
+      OR
+      pp.manage_person_id = #{partUserId}
+      )
+      AND
+    </if>
+    <if test="proMsg != null" >
+      (pp.pro_code like  #{proMsg} or pp.pro_name like #{proMsg})  AND
+    </if>
+    <if test="todoUserId!=null">
+      (
+      prc.cur_process_person_id=#{todoUserId} OR tc.task_person = #{todoUserId}
+      )  AND
+    </if>
+    <![CDATA[ is_delete<>1 ]]>
+    ) a
+    order by a.add_time desc,a.pro_status asc
+  </select>
+
+
+  <select id ="selectProjectCount" resultType="java.lang.Integer">
+    select count(id) counts from pmo_project
+  </select>
+
+  <select id="selectProjectPartCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+  select  count(1) counts from pmo_project pp  where  pp.id in
+  (select DISTINCT per.pro_id from pmo_person per where per.person_id=#{userId})
+  </select>
+
+  <select id="selectProjectTodoCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+  select count(1) counts  from pmo_requirements pr  where pr.cur_process_person_id = #{userId} or pr.id
+  in (select DISTINCT require_id from pmo_require_task where task_person =#{userId} and task_status=0)
+  </select>
+
+</mapper>

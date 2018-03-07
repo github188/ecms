@@ -1,0 +1,69 @@
+<meta charset="UTF-8">
+<link rel="stylesheet" href="project/css/punchClock.css">
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="form-group inblock" style="margin-left: -15px; position:relative;">
+                    <label class="col-sm-2 control-label">部门：</label>
+                    <input type="text" class="form-control dep-parentname" name="depParentName" readonly/>
+                    <span title="清除" class="clear-depart" id="clearDepart">&times;</span>
+                    <div id="DepartForSuperiorEditPanel">
+                        <span title="关闭" class="close-tree-sel" id="closeDepartForSuperiorEdit">&times;</span>
+                        <ul id="treeDepartForSuperiorEdit" class="ztree tree-contain-editdep-sel"></ul>
+                    </div>
+                </div>
+
+                <div class="form-group inblock" >
+                    <label class="col-sm-2 control-label">常驻地：</label>
+                    <select class="form-control" id="address">
+                        <option value="1">深圳</option>
+                        <option value="0">全部</option>
+                    </select>
+                </div>
+
+                <div class="form-group inblock" style="margin-left: -25px;">
+                    <label class="col-sm-2 control-label">姓名：</label>
+                    <input type="text" class="form-control input-key" id="userName">
+                </div>
+
+                <div class="form-group inblock" style="margin-left: -45px;">
+                    <label class="col-sm-2 control-label">日期：</label>
+                    <input type="text" class="form-control input-key laydate-icon" id="layDate" readonly="readonly"style="font-size: 12px;">
+                </div>
+
+                <!--<button style="margin-top: 6px;" class="btn btn-orange btn-search">查询</button>-->
+
+            </div>
+
+            <div class="row">
+                <div class="form-group inblock" style="margin-left: -15px;">
+                    <label class="col-sm-2 control-label">首次打卡：</label>
+                    <input type="text" class="form-control input-key part-clock" id="part-1" >
+                    <span>-</span>
+                    <input type="text" class="form-control input-key part-clock" id="part-2" >
+                </div>
+                <div class="form-group inblock" style="margin-left: -15px;">
+                    <label class="col-sm-2 control-label">末次打卡：</label>
+                    <input type="text" class="form-control input-key part-clock" id="part-3" >
+                    <span>-</span>
+                    <input type="text" class="form-control input-key part-clock" id="part-4" >
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="button-position">
+        <button class="btn btn-orange btn-search">查询</button>
+    </div>
+</div>
+
+<div class="panel panel-nopadding">
+    <div class="panel-body">
+        <div class="list-top">
+            <h4 class="list-title">打卡列表</h4>
+        </div>
+        <div class="table-responsive" id="clockList"></div>
+    </div>
+</div>
+<script type="text/javascript" src="project/punchClock.js"></script>

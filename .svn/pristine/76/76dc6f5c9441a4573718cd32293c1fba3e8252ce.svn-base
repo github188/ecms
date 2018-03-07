@@ -1,0 +1,237 @@
+<template>
+  <div id="attendanceSure">
+    <h2 class="title">{{monthStr}}考勤结果确认</h2>
+    <p class="time">{{addTime}}</p>
+    <p class="content">感谢您上一个月的辛勤工作，又到了核算考勤和工资的时候啦！请在3个工作日内确认您的打卡和考勤是否正确。如有异常，请在2个工作日内提起流程，并催促相关人员进行审批，5个工作日后上月所有考勤修改都将关闭，不能再提起或审批上月的任何考勤流程。敬请知悉！</p>
+    <h2 class="title-sub">{{monthStr}}考勤结果</h2>
+    <div class="table">
+      <div class="result">
+        <div class="row-tr">
+          <div class="header">早退-次</div>
+          <div class="body first-body">{{summary.early}}</div>
+        </div>
+        <div class="row-tr">
+          <div class="header">旷工-次</div>
+          <div class="body">{{summary.absenteeism}}</div>
+        </div>
+        <div class="row-tr">
+          <div class="header">补单-次</div>
+          <div class="body">{{summary.cwaexception}}</div>
+        </div>
+        <div class="row-tr">
+          <div class="header">补签-次</div>
+          <div class="body">{{summary.correct}}</div>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <div>
+        <div class="row-tr">
+          <div class="header">应出勤</div>
+          <div class="body first-body">{{summary.workday}}</div>
+        </div>
+        <div class="row-tr">
+          <div class="header">实际出勤</div>
+          <div class="body">{{summary.normal}}</div>
+        </div>
+        <div class="row-tr">
+          <div class="header">核算出勤</div>
+          <div class="body">{{summary.paidDay}}</div>
+        </div>
+        <div class="row-tr">
+          <div class="header">上月年假</div>
+          <div class="body">{{summary.lastannual}}</div>
+        </div>
+        <div class="row-tr">
+          <div class="header">新增年假</div>
+          <div class="body">{{summary.annualadd}}</div>
+        </div>
+        <div class="row-tr">
+          <div class="header">减少年假</div>
+          <div class="body">{{summary.annualsub}}</div>
+        </div>
+        <div class="row-tr">
+          <div class="header">年假结余</div>
+          <div class="body">{{summary.annualblance}}</div>
+        </div>
+        <div class="row-tr">
+          <div class="header">上月调休假</div>
+          <div class="body">{{summary.lasttakeoff}}</div>
+        </div>
+        <div class="row-tr">
+          <div class="header">新增调休假</div>
+          <div class="body">{{summary.takeoffadd}}</div>
+        </div>
+        <div class="row-tr">
+          <div class="header">减少调休假</div>
+          <div class="body">{{summary.takeoffsub}}</div>
+        </div>
+        <div class="row-tr">
+          <div class="header">调休假结余</div>
+          <div class="body">{{summary.takeoffblance}}</div>
+        </div>
+        <div class="row-tr">
+          <div class="header last-header">病假</div>
+          <div class="body">{{summary.leave2}}</div>
+        </div>
+        <div class="row-tr">
+          <div class="header last-header">事假</div>
+          <div class="body">{{summary.leave3}}</div>
+        </div>
+        <div class="row-tr">
+          <div class="header last-header">有薪假</div>
+          <div class="body">{{summary.leave4}}</div>
+        </div>
+      </div>
+    </div>
+    <calendar ref="calendar"></calendar>
+  </div>
+</template>
+<style lang="scss" scoped>
+#attendanceSure {
+  padding-top: 40px;
+  padding-left: 14px;
+  // background: url('./../img/confirm.png') no-repeat top right;
+  .title {
+    color: #3e3e3e;
+    font-size: 20px;
+  }
+  .time {
+    font-size: 12px;
+    color: #999;
+    margin-top: 6px;
+  }
+  .content {
+    text-indent: 30px;
+    font-size: 14px;
+    line-height: 25px;
+    color: #666;
+    margin-top: 20px;
+    margin-bottom: 28px;
+    padding-bottom: 42px;
+    border-bottom: 1px solid #e9e9e9;
+  }
+  .table {
+    text-align: center;
+    margin-bottom: 30px;
+    .result {
+      margin-bottom: 30px;
+      .body {
+        color: red;
+      }
+    }
+    .header {
+      background: #f4f4f4;
+      height: 39px;
+      line-height: 39px;
+      border: 1px solid #e6e6e6;
+      border-right: 0;
+      color: #989898;
+    }
+    .last-header {
+      border-right: 1px solid #e6e6e6;
+    }
+    .row-tr {
+      float: left;
+      width: calc(1136px / 14);
+      margin-bottom: 30px;
+    }
+    .body {
+      height: 48px;
+      line-height: 48px;
+      border-right: 1px solid #e6e6e6;
+      border-bottom: 1px solid #e6e6e6;
+    }
+    .first-body {
+      border-left: 1px solid #e6e6e6;
+    }
+  }
+  .title-sub {
+    color: #3e3e3e;
+    font-size: 16px;
+  }
+}
+</style>
+<script>
+import calendar from '@/components/Calendar' //日历考勤
+export default {
+  name: 'attendance',
+  components: {
+    calendar,
+  },
+  data() {
+    return {
+      month: '',
+      monthStr: '',
+      addTime: '',
+      type: [],
+      summary: {}
+    }
+  },
+  watch: {
+    details(value) {
+      let str = value.month.split('-')
+      this.monthStr = `${str[0]}年${str[1]}月份`
+      this.month = value.month
+      this.addTime = new Date(value.updateTime).toStr()
+      this.getType()
+      this.getSummary();
+    }
+  },
+  methods: {
+    getData() {
+      this.ajax({
+        url: '/cwa/attendance/list',
+        data: {
+          month: this.month,
+          userId: Utils.getValue('u'),
+        },
+        success(data, $this) {
+          if (data.code == 'success') {
+            $this.$refs.calendar.dateList($this.month, data.content, $this.type)
+          }
+          $this.reportLoading = false
+        },
+      })
+    },
+    getType() {
+      this.ajax({
+        //获取请假类型
+        url: 'ctm/setting/param/list',
+        data: {
+          code: 'cwa_leave_type',
+        },
+        success(data, $this) {
+          if (data.code == 'success') {
+            $this.getData()
+            $this.type = data.content
+          }
+        },
+      })
+    },
+    getSummary() {
+      //获取考勤总结
+      this.ajax({
+        url: 'cwa/attendance/my/total',
+        data: {
+          month: this.month,
+          userId: Utils.getValue('u'),
+        },
+        success(data, $this) {
+          if (data.code == 'success') {
+            let { content } = data
+            for (let key in content) {
+              if (content[key] == 0 || content[key] == null) {
+                $this.summary[key] = '-'
+              } else {
+                Vue.set($this.summary, key, content[key])
+              }
+            }
+          }
+        },
+      })
+    },
+  },
+  props: ['userInfo', 'details']
+}
+</script>
+

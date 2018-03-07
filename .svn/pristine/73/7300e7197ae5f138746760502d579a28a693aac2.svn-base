@@ -1,0 +1,229 @@
+<meta charset="UTF-8">
+<link href="project/css/crmClientManage.css" type="text/css" rel="stylesheet">
+<style>
+	label[class=error] {
+        padding-left: 70px;
+    }
+    #contractForm label[class=error]{
+        padding-left: 0;
+    }
+</style>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="form-horizontal complaimOrder">
+            <div class="form-group inblock" style="width: 100%;">
+                <label class="control-label col-sm-2">&nbsp;客户归属：</label>
+                <ul class="col-sm-10 ascription clearfix ul" style="padding-top: 4px;padding-left: 0;">
+                    <li class="active" data-state="1">全部</li>
+                    <li data-state="2">我跟进的客户<span class="deptnum"></span></li>
+                </ul>
+            </div>
+            <div>
+                <div class="form-group inblock">
+                    <label class="control-label col-sm-2">客户名称：</label>
+                    <input type="text" class="form-control input-key" id="cNameQ">
+                </div>
+                <div class="form-group inblock" style="position: relative;">
+                    <label class="col-sm-2 control-label">负责人：</label>
+                    <div style="right:2px;top:-2px;cursor:pointer;display:none;" class="input_clear"><i class="Hui-iconfont f-26 c_blue" style="position: absolute;top:6px;right:46px;">X</i></div>  
+                    <input type="text" class="form-control input-key" id="cChargeQ" />
+                </div>
+                <div class="form-group inblock">
+                    <label class="control-label col-sm-2">客户类型：</label>
+                    <select class="form-control" flag="client_type" id="cStatusQ">
+                    </select>
+                </div>
+                <div class="form-group inblock">
+                    <label class="col-sm-2 control-label">成交状态：</label>
+                    <select class="form-control" flag="deal_status" id="cBargainStatusQ">
+                    
+                    </select>
+                </div>
+                <div class="form-group inblock">
+                    <label class="col-sm-2 control-label">客户状态：</label>
+                    <select class="form-control" flag="client_status" id="cTypeQ">
+                    	
+                    </select>
+                </div>
+                <div class="form-group inblock">
+                    <label class="col-sm-2 control-label">片区：</label>
+                    <select class="form-control" flag="region" id="cAreaQ">
+                    
+                    </select>
+                </div>
+                <div class="form-group inblock">
+                    <label class="col-sm-2 control-label">客户级别：</label>
+                    <select class="form-control" flag="client_level" id="cRankQ">
+                    </select>
+                </div>
+                <div class="form-group inblock">
+                    <label class="col-sm-2 control-label">合作领域：</label>
+                    <select class="form-control" flag="co_area" id="cTerritoryQ">
+                    </select>
+                </div>
+            </div>
+            <div class="clearboth"></div>
+            <div class="button-position">
+                <button class="btn btn-orange btn-search search">查询</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="panel panel-nopadding">
+    <div class="panel-body">
+        <div class="list-top">
+            <h4 class="list-title">客户列表</h4>
+            <div class="button-power-position" id="btnsOfListContain">
+                <button class="btn btn-turquoise btn-add">新增客户</button>
+            </div>
+        </div>
+        <div class="table-responsive" id="prolist"></div>
+    </div>
+</div>
+
+<!-- 新增客户 -->
+<div class="modal fade" id="addClientModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 1050px;overflow-y: auto;max-height: 90%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">新增客户</h4>
+            </div>
+            <form method="post" class="validate" id="addClientForm">
+                <div class="modal-body">
+                    <h5>客户信息</h5>
+                    <div class="row form-inline addclient-contain">
+                        <div class="row">
+	                        <div class="form-group col-sm-6">
+	                            <label class="control-label"><span class="required">*</span>客户名称：</label>
+	                            <input type="text" class="form-control" name="cName" id="cName"/>
+	                        </div>
+	                        <div class="form-group col-sm-6">
+	                            <label class="control-label" style="margin-left: 12px;"><span class="required">*</span>负责人：</label>
+	                            <input type="text" class="form-control" name="cCharge" id="cCharge" />
+	                        </div>
+                        </div>
+                        <div class="row">
+	                        <div class="form-group col-sm-6">
+	                            <label class="control-label"><span class="required">*</span>客户状态：</label>
+	                            <select class="form-control" name="cStatus" flag="client_status" id="cStatus">
+	                            </select>
+	                        </div>
+	                        <div class="form-group col-sm-6">
+	                            <label class="control-label"><span class="required">*</span>客户类型：</label>
+	                            <select class="form-control" name="cType" flag="client_type" id="cType">
+	                            </select>
+	                        </div>
+                        </div>
+                        <div class="row">
+	                        <div class="form-group col-sm-6">
+	                            <label class="control-label"><span class="required">*</span>合作领域：</label>
+	                            <select class="form-control" name="cTerritory" flag="co_area" id="cTerritory">
+	                            </select>
+	                        </div>
+	                        <div class="form-group col-sm-6">
+	                            <label class="control-label"><span class="required">*</span>成交状态：</label>
+	                            <select class="form-control" name="cBargainStatus" flag="deal_status" id="cBargainStatus">
+	                            </select>
+	                        </div>
+                        </div>
+                        <div class="row">
+	                        <div class="form-group col-sm-6">
+	                            <label class="control-label"><span class="required">*</span>客户级别：</label>
+	                            <select class="form-control" name="cRank" flag="client_level" id="cRank">
+	                            </select>
+	                        </div>
+	                        <div class="form-group col-sm-6">
+	                            <label class="control-label"><span class="required">*</span>详细地址：</label>
+	                            <input type="text" class="form-control c-address" name="cAddress" id="cAddress"/>
+	                        </div>
+                        </div>
+                        <div class="row">
+	                        <div class="form-group col-sm-6">
+	                            <label class="control-label" style="margin-left: 24px;"><span class="required">*</span>片区：</label>
+	                            <select class="form-control" name="cArea" flag="region" id="cArea">
+	                            </select>
+	                        </div>
+	                        <div class="form-group col-sm-12">
+	                            <label class="control-label" style="margin-right: 10px;">客户说明：</label>
+	                            <textarea rows="5" class="form-control desc-textarea" maxlength="200" name="cDesc" id="cDesc"></textarea>
+	                        </div>
+                        </div>
+                    </div>
+                    <div class="contact-contain">
+                        <h5>联系人信息</h5>
+                        <div class="row form-inline">
+                            <div class="form-group col-sm-2">
+                                <label class="control-label">姓名：</label>
+                            </div>
+                            <div class="form-group col-sm-2">
+                                <label class="control-label">电话：</label>
+                            </div>
+                            <div class="form-group col-sm-2">
+                                <label class="control-label">职位：</label>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label class="control-label">备注：</label>
+                            </div>
+                        </div>
+                        <div class="row form-inline contact-item" id="contractForm">
+                            <div class="form-group col-sm-2">
+                                <input type="text" name="contractName" class="form-control c-name"/>
+                            </div>
+                            <div class="form-group col-sm-2">
+                                <input type="text" name="contractTel" class="form-control c-tel"/>
+                            </div>
+                            <div class="form-group col-sm-2">
+                                <input type="text" name="contractPost" class="form-control c-post"/>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <input type="text" name="contractRemark" class="form-control c-remark"/>
+                            </div>
+                            <div class="form-group col-sm-2">
+                                <img src="skins/img/tianjia@2x.png" alt="" class="icon-add" id="btnIconAdd">
+                                <!--<img src="skins/img/shanchu@2x.png" alt="" class="icon-del" id="btnIconDel">-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button type="submit" class="btn btn-success" id="btnAddClient">确定</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- 选择人员 -->
+<div class="modal fade" id="choosePersonModal" data-backdrop="static">
+    <div class="modal-dialog" style="width: 850px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">选择人员 <span style="color:red; font-size: 12px;">(双击可选择)</span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row form-inline">
+                    <div class="form-group col-sm-12">
+                        <div class="input-group col-sm-12">
+                            <input type="text" class="form-control" placeholder="请输入员工姓名" id="queryKD">
+                            <span class="input-group-btn">
+                            <button class="btn btn-orange btn-search" type="button" id="btnSearchDepLeader">搜索</button>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <div>
+                            <!--外面套一层是为了避免分页layout错乱-->
+                            <div class="table-responsive" id="depLeaderList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="project/crmClientManage.js"></script>

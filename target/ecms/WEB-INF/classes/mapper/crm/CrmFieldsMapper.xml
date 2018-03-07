@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.crm.CrmFieldsMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.crm.CrmFields" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="belong_code" property="belongCode" jdbcType="VARCHAR" />
+    <result column="belong_name" property="belongName" jdbcType="VARCHAR" />
+    <result column="belong_group" property="belongGroup" jdbcType="VARCHAR" />
+    <result column="add_person" property="addPerson" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, name, belong_code, belong_name, belong_group, add_person, add_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crm_fields
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from crm_fields
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.crm.CrmFields" >
+    insert into crm_fields (id, code, name, 
+      belong_code, belong_name, belong_group, 
+      add_person, add_time)
+    values (#{id,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{belongCode,jdbcType=VARCHAR}, #{belongName,jdbcType=VARCHAR}, #{belongGroup,jdbcType=VARCHAR}, 
+      #{addPerson,jdbcType=VARCHAR}, #{addTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.crm.CrmFields" >
+    insert into crm_fields
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="belongCode != null" >
+        belong_code,
+      </if>
+      <if test="belongName != null" >
+        belong_name,
+      </if>
+      <if test="belongGroup != null" >
+        belong_group,
+      </if>
+      <if test="addPerson != null" >
+        add_person,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="belongCode != null" >
+        #{belongCode,jdbcType=VARCHAR},
+      </if>
+      <if test="belongName != null" >
+        #{belongName,jdbcType=VARCHAR},
+      </if>
+      <if test="belongGroup != null" >
+        #{belongGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="addPerson != null" >
+        #{addPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.crm.CrmFields" >
+    update crm_fields
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="belongCode != null" >
+        belong_code = #{belongCode,jdbcType=VARCHAR},
+      </if>
+      <if test="belongName != null" >
+        belong_name = #{belongName,jdbcType=VARCHAR},
+      </if>
+      <if test="belongGroup != null" >
+        belong_group = #{belongGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="addPerson != null" >
+        add_person = #{addPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.crm.CrmFields" >
+    update crm_fields
+    set code = #{code,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      belong_code = #{belongCode,jdbcType=VARCHAR},
+      belong_name = #{belongName,jdbcType=VARCHAR},
+      belong_group = #{belongGroup,jdbcType=VARCHAR},
+      add_person = #{addPerson,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectFieldsListByBelong" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from crm_fields
+   <if test="belongCode!=null">
+     where
+     belong_code = #{belongCode}
+   </if>
+    order by add_time asc
+  </select>
+
+  <insert id="addFieldsBatch" parameterType="java.util.List">
+    insert into crm_fields (id, code, name,
+    belong_code, belong_name, belong_group,
+    add_person, add_time)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.id,jdbcType=VARCHAR}, #{item.code,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR},
+      #{item.belongCode,jdbcType=VARCHAR}, #{item.belongName,jdbcType=VARCHAR}, #{item.belongGroup,jdbcType=VARCHAR},
+      #{item.addPerson,jdbcType=VARCHAR}, #{item.addTime,jdbcType=BIGINT})
+    </foreach>
+  </insert>
+
+
+  <update id="updateFieldsBatch" parameterType="java.util.List" >
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+      update crm_fields
+      <set >
+        <if test="item.code != null" >
+          code = #{item.code,jdbcType=VARCHAR},
+        </if>
+        <if test="item.name != null" >
+          name = #{item.name,jdbcType=VARCHAR},
+        </if>
+        <if test="item.belongCode != null" >
+          belong_code = #{item.belongCode,jdbcType=VARCHAR},
+        </if>
+        <if test="item.belongName != null" >
+          belong_name = #{item.belongName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.belongGroup != null" >
+          belong_group = #{item.belongGroup,jdbcType=VARCHAR},
+        </if>
+        <if test="item.addPerson != null" >
+          add_person = #{item.addPerson,jdbcType=VARCHAR},
+        </if>
+        <if test="item.addTime != null" >
+          add_time = #{item.addTime,jdbcType=BIGINT},
+        </if>
+      </set>
+      where id = #{item.id,jdbcType=VARCHAR}
+    </foreach>
+  </update>
+</mapper>

@@ -1,0 +1,357 @@
+/*主体内容start*/
+.user-info{
+    border:1px solid #E6E9EB;
+    background: #F9F9F9;
+    height: 72px;
+    border-radius: 4px;
+    margin: 24px 0;
+    padding:  0 24px;
+}
+.user-info .user-identity{
+    margin-top: 13px;
+}
+.user-identity .user-image{
+    height: 48px;
+    width: 48px;
+    padding: 1px;
+    border: 1px solid #FC7650;
+    margin-right: 12px;
+    border-radius: 50%;
+
+}
+.user-identity .user-name{
+    font-size: 14px;
+    color: #01cd78;
+}
+.user-identity .user-company-identity{
+    color: #888a95;
+    margin-top: 6px;
+}
+.user-company-identity .user-branch{
+    margin-right: 10px;
+}
+.operation-group{
+    height: 100%;
+}
+.operation-item{
+    border:1px solid #E6E9EB;
+    width: 72px;
+    height: 32px;
+    border-radius: 4px;
+    margin-top: 20px;
+    margin-left: 12px;
+    line-height: 30px;
+    font-size: 16px;
+    position: relative;
+    cursor: pointer;
+}
+.business{
+    color: #01cd78;
+}
+.leave{
+    color: #b27cf4;
+}
+.overtime{
+    color: #38c695;
+}
+.reimbursement{
+    color: #feb960;
+}
+.operation-group .operation-add{
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: url("../img/index-icon.png") no-repeat -146px -105px;
+}
+.banner-notice{
+    width: 350px;
+    height: 300px;
+}
+.banner-image{
+    width: 770px;
+    height: 300px;
+}
+.banner-image>a>img{
+    width: 100%;
+    height: 100%;
+}
+#banner-carousel .carousel-inner > .item > img,#banner-carousel .carousel-inner > .item{
+    width: 100%;
+    height: 300px;
+    padding: 50px 36px 0;
+    background: url("../img/index-notice-bg.png") no-repeat 0 0;
+    background-size: 100% 100%;
+    color: #fff;
+}
+.notice-title{
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+.notice-data,.notice-detail{
+    font-size: 14px;
+}
+.notice-detail{
+    margin-top: 30px;
+}
+.carousel-indicators .active {
+    margin: 0 8px;
+    width: 8px;
+    height: 8px;
+    background-color: #ffffff;
+}
+.carousel-indicators li{
+    width: 8px;
+    height: 8px;
+    border-radius: 8px;
+    margin:0 8px;
+}
+.left-dynamic{
+    width: 848px;
+    margin-top: 36px;
+}
+.right-dynamic{
+    margin-top: 32px;
+    width: 242px;
+}
+.module-work{
+    width: 350px;
+}
+.module-title{
+    border-bottom: 1px solid #DDE1E4;
+    border-right: 1px solid #DDE1E4;
+    font-size: 14px;
+    color: #888a95;
+    line-height: 24px;
+    height: 24px;
+    position: relative;
+}
+.module-title .module-item{
+    margin-right: 26px;
+    cursor: pointer;
+    line-height: 20px;
+}
+.module-title .module-item.current,.module-title .module-item:hover{
+    color: #01cd78;
+    border-bottom: 4px solid #01cd78;
+}
+.module-title .module-more{
+    width: 84px;
+    border-left: 1px solid #DDE1E4;
+    color: #01cd78;
+    cursor: pointer;
+}
+.module-more>a{
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+.module-more>a:after{
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+    width: 7px;
+    height: 12px;
+    background: url("../img/index-icon.png") no-repeat -116px -54px;
+}
+.module-list{
+    margin-top: 28px;
+    color: #888a95;
+}
+.module-list .module-item{
+    margin-bottom: 24px;
+}
+.module-list .module-item:last-child{
+    margin-bottom: 0;
+}
+.module-list .module-item{
+    color: #40474d;
+    cursor: pointer;
+}
+.module-list .module-item .module-time{
+    color: #888a95;
+    width: 84px;
+    text-align: center;
+}
+.module-list .module-item>a{
+    text-decoration: none;
+}
+.module-list .module-personal{
+    margin-right: 24px;
+}
+.module-news{
+    width: 464px;
+}
+.module-news .module-name{
+    width: 378px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.excellent-employee{
+    margin-top: 36px;
+    clear: both;
+    width: 100%;
+}
+.employee-item{
+    height: 280px;
+    padding: 0 70px;
+}
+.employee-item .employee{
+    width: 25%;
+    overflow: hidden;
+    height: 280px;
+}
+.employee>a{
+    display: block;
+    overflow: hidden;
+    height: 100%;
+}
+.employee-carousel .carousel-control{
+    width: 70px;
+    background: #fff;
+}
+.carousel-control .employee-icon{
+    width: 28px;
+    height: 62px;
+    position: absolute;
+    top: 50%;
+    z-index: 5;
+    display: inline-block;
+}
+.carousel-control .employee-prev{
+    background: url("../img/index-icon.png") no-repeat -7px -92px;
+    left: 0;
+}
+.carousel-control .employee-prev:hover{
+    background: url("../img/index-icon.png") no-repeat -73px -92px;
+}
+.carousel-control .employee-next{
+    background: url("../img/index-icon.png") no-repeat -40px -92px;
+    right: 0;
+}
+.carousel-control .employee-next:hover{
+    background: url("../img/index-icon.png") no-repeat -106px -92px;
+}
+.employee-item .employee-image,.wall-carousel .carousel-inner .wall-image{
+    width: 108px;
+    height: 108px;
+    display: block;
+    border-radius: 50%;
+}
+.employee-item .employee-image{
+    margin: 44px auto 20px;
+}
+.employee-name{
+    color: #40474d;
+    font-size: 18px;
+}
+.employee-branch{
+    color: #868f94;
+    font-size: 12px;
+    margin: 8px 0 10px;
+}
+.branch-detail{
+    margin-left: 10px;
+}
+.employee-prize{
+    color: #01cd78;
+    font-size: 14px;
+}
+/*右边平台菜单start*/
+.plat-menu-item{
+    height: 42px;
+    background: url("../img/index-icon.png") no-repeat -8px -172px;
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 12px;
+}
+.plat-menu-item:last-child{
+    margin-bottom: 0;
+}
+.plat-menu-item>a{
+    display: block;
+    line-height: 42px;
+    position: relative;
+    text-indent: 54px;
+}
+.plat-menu-item>a:hover,.plat-menu-item>a:active,.plat-menu-item>a:link,.plat-menu-item>a:visited{
+    color: #ffffff;
+    text-decoration: none;
+}
+.plat-menu-item .icon{
+    width: 19px;
+    height: 19px;
+    vertical-align: middle;
+    position: absolute;
+    top: 12px;
+    left: 22px;
+}
+.icon-plat-customer{
+    background: url("../img/index-icon.png") no-repeat -140px -8px;
+}
+.icon-plat-contract{
+    background: url("../img/index-icon.png") no-repeat -62px -8px;
+}
+.icon-plat-project{
+    background: url("../img/index-icon.png") no-repeat -36px -8px;
+}
+.icon-plat-operate{
+    background: url("../img/index-icon.png") no-repeat -86px -6px;
+}
+.icon-plat-administration{
+    background: url("../img/index-icon.png") no-repeat -8px -8px;
+}
+.icon-plat-auth{
+    background: url("../img/index-icon.png") no-repeat -111px -8px;
+}
+/*右边平台菜单end*/
+/*新员工欢迎墙start*/
+.welcome-wall{
+    margin-top: 42px;
+    height: 310px;
+    border: 1px solid #DDE1E4;
+    border-top: none;
+}
+.wall-carousel{
+    height: 238px;
+}
+.welcome-wall:before{
+    content: '';
+    display: block;
+    width: 100%;
+    height: 4px;
+    background: url("../img/index-icon.png") no-repeat -8px -260px;
+}
+.wall-title{
+    font-size: 14px;
+    padding: 24px 0;
+    color: #01cd78;
+}
+.wall-banner{
+}
+.wall-image{
+    margin:  0 auto;
+}
+.wall-item-title{
+    color: #40474d;
+    font-size: 18px;
+    margin: 24px 0 12px;
+    line-height: 18px;
+}
+.wall-item-subtitle,.wall-item-subhead{
+    color: #868f94;
+    font-size: 12px;
+    margin-bottom: 6px;
+}
+.wall-carousel .carousel-indicators li {
+    border: 1px solid #DDE1E4;
+}
+.wall-carousel .carousel-indicators .active{
+    border: 1px solid #01cd78;
+}
+.margin-left-6{
+    margin-left: 6px;
+}
+/*新员工欢迎墙end*/
+/*主体内容end*/

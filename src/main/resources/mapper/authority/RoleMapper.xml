@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.authority.RoleMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.authority.Role" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="profile" property="profile" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, name, status,profile, is_delete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_role
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectRoles" resultMap="BaseResultMap"  >
+    select
+    id, code, name, status,profile
+    from sys_role
+    <![CDATA[
+    where is_delete<>1
+    ]]>
+  <if test="status != null" >
+    AND status = #{status}
+  </if>
+  <if test="name != null" >
+    AND name like #{name}
+  </if>
+  order by code
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_role
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.authority.Role" >
+    insert into sys_role (id, code, name, 
+      status, is_delete)
+    values (#{id,jdbcType=VARCHAR}, #{code,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.authority.Role" >
+    insert into sys_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="profile != null" >
+        profile,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="profile != null" >
+        #{profile,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.authority.Role" >
+    update sys_role
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="profile != null" >
+        profile = #{profile,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.authority.Role" >
+    update sys_role
+    set code = #{code,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},profile = #{profile,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      is_delete = #{isDelete,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectRoleByUser" resultMap="BaseResultMap"  >
+    SELECT
+     r.id, r.code, r.name, r.status,r.profile
+    FROM
+    sys_role r,
+    sys_user_role ur
+    WHERE
+    r.id = ur.role_id
+    AND ur.user_id = #{userId}
+  </select>
+  <select id="selectRoleIdByCode" resultType="java.lang.String" parameterType="java.lang.Integer" >
+    select id from sys_role where code = #{code}
+  </select>
+
+</mapper>

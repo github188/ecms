@@ -1,0 +1,543 @@
+package com.ecaray.ecms.services.cwa.process;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ecaray.ecms.commons.constant.ValiResult;
+import com.ecaray.ecms.commons.exception.ProcessSubmitException;
+import com.ecaray.ecms.commons.utils.DataUtil;
+import com.ecaray.ecms.commons.utils.DateUtil;
+import com.ecaray.ecms.commons.utils.LeaveCalender;
+import com.ecaray.ecms.commons.utils.ParaMap;
+import com.ecaray.ecms.commons.utils.StrUtils;
+import com.ecaray.ecms.dao.mapper.cwa.CwaCorrectAttMapper;
+import com.ecaray.ecms.dao.mapper.cwa.CwaCorrectMapper;
+import com.ecaray.ecms.dao.mapper.cwa.CwaExceptionMapper;
+import com.ecaray.ecms.dao.mapper.news.PortalFilesMapper;
+import com.ecaray.ecms.entity.cwa.CwaAttendance;
+import com.ecaray.ecms.entity.cwa.CwaCorrect;
+import com.ecaray.ecms.entity.cwa.CwaCorrectAtt;
+import com.ecaray.ecms.entity.cwa.CwaException;
+import com.ecaray.ecms.entity.cwa.CwaLeave;
+import com.ecaray.ecms.entity.cwa.CwaProcess;
+import com.ecaray.ecms.entity.news.PortalFiles;
+import com.ecaray.ecms.entity.process.ProcessBase;
+import com.ecaray.ecms.entity.process.SysNodes;
+import com.ecaray.ecms.entity.process.SysProDone;
+import com.ecaray.ecms.entity.process.SysProcess;
+import com.ecaray.ecms.services.authority.UserService;
+import com.ecaray.ecms.services.common.ParameterService;
+import com.ecaray.ecms.services.cwa.CwaProcessService;
+import com.ecaray.ecms.services.cwa.CwaProcessVoService;
+import com.ecaray.ecms.services.cwa.CwaUserHolidayService;
+import com.ecaray.ecms.services.processes.BaseProcessService;
+import com.ecaray.ecms.services.processes.ProcessService;
+import com.ecaray.ecms.services.processes.SpringFactory;
+import com.ecaray.ecms.services.processes.base.SysNodesService;
+
+@Service
+public class CwaCorrectProcess extends BaseProcessService {
+
+	@Autowired
+	private CwaCorrectMapper cwaCorrectMapper;
+	@Autowired
+	private CwaCorrectAttMapper cwaCorrectAttMapper;
+	@Autowired
+	private ProcessService processService;
+	@Autowired
+	private SysNodesService sysNodesService;
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private CwaUserHolidayService cwaUserHolidayService;
+	@Autowired
+	private PortalFilesMapper portalFilesMapper;
+	@Autowired
+	private ParameterService parameterService;
+	@Autowired
+	private CwaExceptionProcess cwaExceptionProcess;
+	@Autowired
+	private CwaProcessVoService cwaProcessVoService;
+	@Autowired
+	private CwaExceptionMapper cwaExceptionMapper;
+	@Autowired
+	private LeaveCalender leaveCalender;
+	@Autowired
+	private CwaProcessService cwaProcessService;
+	
+	private static boolean isSendTodoMail = true;
+
+	@Override
+	public ProcessBase setTitle(ProcessBase process) {
+		CwaCorrect cc = (CwaCorrect) process;
+		String name = "";
+		if (cc.getType() == 1) {
+			name = "考勤变更";
+		}
+		if (cc.getType() == 2) {
+			name = "工作时间变更";
+		}
+		String starttime = DateUtil.format(cc.getStarttime(), "yyyy-MM-dd HH:mm");
+		String endtime = DateUtil.format(cc.getEndtime(), "yyyy-MM-dd HH:mm");
+		process.setTitle(name + "（" + starttime + "至" + endtime + "）");
+		if (StrUtils.isNull(process.getId())) {
+			process.setId(DataUtil.uuidData());
+		}
+		return process;
+	}
+
+	@Override
+	public SysProcess setTodoMailInfo(ProcessBase pro, SysProcess process) {
+		process.setSendMail(isSendTodoMail);
+		if (isSendTodoMail) {
+			return sendTodoMailInfo(pro, process);
+		}
+		return process;
+	}
+
+	@Override
+	public SysProcess initProcess(ProcessBase base, SysProcess process) throws Exception {
+		CwaCorrect cwaCorrect = (CwaCorrect) base;
+		if (cwaCorrect.getResultType() != 8 && cwaCorrect.getResultType() != 0) {
+			String str1 = processService.getProcessPath(cwaCorrect.getResultType());
+			BaseProcessService service = SpringFactory.getBean(str1);
+			ProcessBase refo = service.bindingParamByMap(cwaCorrect.getMap());
+			ValiResult v = cwaProcessService.validateTimeForSubmit((CwaProcess) refo);
+			if (!v.getCode()) {
+				throw new ProcessSubmitException(v.getMsg());
+			}
+			long starttime = cwaCorrect.getStarttime();
+			List<String> cwaList = cwaCorrect.getCwaList();
+			long now = DateUtil.parse("2017-11-27", "yyyy-MM-dd").getTime();
+			if (starttime - now < 0 && cwaList.size() > 0) {
+				throw new ProcessSubmitException("11月26日之前的考勤单已生成结果，如需更改请联系人资");
+			}
+		}
+		if (cwaCorrect.getResultType() == 8) {
+			long starttime = cwaCorrect.getStarttime();
+			long now = DateUtil.parse(DateUtil.format(DateUtil.nowTime()), "yyyy-MM-dd").getTime();
+			if (starttime - now < 0) {
+				throw new ProcessSubmitException("不能修改之前的日期");
+			}
+			Long endtime = cwaCorrect.getEndtime();
+			String userId = cwaCorrect.getUserId();
+			List<CwaCorrect> list = cwaCorrectMapper.listCwaCorrByTime(userId, starttime, endtime);
+			if (list.size() > 0) {
+				throw new ProcessSubmitException("该时间段已发起过工作时间变更申请");
+			}
+			List<CwaAttendance> listing = cwaAttendanceService.listAttendanceByTimeIng(userId, starttime, endtime);
+			if (listing.size() > 0) {
+				for (CwaAttendance att : listing) {
+					if (att.getProcessType() == 2) {
+						continue;
+					}
+					throw new ProcessSubmitException("您当前选择的时间段存在审批中的"
+							+ parameterService.getName("processtype", att.getProcessType() + "") + "申请");
+				}
+			}
+		}
+		if (cwaCorrect.getResultType() == 0) {
+			long starttime = cwaCorrect.getStarttime();
+			Long endtime = cwaCorrect.getEndtime();
+			String userId = cwaCorrect.getUserId();
+			List<CwaAttendance> listing = cwaAttendanceService.listAttendanceByTimeIng(userId, starttime, endtime);
+			if (listing.size() > 0) {
+				for (CwaAttendance att : listing) {
+					if (att.getProcessType() == 2) {
+						continue;
+					}
+					throw new ProcessSubmitException("您当前选择的时间段存在审批中的"
+							+ parameterService.getName("processtype", att.getProcessType() + "") + "申请");
+				}
+			}
+			while (starttime <= endtime) {
+				String startday = DateUtil.format(starttime);
+				List<CwaException> list = cwaExceptionMapper.selectByUserDate(userId, startday);
+				if (list.size() > 0) {
+					throw new ProcessSubmitException("您当前选择的时间段已有系统检测考勤异常处理中");
+				}
+				starttime += 24 * 3600 * 1000;
+			}
+		}
+		Map<String, Object> map = new HashMap<>();
+		int result = cwaCorrect.getResultType();
+		switch (result) {
+		case 1:
+			map.put("leave", 1);
+			break;
+		case 2:
+			map.put("overtime", 1);
+			break;
+		case 3:
+			map.put("travel", 1);
+			break;
+		case 10:
+			map.put("outside", 1);
+			break;
+		case 8:
+			map.put("retor", 1);
+			break;
+		case 0:
+			map.put("retor", 1);
+			break;
+		}
+		process.setStartMap(map);
+		return process;
+	}
+
+	@Override
+	public void startProcessCallBack(ProcessBase pro) throws Exception {
+		CwaCorrect cwaCorrect = (CwaCorrect) pro;
+		if (cwaCorrect.getResultType() != 8 && cwaCorrect.getResultType() != 0) {
+			String str1 = processService.getProcessPath(cwaCorrect.getResultType());
+			BaseProcessService service = SpringFactory.getBean(str1);
+			ProcessBase refo = service.bindingParamByMap(cwaCorrect.getMap());
+			refo.setUserId(cwaCorrect.getUserId());
+			refo.setStatus(-2);
+			String refId = service.saveProcessObject(refo);
+			cwaAttendanceService.translateCwaToAttendance((CwaProcess) refo);
+			if (refo.getProcessType() == 1) { // 扣掉假期
+				CwaLeave leave = (CwaLeave) refo;
+				cwaUserHolidayService.updateUserHoliday(leave);
+			}
+			cwaCorrect.setResultId(refId);
+		}
+		saveProcessObject(pro);
+	}
+
+	@Override
+	public Map<String, Object> getProcessRotaParam(SysProDone done, SysProcess process) throws Exception {
+		CwaCorrect cwaCorrect = (CwaCorrect) getObjectByProcess(process);
+		SysNodes node = sysNodesService.getNodeById(done.getNodeId());
+		int nodeProcessType = node.getProcessType();
+		Map<String, Object> map = new HashMap<>();
+		if (process.getType() != nodeProcessType) {
+			String exceptionId = process.getRelId();
+			String str1 = processService.getProcessPath(cwaCorrect.getResultType());
+			BaseProcessService service = SpringFactory.getBean(str1);
+			process.setRelId(cwaCorrect.getResultId());
+			map = service.getProcessRotaParam(done, process);
+			process.setRelId(exceptionId);
+		} else {
+			int isLeader = cwaProcessVoService.getUserOneManager(process.getUserId());
+			map.put("isleader", isLeader);
+		}
+		return map;
+	}
+
+	@Override
+	public ProcessBase getObjectByProcess(SysProcess process) throws Exception {
+		CwaCorrect cc = cwaCorrectMapper.selectByPrimaryKey(process.getRelId());
+		List<String> cwalist = cwaCorrectAttMapper.selectListByCId(cc.getId());
+		List<PortalFiles> files = portalFilesMapper.selectListByPortalId(cc.getId());
+		cc.setFiles(files);
+		cc.setCwaList(cwalist);
+		cc.setRefList(getRefProcessList(cwalist));
+		cc.setUserName(userService.getUserById(cc.getUserId()).getRealname());
+		if (cc.getResultType() == 8) {
+			cc.setTypeName("工作时间变更");
+		} else {
+			cc.setTypeName(parameterService.getName("processtype", cc.getResultType() + ""));
+		}
+		return cc;
+	}
+
+	@Override
+	public void rejectProcessCallBack(SysProDone done, ProcessBase pro, SysProcess process) throws Exception {
+		CwaCorrect cwaCorrect = (CwaCorrect) pro;
+		updateCwaCorrect(cwaCorrect);
+		int type = cwaCorrect.getResultType();
+		if (type != 8 && type != 0) {
+			String str1 = processService.getProcessPath(type);
+			String baseId = cwaCorrect.getResultId();
+			BaseProcessService service = SpringFactory.getBean(str1);
+			ProcessBase base = service.getObjectById(baseId);
+			if (base.getProcessType() == 1) {
+				CwaLeave leave = (CwaLeave) base;
+				leave.setTimeLength(leave.getTimeLength() * -1);
+				cwaUserHolidayService.updateUserHoliday(leave);
+			}
+			cwaAttendanceService.deleteCwaAttendanceByRefId(baseId);
+		}
+		sendResultMail(done, process, "被驳回");
+		Map<String, Object> map = new HashMap<>();
+		map.put("end", 1);
+		processService.processRotating(process, map);
+		pro.setStatus(4);
+		cancelProcessCallBack(pro, process);
+	}
+
+	private void updateCwaCorrect(CwaCorrect exception) {
+		exception.setUpdateTime(DateUtil.nowTime());
+		cwaCorrectMapper.updateByPrimaryKeySelective(exception);
+		String id = exception.getId();
+		portalFilesMapper.deleteByPoralId(id);
+		List<PortalFiles> files = exception.getFiles();
+		for (PortalFiles file : files) {
+			PortalFiles portalFile = new PortalFiles();
+			portalFile.setPortalId(id);
+			portalFile.setFileId(file.getFileId());
+			portalFile.setFileName(file.getFileName());
+			portalFilesMapper.insertSelective(portalFile);
+		}
+	}
+
+	@Override
+	public void cancelProcessCallBack(ProcessBase pro, SysProcess process) {
+		CwaCorrect exception = (CwaCorrect) pro;
+		updateCwaCorrect(exception);
+	}
+
+	@Override
+	public void agreeProcessCallBack(SysProDone done, ProcessBase pro, SysProcess process) throws Exception {
+		CwaCorrect exception = (CwaCorrect) pro;
+		String userId = exception.getUserId();
+		Integer resultType = exception.getResultType();
+		if (resultType != 8 && resultType != 0) {
+			List<String> cwalist = exception.getCwaList();
+			long starttime = exception.getStarttime();
+			long endtime = exception.getEndtime();
+			while (starttime <= endtime) {
+				String startday = DateUtil.format(starttime);
+				List<CwaAttendance> daylist = cwaAttendanceService.listDayAllAttendance(userId, startday);
+				double t = 0.0d;
+				String resultId = exception.getResultId();
+				CwaAttendance expcwa = cwaAttendanceService.getAttendanceByResultId(userId, startday,resultId);
+				for (CwaAttendance atten : daylist) {
+					if (StrUtils.isNotNull(atten.getRefId())) {
+						if (!cwalist.contains(atten.getRefId()) && !atten.getRefId().equals(resultId)
+								&& atten.getProcessType() != 2 && atten.getProcessType() != null) {
+							t += atten.getTime();
+						}
+					}
+				}
+				Double resultTime = expcwa.getTime() - t;
+				for (CwaAttendance att : daylist) {
+					if (StrUtils.isNotNull(att.getRefId())) {
+						if (att.getRefId().equals(resultId)) {
+							att.setTime(resultTime);
+							att.setStatus(2);
+							cwaAttendanceService.updateCwaAttendanceById(att);
+						}
+						if (cwalist.contains(att.getRefId())) {
+							CwaLeave leave = new CwaLeave();
+							leave.setStartTime(att.getStartTime());
+							leave.setEndTime(att.getEndTime());
+							leave.setTimeLength(-1 * att.getTime());
+							leave.setUserId(exception.getUserId());
+							leave.setType(att.getType());
+							cwaUserHolidayService.updateUserHoliday(leave);
+							if (att.getTime() > resultTime) {
+								att.setTime(att.getTime() - resultTime);
+								cwaAttendanceService.updateCwaAttendanceById(att);
+							} else {
+								cwaAttendanceService.deleteCwaAttendanceById(att.getId());
+							}
+							
+						}
+					}
+				}
+				cwaAttendanceService.valiAttendanceAndPunchCard(exception.getUserId(), startday);
+				starttime += 24 * 3600 * 1000;
+			}
+		}
+		if (resultType == 0 || resultType == 8) {
+			long starttime = exception.getStarttime();
+			long endtime = exception.getEndtime();
+			while (starttime <= endtime) {
+				String startday = DateUtil.format(starttime);
+				List<CwaAttendance> daylist = cwaAttendanceService.listDayAllAttendance(userId, startday);
+				for (CwaAttendance att : daylist) {
+					CwaLeave leave = new CwaLeave();
+					leave.setStartTime(att.getStartTime());
+					leave.setEndTime(att.getEndTime());
+					leave.setTimeLength(-1 * att.getTime());
+					leave.setUserId(exception.getUserId());
+					leave.setType(att.getType());
+					cwaUserHolidayService.updateUserHoliday(leave);
+					cwaAttendanceService.deleteCwaAttendanceById(att.getId());
+				}
+				if (resultType == 0) {
+					cwaAttendanceService.valiAttendanceAndPunchCard(userId, startday);
+					starttime += 24 * 3600 * 1000;
+				}
+				if (resultType == 8) {
+					long startend = DateUtil.parse(startday + " 18:30:00", "yyyy-MM-dd HH:mm:ss").getTime();
+					startend = endtime < startend ? endtime : startend;
+					double t = leaveCalender.getOverTimeLong(starttime, startend, 1);
+					if (t > 0) {
+						CwaAttendance attfilter = new CwaAttendance();
+						attfilter.setDate(startday);
+						attfilter.setUserId(exception.getUserId());
+						attfilter.setStatus(3);
+						attfilter.setType(1);
+						attfilter.setStartTime(starttime);
+						attfilter.setEndTime(startend);
+						attfilter.setTime(t);
+						cwaAttendanceService.saveCwaAttendance(attfilter);
+					}
+					starttime = startend + 14 * 3600 * 1000;
+				}
+			}
+		}
+		updateCwaCorrect(exception);
+		sendResultMail(done, process, "通过");
+	}
+
+	@Override
+	public void rotaingProcessCallBack(ProcessBase pro, SysProcess process) {
+		CwaCorrect exception = (CwaCorrect) pro;
+		updateCwaCorrect(exception);
+	}
+
+	@Override
+	public String saveProcessObject(ProcessBase pro) {
+		CwaCorrect cwaLeave = (CwaCorrect) pro;
+		Long now = DateUtil.nowTime();
+		cwaLeave.setAddTime(now);
+		cwaLeave.setUpdateTime(now);
+		String id = cwaLeave.getId();
+		if (StrUtils.isNull(id)) {
+			id = DataUtil.uuidData();
+			cwaLeave.setId(id);
+		}
+		cwaCorrectMapper.insertSelective(cwaLeave);
+		List<String> list = cwaLeave.getCwaList();
+		if (list != null) {
+			for (String cwaId : list) {
+				CwaCorrectAtt cca = new CwaCorrectAtt();
+				cca.setcId(id);
+				cca.setCwaId(cwaId);
+				cwaCorrectAttMapper.insertSelective(cca);
+			}
+		}
+		List<PortalFiles> files = cwaLeave.getFiles();
+		if (files != null) {
+			for (PortalFiles file : files) {
+				PortalFiles portalFile = new PortalFiles();
+				portalFile.setPortalId(id);
+				portalFile.setFileId(file.getFileId());
+				portalFile.setFileName(file.getFileName());
+				portalFilesMapper.insertSelective(portalFile);
+			}
+		}
+		return id;
+	}
+
+	public List<ProcessBase> getRefProcessList(List<String> cwaList) throws Exception {
+		List<ProcessBase> refList = new ArrayList<>();
+		List<CwaAttendance> clist = cwaAttendanceService.getCwaAttendanceByCwaList(cwaList);
+		ParaMap map = new ParaMap();
+		for (CwaAttendance att : clist) {
+			int type = att.getProcessType();
+			String str1 = processService.getProcessPath(type);
+			BaseProcessService service = SpringFactory.getBean(str1);
+			ProcessBase base1 = service.getObjectById(att.getRefId());
+			base1 = service.setTitle(base1);
+			base1.setId(att.getRefId());
+			if (base1.getStatus() == -1) {
+				CwaException ex = cwaExceptionProcess.getCwaExceptionByResultId(base1.getId());
+				base1.setId(ex.getId());
+			}
+			if (base1.getStatus() == -2) {
+				CwaCorrect ex = getCwaExceptionByResultId(base1.getId());
+				base1.setId(ex.getId());
+			}
+			SysProcess process = processService.getProcessIdByRefId(base1.getId());
+			base1.setId(process.getId());
+			base1.setpType(process.getType());
+			if (map.get(process.getId()) == null) {
+				refList.add(base1);
+			}
+			map.put(process.getId(), 1);
+		}
+		return refList;
+	}
+
+	private CwaCorrect getCwaExceptionByResultId(String id) {
+		return cwaCorrectMapper.selectByResultId(id);
+	}
+
+	public void test() {
+		// int type = correct.getResultType();
+		// List<CwaAttendance> cwaattendanceList =
+		// cwaAttendanceService.getCwaAttendanceByCwaList(cwalist);
+		// long starttime = correct.getStarttime();
+		// long endtime = correct.getEndtime();
+		// double takeoff = 0.0d;
+		// double ann = 0.0d;
+		// while (starttime <= endtime) {
+		// String startDay = DateUtil.format(starttime);
+		// long startend = DateUtil.parse(startDay + " 18:30:00", "yyyy-MM-dd
+		// HH:mm:ss").getTime();
+		// startend = endtime < starttime ? endtime : starttime;
+		// int timetype = type == 1 ? 1 : 3;
+		// double cortime;
+		// try {
+		// cortime = LeaveCalender.getOverTimeLong(starttime, startend,
+		// timetype);
+		// double daytakeoff = 0.0d;
+		// double dayann = 0.0d;
+		// for (CwaAttendance cwa : cwaattendanceList) {
+		// String cwaday = cwa.getDate();
+		// int cwaType = cwa.getType();
+		// if (cwaday.equals(startDay)) {
+		// double cwatime = cwa.getTime();
+		// cwatime = cwatime < cortime ? cwatime : cortime;
+		// if (cwaType == 2) {
+		// daytakeoff -= cwatime;
+		// }
+		// if (cwaType == 4) {
+		// dayann += cwatime;
+		// }
+		// if (cwaType == 5) {
+		// daytakeoff += cwatime;
+		// }
+		// }
+		// }
+		// takeoff += daytakeoff;
+		// ann += dayann;
+		// starttime = endtime + 14 * 3600 * 1000;
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// }
+		//
+		// if (type == 5) {
+		// takeoff = correct.getTimeLength() - takeoff;
+		// leave.setTimeLength(takeoff);
+		// }
+		// if (!cwaUserHolidayService.validateLeaveHoliday(leave)){
+		// throw new RuntimeException("剩余假期不足");
+		// }
+	}
+
+	// if (resultType == 8) {
+	// long starttime = exception.getStarttime();
+	// long endtime = exception.getEndtime();
+	// List<CwaAttendance> list = new ArrayList<>();
+	// long st = starttime;
+	// while (st <= endtime) {
+	// String startday = DateUtil.format(st);
+	// list.addAll(cwaAttendanceService.listAttendanceByUserAndDate(exception.getUserId(),
+	// startday));
+	// st += 24 * 3600 * 1000;
+	// }
+	// for (CwaAttendance att : list) {
+	// if (att.getType() == 4 ){
+	// annsub += att.getTime();
+	// }
+	// if (att.getType() == 5){
+	// takeoffsub += att.getTime();
+	// }
+	// if (att.getType() != 2 || att.getType()!=9)
+	// cwaAttendanceService.deleteCwaAttendanceById(att.getId());
+	// }
+	//
+	// }
+}

@@ -1,0 +1,486 @@
+<meta charset="utf-8">
+<link rel="stylesheet" href="project/css/style.css">
+<link href="skins/js/editor/css/wangEditor.min.css" type="text/css"
+	rel="stylesheet">
+
+<div class="panel panel-default">
+	<div class="panel-body">
+		<div class="form-horizontal complaimOrder">
+			<div class="form-group inblock" style="width: 100%;">
+				<label class="control-label col-sm-2">&nbsp;项目归属：</label>
+				<ul class="col-sm-10 ascription clearfix"
+					style="padding-top: 4px; padding-left: 0">
+					<li class="active" data-state="1">所有项目</li>
+					<li data-state="2">我负责的<span class="deptnum"></span></li>
+					<!--<li data-state="3">我新建的<span class="pernum"></span></li>-->
+					<!--  <li data-state="4">待我处理的<span class="pertonum"></span></li> -->
+				</ul>
+			</div>
+			<div>
+				<div class="form-group inblock">
+					<label class="control-label col-sm-2">片区：</label> <select
+						class="form-control" id="marketlist">
+					</select>
+				</div>
+				<div class="form-group inblock">
+					<label class="control-label col-sm-2">区域：</label> <select
+						class="form-control  col-sm-2" id="provincelist">
+					</select> <select class="form-control  col-sm-2 col-offset-left"
+						id="citylist">
+						<option value="">--请选择--</option>
+					</select> <select class="form-control col-sm-2 col-offset-both"
+						id="countylist">
+						<option value="">--请选择--</option>
+					</select>
+				</div>
+				<div class="form-group inblock">
+					<label class="col-sm-2 control-label">项目状态：</label>
+					<!--<input type="text" class="form-control input-key" id="sberthcode"/>-->
+					<select class="form-control" id="projectstatuslist">
+					</select>
+				</div>
+				<div class="form-group inblock" style="position: relative;">
+					<label class="col-sm-2 control-label">负责人：</label>
+					<!--<div style="right: 2px; top: -2px; cursor: pointer; display: none;"
+						class="input_clear">
+						<i class="Hui-iconfont f-26 c_blue"
+							style="position: absolute; top: 6px; right: 46px;">X</i>
+					</div>-->
+					<input type="text" class="form-control input-key" id="leaderlist"/>
+					<!--<select class="form-control" >-->
+					<!--</select>-->
+				</div>
+				<div class="form-group inblock">
+					<label class="control-label col-sm-2">项目名称/编号：</label>
+					<input type="text" class="form-control input-key" id="proMsg" name="proMsg" style="margin-left: -10px">
+				</div>
+			</div>
+			<div class="clearboth"></div>
+			<div class="button-position">
+				<button class="btn btn-orange btn-search search">查询</button>
+			</div>
+		</div>
+
+	</div>
+</div>
+<div class="panel panel-nopadding">
+	<div class="panel-body">
+		<div class="list-top">
+			<h4 class="list-title">项目</h4>
+			<div class="button-power-position" id="btnsOfListContain">
+				<!--<button class="btn btn-turquoise btn-add">新建项目</button>
+                <button class="btn btn-turquoise btn-export">导出项目</button>-->
+			</div>
+		</div>
+		<div class="table-responsive" id="prolist"></div>
+
+	</div>
+</div>
+
+<!-- 新建项目 -->
+<div class="modal fade" id="addpro" data-backdrop="static">
+	<div class="modal-dialog"
+		style="width: 780px; overflow-y: auto; max-height: 90%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">新建项目</h4>
+			</div>
+			<form method="post" class="validate" id="addproForm">
+				<div class="modal-body">
+					<h5>基础信息</h5>
+					<div class="row">
+						<div class="form-group col-sm-6">
+							<label class="control-label"><span class="required">*</span>项目名称：</label>
+							<input type="text" class="form-control" name="projectname"
+								id="projectname" />
+						</div>
+						<div class="form-group col-sm-6">
+							<label class="control-label"><span class="required">*</span>营销中心：</label>
+							<select class="form-control" id="marketlistadd"
+								name="marketlistadd">
+							</select>
+						</div>
+						<div class="form-group col-sm-8">
+							<label class="control-label"><span class="required">*</span>所属区域：</label>
+							<div class="area-block">
+								<select class="form-control  col-sm-2" id="provincelistadd"
+									name="provincelistadd">
+								</select> <select class="form-control  col-sm-2 col-offset-left"
+									id="citylistadd" name="citylistadd">
+									<option value="">--请选择--</option>
+								</select> <select class="form-control col-sm-2 col-offset-left"
+									id="countylistadd" name="countylistadd">
+									<option value="">--请选择--</option>
+								</select>
+							</div>
+
+						</div>
+						<div class="form-group col-sm-4">
+							<label class="control-label"><span class="required">*</span>立项日期：</label>
+							<input type="text" class="form-control laydate-icon"
+								name="procreatetime" readonly id="procreatetime" />
+						</div>
+						<div class="form-group col-sm-12">
+							<label class="control-label"><span class="required">*</span>项目背景：</label>
+							<textarea rows="5" class="form-control" maxlength="200"
+								name="projectcontext" id="projectcontext"></textarea>
+						</div>
+					</div>
+					<h5>管理信息</h5>
+					<div class="row">
+						<div class="form-group col-sm-6" style="position: relative;">
+							<label class="control-label"><span class="required">*</span>市场负责人：</label>
+							<div
+								style="right: 2px; top: -2px; cursor: pointer; display: none;"
+								class="input_clear">
+								<i class="Hui-iconfont f-26 c_blue"
+									style="position: absolute; top: 30px; right: 27px;">X</i>
+							</div>
+							<input type="text" class="form-control input-key"
+								id="leaderlist1add" name="leaderlist1add" readonly />
+							<!--<select class="form-control" id="leaderlist1add">-->
+							<!--</select>-->
+						</div>
+						<div class="form-group col-sm-6" style="position: relative;">
+							<label class="control-label"><span class="required">*</span>项目经理：</label>
+							<div
+								style="right: 2px; top: -2px; cursor: pointer; display: none;"
+								class="input_clear">
+								<i class="Hui-iconfont f-26 c_blue"
+									style="position: absolute; top: 30px; right: 27px;">X</i>
+							</div>
+							<input type="text" class="form-control input-key"
+								id="leaderlist2add" name="leaderlist2add" readonly />
+							<!--<select class="form-control" id="leaderlist2add">-->
+							<!--</select>-->
+						</div>
+						<div class="form-group col-sm-12" style="position: relative;">
+							<label class="control-label"><span class="required">*</span>项目成员：</label>
+							<div
+								style="right: 2px; top: -2px; cursor: pointer; display: none;"
+								class="input_clear">
+								<i class="Hui-iconfont f-26 c_blue"
+									style="position: absolute; top: 30px; right: 27px;">X</i>
+							</div>
+							<input type="text" class="form-control input-key"
+								id="leaderlist3add" name="leaderlist3add" readonly />
+							<!--<select class="form-control" id="leaderlist3add">-->
+							<!--</select>-->
+						</div>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<div class="modal-msg"></div>
+					<button type="submit" class="btn btn-success" id="btnAddPro">确定</button>
+					<button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+					<!--  data-dismiss="modal" -->
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- 人员组织架构，单选 -->
+<div class="modal fade" id="sglperchoose">
+	<div class="modal-dialog" style="width: 600px">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">选择人员 <span style="color:red; font-size: 12px;">(双击可选择)</span></h4>
+			</div>
+			<div class="modal-body">
+				<!--<div class="col-sm-12">
+                            <div class="input-group col-sm-8">
+                                <input type="text" class="form-control input-key" id="perkwsgl" placeholder="Search for...">
+                                <span class="input-group-btn">
+                                        <button type="button" class="btn btn-success" id="btnSearchsgl">搜索</button>
+                                    </span>
+                            </div>
+                        </div>-->
+				<ul id="treeDemo" class="ztree tree-contain"></ul>
+			</div>
+			<div class="modal-footer">
+				<div class="modal-msg"></div>
+				<button type="submit" class="btn btn-success" id="btnChoosePersgl">确定</button>
+				<button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 人员组织架构，多选 -->
+<div class="modal fade" id="dblperchoose">
+	<div class="modal-dialog" style="width: 600px">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">选择人员</h4>
+			</div>
+			<div class="modal-body">
+				<!--<div class="col-sm-12">
+                            <div class="input-group col-sm-8">
+                                <input type="text" class="form-control input-key" id="perkwdbl" placeholder="Search for...">
+                                <span class="input-group-btn">
+                                        <button type="button" class="btn btn-success" id="btnSearchdbl">搜索</button>
+                                    </span>
+                            </div>
+                        </div>-->
+				<ul id="treeDemodbl" class="ztree tree-contain"></ul>
+			</div>
+			<div class="modal-footer">
+				<div class="modal-msg"></div>
+				<button type="submit" class="btn btn-success" id="btnChoosePerdbl">确定</button>
+				<button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 项目详情 -->
+<div class="modal fade" id="prodetail">
+	<div class="modal-dialog" style="width: 780px">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">项目详情</h4>
+			</div>
+			<form method="post" class="validate" id="proDetailForm">
+				<div class="modal-body">
+					<div class="list-top">
+						<h4 class="list-title">基本信息</h4>
+						<div class="button-power-position">
+							<button class="btn btn-turquoise btn-editprod" data-status="edit">编辑</button>
+							<!--<button class="btn btn-turquoise btn-proreport">项目周报</button>-->
+							<!--<button class="btn btn-turquoise btn-prodemand">项目需求</button>-->
+							<button class="btn btn-turquoise btn-closepro">关闭项目</button>
+						</div>
+					</div>
+					<div class="row form-inline edit-block" id="editblock">
+						<div class="form-group col-sm-5">
+							<label class="control-label">立项日期：</label> <input type="text"
+								class="form-control on-border" name="dprodate" id="dprodate"
+								readonly />
+						</div>
+						<div class="form-group col-sm-7">
+							<label class="control-label">营销中心：</label> <input type="text"
+								class="form-control on-border" name="dmarket" id="dmarket"
+								readonly />
+						</div>
+						<div class="form-group col-sm-5">
+							<label class="control-label">项目编号：</label> <input type="text"
+								class="form-control on-border" name="dprocode" id="dprocode"
+								readonly />
+						</div>
+						<div class="form-group col-sm-7">
+							<label class="control-label">所属区域：</label> <input type="text"
+								class="form-control on-border" name="dproarea" id="dproarea"
+								readonly />
+						</div>
+						<div class="form-group col-sm-5">
+							<label class="control-label">项目经理：</label> <input type="text"
+								class="form-control on-border" name="dpromanager"
+								id="dpromanager" readonly />
+						</div>
+						<div class="form-group col-sm-7">
+							<label class="control-label">市场负责人：</label> <input type="text"
+								class="form-control on-border" name="dproleader" id="dproleader"
+								readonly />
+						</div>
+						<div class="form-group col-sm-12">
+							<label class="control-label">项目成员：</label> <input type="text"
+								class="form-control on-border" name="dpromebs" id="dpromebs"
+								readonly />
+						</div>
+						<div class="form-group col-sm-12">
+							<label class="control-label pro-desc-label">项目背景：</label>
+							<textarea rows="5"
+								class="form-control pro-desc-textarea on-border" maxlength="200"
+								name="dprodesc" id="dprodesc"></textarea>
+						</div>
+					</div>
+					<div class="row form-inline edit-block2" id="editblock2">
+						<div class="form-group col-sm-5">
+							<label class="control-label">立项日期：</label> <input type="text"
+								class="form-control" name="dprodate2" id="dprodate2" readonly />
+						</div>
+						<div class="form-group col-sm-7">
+							<label class="control-label">营销中心：</label> <select
+								class="form-control" id="dmarket2" name="dmarket2">
+							</select>
+						</div>
+						<div class="form-group col-sm-5">
+							<label class="control-label">项目编号：</label> <input type="text"
+								class="form-control on-border" name="dprocode2" id="dprocode2"
+								readonly />
+						</div>
+						<div class="form-group col-sm-7 ">
+							<label class="">所属区域：</label>
+							<div class="eb2-selects">
+								<select class="form-control " id="dproprovince2"
+									name="dproprovince2">
+								</select> <select class="form-control   " id="dprocity2" name="dprocity2">
+									<option value="">--请选择--</option>
+								</select> <select class="form-control  " id="dprocounty2"
+									name="dprocounty2">
+									<option value="">--请选择--</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group col-sm-5">
+							<label class="control-label">项目经理：</label> <input type="text"
+								class="form-control" name="dpromanager2" id="dpromanager2"
+								readonly />
+						</div>
+						<div class="form-group col-sm-7">
+							<label class="control-label">市场负责人：</label> <input type="text"
+								class="form-control" name="dproleader2" id="dproleader2"
+								readonly />
+						</div>
+						<div class="form-group col-sm-12">
+							<label class="control-label">项目成员：</label> <input type="text"
+								class="form-control" name="dpromebs2" id="dpromebs2" readonly />
+						</div>
+						<div class="form-group col-sm-12">
+							<label class="control-label pro-desc-label">项目背景：</label>
+							<textarea rows="5" class="form-control pro-desc-textarea"
+								maxlength="200" name="dprodesc2" id="dprodesc2"></textarea>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- 新增需求弹窗 start [[ -->
+<div class="modal fade" id="demandEditPanel" data-backdrop="static" data-clear="true">
+	<div class="modal-dialog" style="width: 640px;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">新建需求</h4>
+			</div>
+			<form class="formvalidate form-validate" id="demandEditForm"
+				method="post" role="form">
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12 form-group">
+							<label class="col-md-2 control-label">项目名称</label>
+							<div class="col-md-10">
+								<div class="search-boxs errorPlacement">
+									<input class="form-control" name="proInfo" type="text"
+										autocomplete="off" readonly>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12 form-group">
+							<label class="col-md-2 control-label"><span
+								class="required" aria-required="true">*</span>需求接收人</label>
+							<div class="col-md-10">
+								<div class="search-boxs errorPlacement">
+									<input class="form-control" name="receivePerson" type="text"
+										autocomplete="off" id="receivePerson" readonly>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12 form-group errorPlacement">
+							<label class="col-md-2 control-label"><span
+								class="required" aria-required="true">*</span>是否紧急</label>
+							<div class="col-md-10 radio">
+								<label class="radio-inline"> <input name="reqEmergency"
+									type="radio" value="2" checked="checked"> <span
+									class="lbl"></span><span class="radio-text">否</span>
+								</label> <label class="radio-inline"> <input name="reqEmergency"
+									type="radio" value="1"> <span class="lbl"></span><span
+									class="radio-text">是</span>
+								</label>
+							</div>
+						</div>
+						<div class="col-md-12 form-group chuliren">
+							<label class="col-md-2 control-label"><span
+								class="required" aria-required="true">*</span>需求标题</label>
+							<div class="col-md-10">
+								<input class="form-control" name="reqtitle" type="text">
+							</div>
+						</div>
+						<div class="col-md-12 form-group">
+							<label class="col-md-2 control-label"><span
+								class="required" aria-required="true">*</span>需求详情</label>
+							<div class="col-md-10">
+								<div class="wangeditor-container" id="reqDetail"
+									style="height: 220px"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="modal-msg"></div>
+					<button class="btn btn-success btn-examine" type="submit"
+						id="btnToAddDMD">确定</button>
+					<button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- 新增需求弹窗 end ]] -->
+<div class="modal fade" id="choosePersonModal" data-backdrop="static">
+	<div class="modal-dialog" style="width: 850px">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">选择人员</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row form-inline">
+					<div class="form-group col-sm-12">
+						<div class="input-group col-sm-12">
+							<input type="text" class="form-control" placeholder="请输入员工姓名"
+								id="queryKD"> <span class="input-group-btn">
+								<button class="btn btn-orange btn-search" type="button"
+									id="btnSearchDepLeader">搜索</button>
+							</span>
+						</div>
+					</div>
+					<div class="form-group col-sm-12">
+						<div>
+							<!--外面套一层是为了避免分页layout错乱-->
+							<div class="table-responsive" id="depLeaderList"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 导出 [[ -->
+<div class="modal fade" id="exportExclePanel" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title">导出信息确认</h4>
+			</div>
+			<div class="modal-body">
+				<div>您确定要导出数据吗？</div>
+			</div>
+			<div class="modal-footer">
+				<div class="modal-msg"></div>
+				<button type="submit" class="btn btn-success" id="export-sure">确认</button>
+				<button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 导出 ]] -->
+
+<script src="project/proManage.js"></script>

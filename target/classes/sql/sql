@@ -1,0 +1,205 @@
+CREATE VIEW require_count ( pro_id ,require_count ) AS select pro_id ,COUNT(1) require_count  from pmo_requirements  GROUP BY pro_id
+
+
+
+
+
+CREATE TABLE `ctm_contract` (
+  `id` varchar(32) NOT NULL,
+  `examine_id` varchar(32) DEFAULT NULL COMMENT '合同审批详情id',
+  `contract_code` varchar(255) NOT NULL COMMENT '合同编号',
+  `contract_date` bigint(20) DEFAULT NULL COMMENT '合同日期',
+  `contract_attr` varchar(20) DEFAULT NULL COMMENT '合同属性',
+  `contract_amount` varchar(20) DEFAULT NULL COMMENT '合同金额区间',
+  `contract_type` varchar(5) DEFAULT NULL COMMENT '合同式份',
+  `contract_status` int(4) DEFAULT NULL COMMENT '合同状态，生效中，已结束，已终止',
+  `contract_picture` varchar(255) DEFAULT NULL COMMENT '合同原件',
+  `contract_abstract` varchar(255) DEFAULT NULL COMMENT '合同摘要',
+  `add_time` bigint(20) DEFAULT NULL COMMENT '添加时间',
+  `update_time` bigint(20) DEFAULT NULL,
+  `add_user` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+CREATE TABLE `ctm_contract_examine` (
+  `id` varchar(32) NOT NULL,
+  `contract_name` varchar(20) DEFAULT NULL COMMENT '合同名称',
+  `customer_id` varchar(32) DEFAULT NULL COMMENT '客户id',
+  `customer_name` varchar(20) DEFAULT NULL COMMENT '客户名称',
+  `region_id` varchar(32) DEFAULT NULL COMMENT '片区id',
+  `region_name` varchar(20) DEFAULT NULL COMMENT '片区名称',
+  `salesman_id` varchar(32) DEFAULT NULL COMMENT '业务员id',
+  `salesman_name` varchar(20) DEFAULT NULL COMMENT '业务员名称',
+  `dep_id` varchar(32) DEFAULT NULL COMMENT '办事处',
+  `department_id` varchar(32) DEFAULT NULL COMMENT '产品线id',
+  `opp_id` varchar(32) DEFAULT NULL COMMENT '所属商机',
+  `opp_name` varchar(20) DEFAULT NULL COMMENT '所属商机名称',
+  `files` varchar(255) DEFAULT NULL COMMENT '附件',
+  `status` int(2) DEFAULT '0' COMMENT '0-未提交，1-审核中，2-待归档，3-已归档',
+  `start_time` bigint(20) DEFAULT NULL COMMENT '合同开始时间',
+  `end_time` bigint(20) DEFAULT NULL COMMENT '合同结束时间',
+  `remark` varchar(255) DEFAULT NULL COMMENT '其他说明',
+  `add_time` bigint(20) DEFAULT NULL COMMENT '添加时间',
+  `update_time` bigint(20) DEFAULT NULL COMMENT '更新时间',
+  `add_user` varchar(32) DEFAULT NULL COMMENT '添加人id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `ctm_files` (
+  `id` varchar(32) NOT NULL,
+  `ref_id` varchar(32) DEFAULT NULL COMMENT '关联id(文件所属)',
+  `name` varchar(32) DEFAULT NULL COMMENT '文件名',
+  `size` varchar(32) DEFAULT NULL COMMENT '文件大小',
+  `isvalid` int(2) DEFAULT NULL COMMENT '是否有效',
+  `add_time` bigint(20) DEFAULT NULL COMMENT '添加时间',
+  `update_time` bigint(20) DEFAULT NULL COMMENT '更新时间',
+  `add_user` varchar(32) DEFAULT NULL COMMENT '添加人',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `ctm_template` (
+  `id` varchar(32) NOT NULL,
+  `parent_id` varchar(32) DEFAULT NULL COMMENT '父id',
+  `name` varchar(20) DEFAULT NULL COMMENT '目录名称',
+  `add_time` bigint(20) DEFAULT NULL COMMENT '添加时间',
+  `update_time` bigint(20) DEFAULT NULL COMMENT '更新时间',
+  `add_user` varchar(20) DEFAULT NULL COMMENT '添加人',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sys_nodes` (
+  `id` varchar(32) NOT NULL,
+  `node_name` varchar(20) DEFAULT NULL COMMENT '节点名称',
+  `process_type` int(2) DEFAULT NULL COMMENT '流程类型1-请假，2-出差，3-报销，4-合同审批',
+  `is_head` int(2) DEFAULT NULL COMMENT '是否是头结点1-是，0-否',
+  `is_setting` int(2) DEFAULT NULL COMMENT '是否可配置人员',
+  `person_path` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+
+CREATE TABLE `sys_nodes_btn` (
+  `node_id` varchar(32) DEFAULT NULL,
+  `btn_id` varchar(32) DEFAULT NULL COMMENT '按钮id'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sys_nodes_user` (
+  `id` varchar(32) NOT NULL,
+  `node_id` varchar(32) DEFAULT NULL COMMENT '节点id',
+  `user_id` varchar(32) DEFAULT NULL COMMENT '处理人id',
+  `add_time` bigint(20) DEFAULT NULL,
+  `update_time` bigint(20) DEFAULT NULL,
+  `isvalid` int(2) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sys_parameter` (
+  `id` varchar(32) NOT NULL,
+  `code` varchar(20) DEFAULT NULL COMMENT '参数所属编号',
+  `name` varchar(10) DEFAULT NULL COMMENT '参数字段名称',
+  `value` varchar(10) DEFAULT NULL COMMENT '参数值',
+  `add_user` bigint(20) DEFAULT NULL COMMENT '添加人',
+  `add_time` bigint(20) DEFAULT NULL COMMENT '添加时间',
+  `update_time` bigint(20) DEFAULT NULL COMMENT '更新时间',
+  `isvalid` int(2) DEFAULT NULL COMMENT '是否可用0-不可，1-可用',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sys_process` (
+  `id` varchar(32) NOT NULL,
+  `user_id` varchar(32) NOT NULL COMMENT '流程发起人id',
+  `type` int(4) DEFAULT NULL COMMENT '流程类型1-请假，2-出差，3-报销，4-合同审批',
+  `title` varchar(255) DEFAULT NULL COMMENT '流程标题',
+  `node_id` varchar(32) DEFAULT NULL COMMENT '流程当前节点',
+  `rel_id` varchar(32) DEFAULT NULL COMMENT '关联业务表id',
+  `add_time` bigint(20) DEFAULT NULL COMMENT '添加时间',
+  `update_time` bigint(20) DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sys_prodoing` (
+  `id` varchar(32) NOT NULL,
+  `process_id` varchar(32) DEFAULT NULL COMMENT '流程id',
+  `node_id` varchar(32) DEFAULT NULL COMMENT '结点id',
+  `handler_id` varchar(32) DEFAULT NULL COMMENT '处理人id',
+  `add_time` bigint(20) DEFAULT NULL COMMENT '添加时间',
+  `update_time` bigint(20) DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sys_prodone` (
+  `id` varchar(32) NOT NULL,
+  `process_id` varchar(32) DEFAULT NULL COMMENT '流程id',
+  `node_id` varchar(32) DEFAULT NULL COMMENT '节点id',
+  `handler_id` varchar(32) DEFAULT NULL COMMENT '处理人id',
+  `result` int(2) DEFAULT NULL COMMENT '处理结果0-驳回,1-同意,2-重新发起，3-结束',
+  `opinion` varchar(255) DEFAULT NULL COMMENT '处理意见',
+  `start_time` bigint(20) DEFAULT NULL COMMENT '待办开始时间',
+  `add_time` bigint(20) DEFAULT NULL COMMENT '添加时间',
+  `update_time` bigint(20) DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sys_profilter` (
+  `node_id` varchar(32) DEFAULT NULL COMMENT '当前节点',
+  `next_node_id` varchar(32) DEFAULT NULL COMMENT '下个节点',
+  `filter` varchar(100) DEFAULT NULL COMMENT '流转条件'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+INSERT INTO `sys_profilter` (`node_id`, `next_node_id`, `filter`) VALUES ('1', '6', '<#if (end>0)>true<#else>false</#if>');
+INSERT INTO `sys_profilter` (`node_id`, `next_node_id`, `filter`) VALUES ('2', '3', '<#if passNum=count>true<#else>false</#if>');
+INSERT INTO `sys_profilter` (`node_id`, `next_node_id`, `filter`) VALUES ('2', '1', '<#if (rejectNum>0)>true<#else>false</#if>');
+INSERT INTO `sys_profilter` (`node_id`, `next_node_id`, `filter`) VALUES ('3', '4', '<#if passNum=count>true<#else>false</#if>');
+INSERT INTO `sys_profilter` (`node_id`, `next_node_id`, `filter`) VALUES ('3', '1', '<#if (rejectNum>0)>true<#else>false</#if>');
+INSERT INTO `sys_profilter` (`node_id`, `next_node_id`, `filter`) VALUES ('4', '5', '<#if passNum=count>true<#else>false</#if>');
+INSERT INTO `sys_profilter` (`node_id`, `next_node_id`, `filter`) VALUES ('4', '1', '<#if (rejectNum>0)>true<#else>false</#if>');
+INSERT INTO `sys_profilter` (`node_id`, `next_node_id`, `filter`) VALUES ('5', '6', 'true');
+INSERT INTO `sys_profilter` (`node_id`, `next_node_id`, `filter`) VALUES ('1', '2', '<#if (begin>0)>true<#else>false</#if>');
+
+
+
+
+INSERT INTO `sys_nodes` (`id`, `node_name`, `process_type`, `is_head`, `is_setting`, `person_path`) VALUES ('1', '已驳回', '4', '1', '0', 'getApplyUser');
+INSERT INTO `sys_nodes` (`id`, `node_name`, `process_type`, `is_head`, `is_setting`, `person_path`) VALUES ('2', '上级审批', '4', '0', '0', 'getGroupLeader');
+INSERT INTO `sys_nodes` (`id`, `node_name`, `process_type`, `is_head`, `is_setting`, `person_path`) VALUES ('3', '业务会审', '4', '0', '1', 'getHandler');
+INSERT INTO `sys_nodes` (`id`, `node_name`, `process_type`, `is_head`, `is_setting`, `person_path`) VALUES ('4', 'CEO审批', '4', '0', '1', 'getHandler');
+INSERT INTO `sys_nodes` (`id`, `node_name`, `process_type`, `is_head`, `is_setting`, `person_path`) VALUES ('5', '合同归档', '4', '2', '1', 'getHandler');
+INSERT INTO `sys_nodes` (`id`, `node_name`, `process_type`, `is_head`, `is_setting`, `person_path`) VALUES ('6', '已结束', '4', '3', '1', '');
+
+INSERT INTO `sys_nodes_btn` (`node_id`, `btn_id`) VALUES ('2', 'contractAgree');
+INSERT INTO `sys_nodes_btn` (`node_id`, `btn_id`) VALUES ('2', 'contractRebut');
+INSERT INTO `sys_nodes_btn` (`node_id`, `btn_id`) VALUES ('3', 'contractAgree');
+INSERT INTO `sys_nodes_btn` (`node_id`, `btn_id`) VALUES ('3', 'contractRebut');
+INSERT INTO `sys_nodes_btn` (`node_id`, `btn_id`) VALUES ('4', 'contractAgree');
+INSERT INTO `sys_nodes_btn` (`node_id`, `btn_id`) VALUES ('4', 'contractRebut');
+INSERT INTO `sys_nodes_btn` (`node_id`, `btn_id`) VALUES ('5', 'contractFile');
+INSERT INTO `sys_nodes_btn` (`node_id`, `btn_id`) VALUES ('1', 'contractEnd');
+INSERT INTO `sys_nodes_btn` (`node_id`, `btn_id`) VALUES ('1', 'contractRestart');
+
+
+INSERT INTO `sys_parameter` (`id`, `code`, `name`, `value`, `add_user`, `add_time`, `update_time`, `isvalid`) VALUES ('152082790593422eb448a318384909cc', 'ctm_attr', '合同属性2', '7', NULL, '1499668913117', '1499857138066', '1');
+INSERT INTO `sys_parameter` (`id`, `code`, `name`, `value`, `add_user`, `add_time`, `update_time`, `isvalid`) VALUES ('1fcb7f6dc9d8432b880f379ebef6d22a', 'contract_exstatus', '待归档', '2', '1', '1499152771000', '1499152771000', '1');
+INSERT INTO `sys_parameter` (`id`, `code`, `name`, `value`, `add_user`, `add_time`, `update_time`, `isvalid`) VALUES ('2fcb7f6dc9d8432b880f379ebef6d22a', 'contract_exstatus', '已归档', '3', '1', '1499152771000', '1499152771000', '1');
+INSERT INTO `sys_parameter` (`id`, `code`, `name`, `value`, `add_user`, `add_time`, `update_time`, `isvalid`) VALUES ('2fcb7f6dc9d8432b880f379ebef6d23a', 'contract_status', '执行中', '1', '1', '1499152771000', '1499152771000', '1');
+INSERT INTO `sys_parameter` (`id`, `code`, `name`, `value`, `add_user`, `add_time`, `update_time`, `isvalid`) VALUES ('2fcb7f6dc9d8432b880f379ebef6d24a', 'contract_status', '已结束', '2', '1', '1499152771000', '1499152771000', '1');
+INSERT INTO `sys_parameter` (`id`, `code`, `name`, `value`, `add_user`, `add_time`, `update_time`, `isvalid`) VALUES ('2fcb7f6dc9d8432b880f379ebef6d25a', 'contract_status', '已终止', '3', '1', '1499152771000', '1499152771000', '1');
+INSERT INTO `sys_parameter` (`id`, `code`, `name`, `value`, `add_user`, `add_time`, `update_time`, `isvalid`) VALUES ('2fcb7f6dc9d8432b880f379ebef6d26a', 'department', '新能源', 'XNY', '1', '1499152771000', '1499669204209', '1');
+INSERT INTO `sys_parameter` (`id`, `code`, `name`, `value`, `add_user`, `add_time`, `update_time`, `isvalid`) VALUES ('2fcb7f6dc9d8432b880f379ebef6d27a', 'department', '路内', 'LN', '1', '1499152771000', '1499669204214', '1');
+INSERT INTO `sys_parameter` (`id`, `code`, `name`, `value`, `add_user`, `add_time`, `update_time`, `isvalid`) VALUES ('2fcb7f6dc9d8432b880f379ebef6d28a', 'department', '路外', 'LW', '1', '1499152771000', '1499669204217', '1');
+INSERT INTO `sys_parameter` (`id`, `code`, `name`, `value`, `add_user`, `add_time`, `update_time`, `isvalid`) VALUES ('2fcb7f6dc9d8432b880f379ebef6d29a', 'processtype', '项目', '1', '1', '1499152771000', '1499152771000', '1');
+INSERT INTO `sys_parameter` (`id`, `code`, `name`, `value`, `add_user`, `add_time`, `update_time`, `isvalid`) VALUES ('2fcb7f6dc9d8432b880f379ebef6d31a', 'processtype', '报销', '3', '1', '1499152771000', '1499152771000', '1');
+INSERT INTO `sys_parameter` (`id`, `code`, `name`, `value`, `add_user`, `add_time`, `update_time`, `isvalid`) VALUES ('2fcb7f6dc9d8432b880f379ebef6d32a', 'processtype', '合同审批', '4', '1', '1499152771000', '1499152771000', '1');
+INSERT INTO `sys_parameter` (`id`, `code`, `name`, `value`, `add_user`, `add_time`, `update_time`, `isvalid`) VALUES ('2fcb7f6dc9d8432b880f379ebef6d38a', 'processtype', '加班', '2', '1', '1499152771000', '1499152771000', '1');
+INSERT INTO `sys_parameter` (`id`, `code`, `name`, `value`, `add_user`, `add_time`, `update_time`, `isvalid`) VALUES ('3eab7f6dc9d8432b880f379ebef6d38a', 'ctm_style', '一式两份', '2', '1', '1499152771000', '1499671765806', '1');
+INSERT INTO `sys_parameter` (`id`, `code`, `name`, `value`, `add_user`, `add_time`, `update_time`, `isvalid`) VALUES ('3ecb7f6dc9d8432b880f379ebef6d38a', 'sign_modal', '签约模式', '5', '1', '1499152771000', '1499857145396', '1');
+INSERT INTO `sys_parameter` (`id`, `code`, `name`, `value`, `add_user`, `add_time`, `update_time`, `isvalid`) VALUES ('3f334f48b0ce4494903a5618fd9fb461', 'ctm_style', '一式三份', '3', NULL, '1499671765810', NULL, '1');
+INSERT INTO `sys_parameter` (`id`, `code`, `name`, `value`, `add_user`, `add_time`, `update_time`, `isvalid`) VALUES ('3fcb7f6dc9d8432b880f379ebef6d38a', 'ctm_attr', '合同属性1', '8', '1', '1499152771000', '1499857138069', '1');
+INSERT INTO `sys_parameter` (`id`, `code`, `name`, `value`, `add_user`, `add_time`, `update_time`, `isvalid`) VALUES ('a45e2eb6a3fe493882e50ec18405d0fe', 'ctm_attr', '合同属性3', '9', NULL, '1499669163119', '1499857138071', '1');
+INSERT INTO `sys_parameter` (`id`, `code`, `name`, `value`, `add_user`, `add_time`, `update_time`, `isvalid`) VALUES ('ce91803e7ae24fe78838357cb6763ea0', 'sign_modal', '签约模式2', '6', '1', '1499669189608', '1499857145398', '1');
+INSERT INTO `sys_parameter` (`id`, `code`, `name`, `value`, `add_user`, `add_time`, `update_time`, `isvalid`) VALUES ('de91803e7ae24fe78838357cb6763ea0', 'ctm_examine_status', '审批中', '1', '1', '1499669189608', NULL, '1');
+INSERT INTO `sys_parameter` (`id`, `code`, `name`, `value`, `add_user`, `add_time`, `update_time`, `isvalid`) VALUES ('de91803e7ae24fe78838357cb6763ea1', 'ctm_examine_status', '待归档', '2', '1', '1499669189608', NULL, '1');
+INSERT INTO `sys_parameter` (`id`, `code`, `name`, `value`, `add_user`, `add_time`, `update_time`, `isvalid`) VALUES ('de91803e7ae24fe78838357cb6763ea2', 'ctm_examine_status', '已归档', '3', '1', '1499669189608', NULL, '1');
+INSERT INTO `sys_parameter` (`id`, `code`, `name`, `value`, `add_user`, `add_time`, `update_time`, `isvalid`) VALUES ('de91803e7ae24fe78838357cb6763ea3', 'ctm_examine_status', '已驳回', '4', '1', '1499669189608', NULL, '1');

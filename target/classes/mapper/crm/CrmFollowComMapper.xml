@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.crm.CrmFollowComMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.crm.CrmFollowCom" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="client_id" property="clientId" jdbcType="VARCHAR" />
+    <result column="opp_id" property="oppId" jdbcType="VARCHAR" />
+    <result column="follow_id" property="followId" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+    <result column="belong_id" property="belongId" jdbcType="VARCHAR" />
+    <result column="add_person_id" property="addPersonId" jdbcType="VARCHAR" />
+    <result column="add_person_name" property="addPersonName" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, client_id, opp_id, follow_id, content, parent_id, belong_id, add_person_id, add_person_name,
+    add_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from crm_follow_comment
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from crm_follow_comment
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.crm.CrmFollowCom" >
+    insert into crm_follow_comment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="clientId != null" >
+        client_id,
+      </if>
+      <if test="oppId != null" >
+        opp_id,
+      </if>
+      <if test="followId != null" >
+        follow_id,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="belongId != null" >
+        belong_id,
+      </if>
+      <if test="addPersonId != null" >
+        add_person_id,
+      </if>
+      <if test="addPersonName != null" >
+        add_person_name,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="clientId != null" >
+        #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="oppId != null" >
+        #{oppId,jdbcType=VARCHAR},
+      </if>
+      <if test="followId != null" >
+        #{followId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="belongId != null" >
+        #{belongId,jdbcType=VARCHAR},
+      </if>
+      <if test="addPersonId != null" >
+        #{addPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="addPersonName != null" >
+        #{addPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.crm.CrmFollowCom" >
+    update crm_follow_comment
+    <set >
+      <if test="clientId != null" >
+        client_id = #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="oppId != null" >
+        opp_id = #{oppId,jdbcType=VARCHAR},
+      </if>
+      <if test="followId != null" >
+        follow_id = #{followId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="belongId != null" >
+        belong_id = #{belongId,jdbcType=VARCHAR},
+      </if>
+      <if test="addPersonId != null" >
+        add_person_id = #{addPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="addPersonName != null" >
+        add_person_name = #{addPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+  <resultMap id="SubResultQuery" type="com.ecaray.ecms.entity.crm.Vo.CrmFollowComVo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="client_id" property="clientId" jdbcType="VARCHAR" />
+    <result column="opp_id" property="oppId" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+    <result column="follow_id" property="followId" jdbcType="VARCHAR" />
+    <result column="belong_id" property="belongId" jdbcType="VARCHAR" />
+    <result column="add_person_id" property="addPersonId" jdbcType="VARCHAR" />
+    <result column="add_person_name" property="addPersonName" jdbcType="VARCHAR" />
+    <result column="parent_user_id" property="parentUserId" jdbcType="VARCHAR" />
+    <result column="parent_user_name" property="parentUserName" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+
+  <select id="selectComByBelongId" resultMap="SubResultQuery" parameterType="java.lang.String" >
+    SELECT
+	a.*, b.add_person_id AS parent_user_id,
+	b.add_person_name AS parent_user_name
+FROM
+	crm_follow_comment a LEFT JOIN
+	crm_follow_comment b
+ON
+	b.id = a.parent_id
+WHERE  a.belong_id=#{belongId} ORDER BY a.add_time desc
+  </select>
+
+
+  <select id="selectComByFollowId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from crm_follow_comment
+    where follow_id = #{followId}  AND  parent_id = '0' order by add_time desc
+  </select>
+
+
+</mapper>

@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.crm.CrmOppMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.crm.CrmOpp" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="client_id" property="clientId" jdbcType="VARCHAR" />
+    <result column="client_name" property="clientName" jdbcType="VARCHAR" />
+    <result column="keeper_id" property="keeperId" jdbcType="VARCHAR" />
+    <result column="keeper_name" property="keeperName" jdbcType="VARCHAR" />
+    <result column="region_id" property="regionId" jdbcType="VARCHAR" />
+    <result column="int_items_id" property="intItemsId" jdbcType="VARCHAR" />
+    <result column="co_mode_id" property="coModeId" jdbcType="VARCHAR" />
+    <result column="sale_stage_id" property="saleStageId" jdbcType="VARCHAR" />
+    <result column="advance_sales" property="advanceSales" jdbcType="DOUBLE" />
+    <result column="deal_date" property="dealDate" jdbcType="BIGINT" />
+    <result column="comments" property="comments" jdbcType="VARCHAR" />
+    <result column="add_person_id" property="addPersonId" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="last_flow_time" property="lastFlowTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, client_id, client_name, keeper_id, keeper_name, region_id, int_items_id, 
+    co_mode_id, sale_stage_id, advance_sales, deal_date, comments, add_person_id, add_time, 
+    update_time, last_flow_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crm_opp
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from crm_opp
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.crm.CrmOpp" >
+    insert into crm_opp
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="clientId != null" >
+        client_id,
+      </if>
+      <if test="clientName != null" >
+        client_name,
+      </if>
+      <if test="keeperId != null" >
+        keeper_id,
+      </if>
+      <if test="keeperName != null" >
+        keeper_name,
+      </if>
+      <if test="regionId != null" >
+        region_id,
+      </if>
+      <if test="intItemsId != null" >
+        int_items_id,
+      </if>
+      <if test="coModeId != null" >
+        co_mode_id,
+      </if>
+      <if test="saleStageId != null" >
+        sale_stage_id,
+      </if>
+      <if test="advanceSales != null" >
+        advance_sales,
+      </if>
+      <if test="dealDate != null" >
+        deal_date,
+      </if>
+      <if test="comments != null" >
+        comments,
+      </if>
+      <if test="addPersonId != null" >
+        add_person_id,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="lastFlowTime != null" >
+        last_flow_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="clientId != null" >
+        #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="clientName != null" >
+        #{clientName,jdbcType=VARCHAR},
+      </if>
+      <if test="keeperId != null" >
+        #{keeperId,jdbcType=VARCHAR},
+      </if>
+      <if test="keeperName != null" >
+        #{keeperName,jdbcType=VARCHAR},
+      </if>
+      <if test="regionId != null" >
+        #{regionId,jdbcType=VARCHAR},
+      </if>
+      <if test="intItemsId != null" >
+        #{intItemsId,jdbcType=VARCHAR},
+      </if>
+      <if test="coModeId != null" >
+        #{coModeId,jdbcType=VARCHAR},
+      </if>
+      <if test="saleStageId != null" >
+        #{saleStageId,jdbcType=VARCHAR},
+      </if>
+      <if test="advanceSales != null" >
+        #{advanceSales,jdbcType=DOUBLE},
+      </if>
+      <if test="dealDate != null" >
+        #{dealDate,jdbcType=BIGINT},
+      </if>
+      <if test="comments != null" >
+        #{comments,jdbcType=VARCHAR},
+      </if>
+      <if test="addPersonId != null" >
+        #{addPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="lastFlowTime != null" >
+        #{lastFlowTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.crm.CrmOpp" >
+    update crm_opp
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="clientId != null" >
+        client_id = #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="clientName != null" >
+        client_name = #{clientName,jdbcType=VARCHAR},
+      </if>
+      <if test="keeperId != null" >
+        keeper_id = #{keeperId,jdbcType=VARCHAR},
+      </if>
+      <if test="keeperName != null" >
+        keeper_name = #{keeperName,jdbcType=VARCHAR},
+      </if>
+      <if test="regionId != null" >
+        region_id = #{regionId,jdbcType=VARCHAR},
+      </if>
+      <if test="intItemsId != null" >
+        int_items_id = #{intItemsId,jdbcType=VARCHAR},
+      </if>
+      <if test="coModeId != null" >
+        co_mode_id = #{coModeId,jdbcType=VARCHAR},
+      </if>
+      <if test="saleStageId != null" >
+        sale_stage_id = #{saleStageId,jdbcType=VARCHAR},
+      </if>
+      <if test="advanceSales != null" >
+        advance_sales = #{advanceSales,jdbcType=DOUBLE},
+      </if>
+      <if test="dealDate != null" >
+        deal_date = #{dealDate,jdbcType=BIGINT},
+      </if>
+      <if test="comments != null" >
+        comments = #{comments,jdbcType=VARCHAR},
+      </if>
+      <if test="addPersonId != null" >
+        add_person_id = #{addPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="lastFlowTime != null" >
+        last_flow_time = #{lastFlowTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+
+
+  <resultMap id="BaseQueryResultMap" type="com.ecaray.ecms.entity.crm.Vo.CrmOppVo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="client_id" property="clientId" jdbcType="VARCHAR" />
+    <result column="client_name" property="clientName" jdbcType="VARCHAR" />
+    <result column="keeper_name" property="keeperName" jdbcType="VARCHAR" />
+    <result column="region_id" property="regionId" jdbcType="VARCHAR" />
+    <result column="int_items_id" property="intItemsId" jdbcType="VARCHAR" />
+    <result column="co_mode_id" property="coModeId" jdbcType="VARCHAR" />
+    <result column="sale_stage_id" property="saleStageId" jdbcType="VARCHAR" />
+    <result column="advance_sales" property="advanceSales" jdbcType="DOUBLE" />
+    <result column="deal_date" property="dealDate" jdbcType="BIGINT" />
+    <result column="last_flow_time" property="lastFlowTime" jdbcType="BIGINT" />
+    <result column="follow_count" property="followCount" jdbcType="INTEGER" />
+  </resultMap>
+
+  <select id="selectOppListQuery" resultMap="BaseQueryResultMap"
+          parameterType="com.ecaray.ecms.entity.crm.Vo.OppQueryFilter" >
+   SELECT
+    a.id,
+	a. NAME,
+	a.client_id,
+	a.client_name,
+	a.keeper_name,
+	a.sale_stage_id,
+	a.region_id,
+	a.int_items_id,
+	a.co_mode_id,
+	a.deal_date,
+	a.comments,
+	a.advance_sales,
+cf.follow_count,
+a.last_flow_time
+
+FROM
+	crm_opp a  LEFT JOIN (
+	SELECT
+		count(1) AS follow_count,
+    c.opp_id
+	FROM
+		crm_follow c
+	GROUP BY
+		c.opp_id
+) as cf ON 	 cf.opp_id = a.id
+WHERE
+
+    1=1
+    <if test="name != null" >
+      AND a.name like  #{name}
+    </if>
+    <if test="clientId != null" >
+      AND a.client_id =  #{clientId}
+    </if>
+    <if test="clientName != null" >
+      AND a.client_name like  #{clientName}
+    </if>
+    <if test="keeperName != null" >
+      AND  a.keeper_name like #{keeperName}
+    </if>
+    <if test="keeperId != null" >
+      AND a.keeper_id = #{keeperId}
+    </if>
+    <if test="keeperId == null" >
+      AND a.keeper_id IN
+      <foreach item="item" index="index" collection="keepers" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+
+    </if>
+    <if test="regionId != null" >
+      AND  a.region_id = #{regionId}
+    </if>
+
+    <if test="intItemsId != null" >
+      AND a.int_items_id = #{intItemsId}
+    </if>
+
+    <if test="coModeId != null" >
+      AND a.co_mode_id = #{coModeId}
+    </if>
+    <if test="saleStageId != null" >
+      AND a.sale_stage_id = #{saleStageId}
+    </if>
+    <if test="lastFlowTime > 0" >
+      AND a.last_flow_time &gt; #{lastFlowTime}
+    </if>
+    order by  a.add_time desc
+  </select>
+
+
+
+  <resultMap id="DetailResultMap" type="com.ecaray.ecms.entity.crm.Vo.CrmOppVo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="client_id" property="clientId" jdbcType="VARCHAR" />
+    <result column="client_name" property="clientName" jdbcType="VARCHAR" />
+    <result column="keeper_id" property="keeperId" jdbcType="VARCHAR" />
+    <result column="keeper_name" property="keeperName" jdbcType="VARCHAR" />
+    <result column="region_id" property="regionId" jdbcType="VARCHAR" />
+    <result column="int_items_id" property="intItemsId" jdbcType="VARCHAR" />
+    <result column="co_mode_id" property="coModeId" jdbcType="VARCHAR" />
+    <result column="sale_stage_id" property="saleStageId" jdbcType="VARCHAR" />
+    <result column="advance_sales" property="advanceSales" jdbcType="DOUBLE" />
+    <result column="deal_date" property="dealDate" jdbcType="BIGINT" />
+    <result column="comments" property="comments" jdbcType="VARCHAR" />
+    <result column="add_person_id" property="addPersonId" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="last_flow_time" property="lastFlowTime" jdbcType="BIGINT" />
+    <result column="follow_count" property="followCount" jdbcType="INTEGER" />
+    <result column="contacts_count" property="contactsCount" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="selectOppDetailById" resultMap="DetailResultMap" parameterType="java.lang.String" >
+     SELECT
+	co.*,a.follow_count,b.contacts_count
+FROM
+	crm_opp co
+LEFT JOIN (
+	SELECT
+		count(1) AS follow_count,
+		cf.opp_id
+	FROM
+		crm_follow cf
+ where cf.opp_id=#{id}
+	GROUP BY
+		cf.opp_id
+) AS a ON co.id = a.opp_id
+
+LEFT JOIN (
+  SELECT
+   count(1) as contacts_count,coc.opp_id
+   FROM crm_opp_contacts coc
+   where coc.opp_id=#{id}
+   GROUP BY coc.opp_id
+) as b ON co.id = b.opp_id
+
+where co.id = #{id}  limit 1
+  </select>
+    <select id="selectCrmOppById" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select * from crm_opp where 1=1 
+  	<if test="oppId != null">
+  		AND id = #{oppId}
+  	</if>
+  </select>
+
+
+
+</mapper>

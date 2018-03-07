@@ -1,0 +1,287 @@
+<template>
+  <div id="articleSettting">
+    <el-form ref="formInline" :model="form" label-width="0" :inline="true">
+      <el-form-item label="">
+        <el-select @change="selectChange" v-model="form.select" placeholder="请选择" style="width: 180px;">
+          <el-option label="文章类型设置" :value="0"></el-option>
+          <el-option label="审批人设置" :value="1"></el-option>
+        </el-select>
+      </el-form-item>
+    </el-form>
+
+    <template v-if="form.select == 0">
+      <el-button type="success" @click="addTag" style="float:right; margin-top:-54px;">添 加</el-button>
+      <div class="table-list" id="articleTable"></div>
+    </template>
+
+    <div class="table-list" v-if="form.select == 1" id="approveTable"></div>
+
+    <el-dialog :title="tagModalTitle" :visible.sync="tagModal" size="tiny" class="tag-modal">
+      <el-form ref="tagForm" label-width="120px" :model="tagForm" :rules="tagRules" label-position="right">
+        <el-form-item label="类型名称：" prop="typeName">
+          <el-input v-model="tagForm.typeName" placeholder="请输入类型名称"></el-input>
+        </el-form-item>
+        <el-form-item label="字体颜色：" prop="color">
+          <el-input v-model="tagForm.color" placeholder="请输入标签字体颜色,例如#eee">
+            <template slot="append">
+              <el-color-picker color-format="hex" v-model="tagForm.color"></el-color-picker>
+            </template>
+          </el-input>
+        </el-form-item>
+      </el-form>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button type="success" :disabled="disable" v-if="disable">
+          <i class="el-icon-loading"></i>
+        </el-button>
+        <el-button type="success" :disabled="disable" @click="tagSubmit" v-else>确 定</el-button>
+        <el-button type="info" @click="tagModal = false">取 消</el-button>
+      </span>
+    </el-dialog>
+
+    <el-dialog title="审批设置" :visible.sync="approveModal" size="tiny" class="tag-modal">
+      <el-form label-width="80px" label-position="right">
+        <el-form-item label="审批人：">
+          <el-select style=" width: 350px !important;" v-model="form.person" filterable :multiple="false" placeholder="请输入关键字">
+            <el-option v-for="item in personList" :key="item.id" :label="item.realname" :value="item.id + '|' + item.realname">
+              <span style="float:left" class="search-label">{{item.realname}}</span>
+              <!-- <span style="float:right; padding-right:40px;" class="search-label">{{item.phone}}</span> -->
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button type="success" :disabled="disable" v-if="disable">
+          <i class="el-icon-loading"></i>
+        </el-button>
+        <el-button type="success" :disabled="disable" @click="approveSubmit" v-else>确 定</el-button>
+        <el-button type="info" @click="approveModal = false">取 消</el-button>
+      </span>
+    </el-dialog>
+
+  </div>
+</template>
+<style lang="scss">
+#articleSettting {
+  .tag-modal .el-dialog {
+    width: 500px;
+  }
+  .table-list {
+    margin-bottom: 30px;
+  }
+  .el-color-picker__color{
+    height: 16px;
+  }
+  .el-color-picker__trigger{
+    height: 30px;
+    border: 0;
+  }
+  .el-color-picker__empty{
+    top: 2px;
+  }
+}
+</style>
+<script>
+export default {
+  name: 'setting',
+  data() {
+    return {
+      tagModal: false,
+      approveModal: false,
+      tagModalTitle: '',
+      tagEdit: false,
+      personList: [],  //所有员工列表
+      form: {
+        select: 0,
+        nodeId: '', //审批节点
+        person: '',  //文章审批人
+      },
+      tagForm: {
+        typeName: '',
+        typeValue: '',
+        color: '#eee',
+        id: '',
+        value: ''
+      },
+      tagRules: {
+        typeName: [{
+          required: true,
+          message: '类型名称不能为空!'
+        },{
+          max: 4,
+          message: '类型名称不能超过4个字!'
+        }],
+        color: [{
+          required: true,
+          message: '字体颜色不能为空!'
+        }, {
+          type: 'hex',
+          message: '字体颜色格式不正确!'
+        }]
+      }
+    };
+  },
+  created() {
+    this.getTagList();
+    this.getPersonList();
+  },
+  methods: {
+    getTagList() {
+      let $this = this;
+      this.tableList({
+        url: '/ctm/setting/param/list',
+        data: {
+          code: 'portal_type'
+        },
+        element: '#articleTable',
+        columns: [{
+          name: '类型',
+          value: 'name',
+          render(row) {
+            return row.name.split('#')[0];
+          }
+        }, {
+          name: '操作',
+          operator() {
+            return [{
+              name: '修改',
+              click(row) {
+                $this.tagForm.typeName = row.name.split('#')[0];
+                $this.tagForm.color = '#' + row.name.split('#')[1];
+                $this.tagForm.id = row.id;
+                $this.tagForm.value = row.value;
+                $this.tagModalTitle = "修改标签类型";
+                $this.tagModal = true;
+                $this.tagEdit = true;
+              }
+            }];
+          }
+        }]
+      });
+    },
+    getPersonList() {  //获取所有人
+      this.ajax({
+        url: '/authority/user/query/list',
+        data: {
+          pageNum: 1,
+          pageSize: 1000
+        },
+        success(data, $this) {
+          if (data.code == 'success') {
+            $this.personList = data.content;
+          }
+        }
+      });
+    },
+    approveSet() { //设置审批人
+      let $this = this;
+      this.tableList({
+        url: '/news/process/nodes/list',
+        element: '#approveTable',
+        isPage: false,
+        columns: [{
+          name: '审批节点',
+          render(){
+            return '初审';
+          }
+        }, {
+          name: '审批人',
+          value: 'userName'
+        }, {
+          name: '操作',
+          operator() {
+            return [{
+              name: '修改',
+              click(row) {
+                $this.approveModal = true;
+                let id = row.userId;
+                let name = row.userName;
+                if (!!id) {
+                  $this.form.person = id + '|' + name;
+                } else {
+                  $this.form.person = '';
+                }
+                $this.form.nodeId = row.nodeId;
+              }
+            }];
+          }
+        }]
+      });
+    },
+    selectChange(value) {
+      if (value == 0) {
+        this.getTagList();
+      } else {
+        this.approveSet();
+      }
+    },
+    addTag() {
+      this.resetForm('tagForm');
+      this.tagModal = true;
+      this.tagEdit = false;
+      this.tagModalTitle = "添加标签类型";
+      this.tagForm.typeName = '';
+      this.tagForm.color = '#eee';
+    },
+    tagSubmit() {
+      this.$refs.tagForm.validate(valid => {
+        if (valid) {
+          this.disable = true;
+          let params = {
+            data: [{
+              name: this.tagForm.typeName + this.tagForm.color,
+              code: 'portal_type'
+            }]
+          };
+          if (this.tagEdit) {  //编辑模式
+            params.data[0].id = this.tagForm.id;
+            params.data[0].value = this.tagForm.value;
+          }
+          this.ajax({
+            url: '/ctm/setting/param/update',
+            type: 'put',
+            data: params,
+            success(data, $this) {
+              $this.disable = false;
+              if (data.code == 'success') {
+                $this.successTips();
+                $this.getTagList();
+                $this.tagModal = false;
+              } else {
+                $this.errorTips(data.message);
+              }
+            }
+          });
+        }
+      });
+    },
+    approveSubmit() {
+      const userId = this.form.person.split('|')[0];
+      if (!userId) {
+        this.errorTips('审批人不能为空!');
+        return;
+      }
+      this.disable = true;
+      this.ajax({
+        url: '/cwa/attendance/handler/update',
+        type: 'put',
+        data: {
+          nodeId: this.form.nodeId,
+          userId: this.form.person.split('|')[0]
+        },
+        success(data, $this) {
+          if (data.code == 'success') {
+            $this.approveModal = false;
+            $this.successTips();
+            $this.approveSet();
+          } else {
+            $this.errorTips(data.message);
+          }
+        }
+      });
+    }
+  }
+};
+</script>
+

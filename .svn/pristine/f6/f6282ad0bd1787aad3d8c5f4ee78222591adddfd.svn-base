@@ -1,0 +1,751 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.authority.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.authority.User" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="usercode" property="usercode" jdbcType="VARCHAR" />
+    <result column="realname" property="realname" jdbcType="VARCHAR" />
+    <result column="idcard" property="idcard" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="head_pic" property="headPic" jdbcType="VARCHAR" />
+    <result column="is_leave" property="isLeave" jdbcType="INTEGER" />
+    <result column="profess_level" property="professLevel" jdbcType="VARCHAR" />
+    <result column="manage_level" property="manageLevel" jdbcType="VARCHAR" />
+    <result column="dep_id" property="depId" jdbcType="VARCHAR" />
+    <result column="name" property="depName" jdbcType="VARCHAR" />
+    <result column="cwaName" property="cwaName" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="direct_leader" property="directLeader" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, username, password, usercode, realname, idcard, phone, email, sex, profess_level,address,is_leave,head_pic,
+    manage_level, dep_id, direct_leader, create_time, update_time
+  </sql>
+  <sql id="NoPass_Column_List" >
+    id, username, usercode, realname, idcard, phone,post, email, sex, profess_level,address,is_leave,head_pic,
+    manage_level, dep_id, direct_leader, create_time, update_time
+  </sql>
+  <!---->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="NoPass_Column_List" />
+    from sys_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.authority.User" >
+    insert into sys_user (id, username, password,
+    usercode, realname, idcard,
+    phone,tel, email, sex,is_leave,
+    profess_level, manage_level, dep_id,post,address,
+    direct_leader, create_time, update_time,
+    is_delete)
+    values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+    #{usercode,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR},
+    #{phone,jdbcType=VARCHAR},#{tel,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER},
+    #{isLeave,jdbcType=INTEGER},
+    #{professLevel,jdbcType=VARCHAR}, #{manageLevel,jdbcType=VARCHAR}, #{depId,jdbcType=VARCHAR},
+     #{post,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+    #{directLeader,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT},
+    #{isDelete,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.authority.User" >
+    insert into sys_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="usercode != null" >
+        usercode,
+      </if>
+      <if test="realname != null" >
+        realname,
+      </if>
+      <if test="idcard != null" >
+        idcard,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if><if test="tel != null" >
+        tel,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="isLeave != null" >
+        is_leave,
+      </if>
+      <if test="professLevel != null" >
+        profess_level,
+      </if>
+      <if test="manageLevel != null" >
+        manage_level,
+      </if>
+      <if test="depId != null" >
+        dep_id,
+      </if>
+      <if test="post != null" >
+        post,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="headPic != null" >
+        head_pic,
+      </if>
+      <if test="directLeader != null" >
+        direct_leader,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="usercode != null" >
+        #{usercode,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null" >
+        #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null" >
+        #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+
+      <if test="isLeave != null" >
+        #{isLeave,jdbcType=INTEGER},
+      </if>
+      <if test="professLevel != null" >
+        #{professLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="manageLevel != null" >
+        #{manageLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="depId != null" >
+        #{depId,jdbcType=VARCHAR},
+      </if>
+      <if test="post != null" >
+        #{post,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="headPic != null" >
+        #{headPic},
+      </if>
+      <if test="directLeader != null" >
+        #{directLeader,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <insert id="insertTotmp" parameterType="com.ecaray.ecms.entity.authority.User" >
+    insert into sys_user_tmp
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="usercode != null" >
+        usercode,
+      </if>
+      <if test="realname != null" >
+        realname,
+      </if>
+      <if test="idcard != null" >
+        idcard,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if><if test="tel != null" >
+        tel,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="isLeave != null" >
+        is_leave,
+      </if>
+      <if test="professLevel != null" >
+        profess_level,
+      </if>
+      <if test="manageLevel != null" >
+        manage_level,
+      </if>
+      <if test="depId != null" >
+        dep_id,
+      </if>
+      <if test="post != null" >
+        post,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="headPic != null" >
+        head_pic,
+      </if>
+      <if test="directLeader != null" >
+        direct_leader,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="usercode != null" >
+        #{usercode,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null" >
+        #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null" >
+        #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+
+      <if test="isLeave != null" >
+        #{isLeave,jdbcType=INTEGER},
+      </if>
+      <if test="professLevel != null" >
+        #{professLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="manageLevel != null" >
+        #{manageLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="depId != null" >
+        #{depId,jdbcType=VARCHAR},
+      </if>
+      <if test="post != null" >
+        #{post,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="headPic != null" >
+        #{headPic},
+      </if>
+      <if test="directLeader != null" >
+        #{directLeader,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.authority.User" >
+    update sys_user
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="usercode != null" >
+        usercode = #{usercode,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null" >
+        realname = #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null" >
+        idcard = #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="isLeave != null" >
+        is_leave = #{isLeave,jdbcType=INTEGER},
+      </if>
+      <if test="professLevel != null" >
+        profess_level = #{professLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="manageLevel != null" >
+        manage_level = #{manageLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="depId != null" >
+        dep_id = #{depId,jdbcType=VARCHAR},
+      </if>
+      <if test="post != null" >
+        post = #{post,jdbcType=VARCHAR},
+      </if>
+
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+
+      <if test="headPic != null" >
+        head_pic = #{headPic,jdbcType=VARCHAR},
+      </if>
+
+      <if test="directLeader != null" >
+        direct_leader = #{directLeader,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.authority.User" >
+    update sys_user
+    set username = #{username,jdbcType=VARCHAR},
+    password = #{password,jdbcType=VARCHAR},
+    usercode = #{usercode,jdbcType=VARCHAR},
+    realname = #{realname,jdbcType=VARCHAR},
+    idcard = #{idcard,jdbcType=VARCHAR},
+    phone = #{phone,jdbcType=VARCHAR},
+    tel = #{tel,jdbcType=VARCHAR},
+    email = #{email,jdbcType=VARCHAR},
+    sex = #{sex,jdbcType=INTEGER},
+    profess_level = #{professLevel,jdbcType=VARCHAR},
+    manage_level = #{manageLevel,jdbcType=VARCHAR},
+    dep_id = #{depId,jdbcType=VARCHAR},
+    post = #{post,jdbcType=VARCHAR},
+    address = #{address,jdbcType=VARCHAR},
+    direct_leader = #{directLeader,jdbcType=VARCHAR},
+    create_time = #{createTime,jdbcType=BIGINT},
+    update_time = #{updateTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectAllUsers" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from sys_user where is_delete=0
+    order by id
+  </select>
+  <resultMap id="DeptUserResultMap" type="com.ecaray.ecms.entity.authority.User" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="realname" property="realname" jdbcType="VARCHAR" />
+    <result column="is_leave" property="isLeave" jdbcType="INTEGER" />
+    <result column="post" property="post" jdbcType="VARCHAR" />
+    <result column="usercode" property="usercode" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="dep_id" property="depId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Dept_user_result" >
+    id, username, password, realname, idcard, phone, email, dep_id,is_leave,post,usercode,tel
+  </sql>
+<!--根据科室ID 和 查询信息查询用户-->
+  <select id="selectUserByDeptId" resultMap="DeptUserResultMap">
+    Select
+    <include refid="Dept_user_result" />
+    from sys_user where dep_id in
+    <foreach item="ids" index="index" collection="list" open="(" separator="," close=")">
+      #{ids} 
+    </foreach>
+    <if test = "queryInfo!=null">
+      AND (
+      realname like #{queryInfo}
+      or
+      phone like #{queryInfo}
+      )
+    </if>
+     and is_delete=0 and is_leave = 0
+     order by usercode asc
+  </select>
+  <select id="selectUserById" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from sys_user where id=#{userId} and is_delete = 0
+  </select>
+  <select id="selectUserByIdNoPassWord" resultMap="BaseResultMap" >
+    select
+    <include refid="NoPass_Column_List" />
+    from sys_user where id=#{userId} and is_delete = 0 limit 1 
+  </select>
+  <select id="selectUserByAccount" resultMap="BaseResultMap" >
+    select
+         id, username, realname, password
+    from sys_user where username=#{username}
+    AND    <![CDATA[ is_leave = 0 ]]>
+    limit 1
+  </select>
+  <resultMap id="UserBaseInfoMap" type="com.ecaray.ecms.entity.authority.Vo.UserBaseInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="realname" property="realname" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectUserBaseInfos" resultMap="UserBaseInfoMap" >
+    select
+    id,realname
+    from sys_user order by id
+  </select>
+
+  <select id="selectUserTreeWithDept" resultMap="UserTreeWithDept">
+    select id,name,parent_id,type ,nocheck from (
+    select id,realname as name ,dep_id as parent_id ,'user' as type,false as nocheck  from sys_user
+    UNION
+    select id,name,parent_id ,'dept' as type ,true AS nocheck from sys_dep
+   )
+     as
+    usertrees
+    where parent_id=0 order by id ASC
+  </select>
+  <!-- 返回结果集 -->
+  <resultMap type="com.ecaray.ecms.entity.authority.Vo.UserDeptTreeVo" id="UserTreeWithDept">
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="parent_id" property="pId" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="nocheck" property="nocheck" jdbcType="BOOLEAN"/>
+    <collection property="children"  column="id" ofType="com.ecaray.ecms.entity.authority.Vo.UserDeptTreeVo"
+                select="findMenuByParentId"></collection>
+  </resultMap>
+  <!-- 根据父键查询 -->
+  <select id="findMenuByParentId" parameterType="java.lang.String" resultMap="UserTreeWithDept">
+    select id,name,parent_id,type,nocheck from (
+    select id,realname as name ,dep_id as parent_id ,'user' as type,false as nocheck from sys_user
+    UNION
+    select id,name,parent_id ,'dept' as type ,true AS nocheck from sys_dep
+    )
+    as usertrees
+    where parent_id=#{id}
+  </select>
+<!--   NOCHECK -->
+  <!-- nocheck-->
+  <select id="selectUserTreeWithDeptNocheck" resultMap="UserTreeWithDeptNochcek">
+    select id,name,parent_id,type ,nocheck from (select id,name,parent_id ,'dept' as type ,false AS nocheck from sys_dep id
+    UNION
+    select id,realname as name ,dep_id as parent_id ,'user' as type,false as nocheck  from sys_user)
+    as
+    usertrees
+    where parent_id=0 order by id asc
+  </select>
+  <resultMap type="com.ecaray.ecms.entity.authority.Vo.UserDeptTreeVo" id="UserTreeWithDeptNochcek">
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="parent_id" property="pId" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="nocheck" property="nocheck" jdbcType="BOOLEAN"/>
+    <collection property="children"  column="id" ofType="com.ecaray.ecms.entity.authority.Vo.UserDeptTreeVo"
+                select="findMenuByParentIdNocheck"></collection>
+  </resultMap>
+  <!-- 根据父键查询 nocheck-->
+  <select id="findMenuByParentIdNocheck" parameterType="java.lang.String" resultMap="UserTreeWithDeptNochcek">
+    select id,name,parent_id,type ,nocheck from (select id,name,parent_id ,'dept' as type ,false AS nocheck from sys_dep id  UNION
+    select id,realname as name ,dep_id as parent_id ,'user' as type,false as nocheck from sys_user)
+    as usertrees
+    where parent_id=#{id} order by id
+  </select>
+  <resultMap type="com.ecaray.ecms.entity.authority.Vo.UserContacts" id="UserContactsResult">
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="realname" property="realname" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectUserContacts" resultMap="UserContactsResult">
+    select id,realname,phone,email
+    from sys_user su
+    where su.id in
+    <foreach collection="array" item="id" index="index"
+             open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </select>
+  <resultMap id="QueryUserDetailResultMap" type="com.ecaray.ecms.entity.authority.Vo.UserDetailVo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="usercode" property="usercode" jdbcType="VARCHAR" />
+    <result column="realname" property="realname" jdbcType="VARCHAR" />
+    <result column="idcard" property="idcard" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="post" property="post" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="profess_level" property="professLevel" jdbcType="VARCHAR" />
+    <result column="manage_level" property="manageLevel" jdbcType="VARCHAR" />
+    <result column="dep_id" property="depId" jdbcType="VARCHAR" />
+    <result column="dep_name" property="depName" jdbcType="VARCHAR" />
+    <result column="head_pic" property="headPic" jdbcType="VARCHAR" />
+    <result column="is_leave" property="isLeave" jdbcType="INTEGER" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="direct_leader" property="directLeader" jdbcType="VARCHAR" />
+    <result column="leader_name" property="leaderName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <select id="selectUserDetailById" resultMap="QueryUserDetailResultMap" parameterType="java.lang.String" >
+    SELECT
+
+     a.id, a.username,  a.usercode, a.realname, a.idcard, a.phone, a.email, a.sex, a.profess_level,a.address,
+    a.manage_level, a.dep_id, a.direct_leader, a.create_time, a.update_time,a.is_leave,a.is_delete,a.post,a.head_pic,
+    b.realname AS leader_name,c.name as dep_name
+       FROM
+	sys_user a LEFT JOIN
+	sys_user b  ON 	b.id = a.direct_leader
+       LEFT JOIN
+	sys_dep c   ON  a.dep_id = c.id
+       WHERE
+     a.id=#{id}
+  </select>
+  <select id="selectUsersByNameOrDept" resultMap="QueryUserDetailResultMap" parameterType="java.lang.String" >
+    SELECT
+
+    a.id, a.username,  a.usercode, a.realname, a.idcard, a.phone, a.email, a.sex, a.profess_level,a.address,
+    a.manage_level, a.dep_id, a.direct_leader, a.create_time, a.update_time,a.is_leave,
+    b.realname AS leader_name,c.name as dep_name
+    FROM
+    sys_user a LEFT JOIN
+    sys_user b  ON 	b.id = a.direct_leader
+    LEFT JOIN
+    sys_dep c   ON  a.dep_id = c.id
+    WHERE
+    a.usercode > '0000'
+    <if test="queryInfo != null" >
+      AND (a.realname like #{queryInfo} OR c.name like #{queryInfo})
+    </if>
+    and a.is_leave = 0 and a.is_delete = 0
+    order by a.usercode
+  </select>
+
+
+  <select id="selectSubordinateTree" resultMap="ResultSubordinateTreeMap">
+    select id,realname  FROM  sys_user where direct_leader = #{userId}
+  </select>
+
+  <resultMap type="com.ecaray.ecms.entity.authority.Vo.UserSubTreeVo" id="ResultSubordinateTreeMap">
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <id column="realname" property="realname" jdbcType="VARCHAR" />
+
+    <collection property="children"  column="id" ofType="com.ecaray.ecms.entity.authority.Vo.UserSubTreeVo"
+                select="selectSubordinateTreeByParent"></collection>
+  </resultMap>
+  <!-- 根据父键查询 -->
+  <select id="selectSubordinateTreeByParent" parameterType="java.lang.String"
+          resultMap="ResultSubordinateTreeMap">
+    select id,realname  FROM  sys_user where direct_leader =#{id}
+  </select>
+  <select id="selectDepName" parameterType="java.lang.String" resultType="java.lang.String">
+  	select d.name from sys_user user left join sys_dep d on user.dep_id = d.id where user.id = #{userId} 
+  </select>
+  
+  <select id="getDeptLeader" parameterType="java.lang.String" resultType="java.lang.String">
+  	select dep.leader_id from sys_user user left join sys_dep dep on user.dep_id = dep.id where user.id = #{userId}
+  </select>
+  
+  <resultMap id="DepTreeBaseResultMap" type="com.ecaray.ecms.entity.authority.Vo.DepTree" >
+  <id column="id" property="id" jdbcType="VARCHAR" />
+  <result column="name" property="name" jdbcType="VARCHAR" />
+  <result column="leader_id" property="leaderId" jdbcType="VARCHAR" />
+  <result column="parentId" property="parentId" jdbcType="VARCHAR" />
+  <collection property="parent" column="parent_id" select="selectDepTree" 
+  	ofType="com.ecaray.ecms.entity.authority.Vo.DepTree"></collection>
+ </resultMap>
+  <select id="selectDepTree" parameterType="java.lang.String" resultMap="DepTreeBaseResultMap">
+  		select id,name,leader_id,parent_id as parentId,parent_id from sys_dep where id = #{id}
+  </select>
+  
+ <resultMap id="UserTreeBaseResultMap" type="com.ecaray.ecms.entity.authority.Vo.UserTree" >
+  <id column="id" property="id" jdbcType="VARCHAR" />
+  <collection property="children" column="id" select="selectUserTreeByParentId" 
+  	ofType="com.ecaray.ecms.entity.authority.Vo.UserTree"></collection>
+ </resultMap>
+ 
+ <select id="selectByrealname" parameterType="java.lang.String" resultMap="BaseResultMap">
+ 	select * from sys_user where realname = #{realname}
+ </select>
+ 
+ <select id="getAllUserList" resultMap="BaseResultMap">
+ 	select
+    <include refid="NoPass_Column_List" />
+    from sys_user where is_delete = 0 and is_leave = 0 and usercode > '0001'
+ </select>
+ 
+  <select id="selectUserTree" parameterType="java.lang.String" resultMap="UserTreeBaseResultMap">
+  		select id from sys_user where id = #{id}
+  </select>
+  <select id="selectUserTreeByParentId" parameterType="java.lang.String" resultMap="UserTreeBaseResultMap">
+  		select id from sys_user where direct_leader = #{id}
+  </select>
+  <update id="restartUserPassword" parameterType="com.ecaray.ecms.entity.authority.User" >
+		update sys_user set password = #{password} where id = #{id}
+  </update>
+  <select id="selectUserPhoneList" parameterType="com.ecaray.ecms.entity.authority.Vo.UserFilter" resultMap="BaseResultMap">
+	select
+	u.id,
+	u.usercode,
+	u.phone,
+	u.dep_id,
+	d.realname as direct_leader,
+	u.realname,
+	u.address,
+	u.email,
+	u.post
+	from
+	sys_user u
+	left join sys_user d on u.direct_leader = d.id
+	left join sys_dep dep on u.dep_id = dep.id
+	where
+	u.is_delete = 0 and u.is_leave = 0
+	<if test="realname != null">
+		and u.realname = #{realname}
+	</if>
+	and u.usercode >'0001'
+	order by u.usercode
+  </select>
+  <select id="selectUserListByMonth" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+			 <include refid="NoPass_Column_List" /> from sys_user
+		where
+			from_unixtime(create_time / 1000, '%m') = #{month} 
+ </select>
+ 
+ <resultMap id="ALLUserBaseResultMap" type="com.ecaray.ecms.entity.authority.User" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="usercode" property="usercode" jdbcType="VARCHAR" />
+    <result column="realname" property="realname" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="dep_id" property="depId" jdbcType="VARCHAR" />
+    <result column="dep_name" property="depName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectAllUserList" resultMap="ALLUserBaseResultMap">
+	select u.usercode,u.id,u.realname,u.dep_id,d.name as dep_name,u.create_time from sys_user u left join sys_dep d on u.dep_id = d.id where u.usercode > '0001' and u.is_leave = 0 and u.is_delete = 0
+ </select>
+  <select id="selectUserPasswordByName" parameterType = "java.lang.String" resultType="java.lang.String">
+	select password from sys_user_tmp  where realname = #{realname} and is_leave = 0 and is_delete = 0
+ </select>
+  <select id="selectUserByUsercode" parameterType="java.lang.String" resultMap="BaseResultMap">
+	select * from sys_user  where usercode = #{usercode}
+ </select>
+  <select id="selectUserListByPc" parameterType="com.ecaray.ecms.entity.cwa.CwaPunchCard" resultMap="BaseResultMap">
+	select user.id,user.realname,user.dep_id,dep.name,user.address,para.name as cwaName from sys_user user
+	left join sys_dep dep on user.dep_id = dep.id
+	left join cwa_user_attendance att on user.id = att.user_id and att.date = #{date}
+	left join sys_parameter para on ifnull(att.type,1) = para.value and code = 'cwa_leave_type' and para.isvalid = 1
+	where user.is_delete = 0
+	and user.is_leave = 0
+	<if test="name != null" >
+      AND user.realname like #{name}
+    </if> 
+    <if test="depList == null" >
+     AND user.dep_id is null
+    </if> 
+	<if test="depList != null" >
+     AND user.dep_id in 
+     <foreach collection="depList" item="id" index="index" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+    </if> 
+	<if test="address == 1" >
+      and user.address = '深圳'
+    </if> 
+ </select>
+  <select id="selectUserCount"  resultType="java.lang.Integer">
+  	select count(1) from sys_user where is_delete = 0 and is_leave = 0 and usercode > '0000'
+ </select>
+  <select id="selectUserListByDepId" resultType="java.lang.String">
+  	select id from sys_user where is_delete = 0 and is_leave = 0 and usercode > '0001'
+  	<if test="list!=null">
+  		AND dep_id in 
+     	<foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+     		#{id}
+    	</foreach>
+  	</if> 
+ </select>
+  <select id="getUserByLikename" resultType="java.lang.String" resultMap="BaseResultMap">
+  	select * from sys_user where realname like #{nameKey} limit 1
+ </select>
+</mapper>

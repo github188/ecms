@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>亿车科技EAP - 企业动态</title>
+    <link rel="shortcut icon" type="images/x-icon" href="../../skins/img/short-icon.ico">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="../skins/img/logo.ico" type="image/x-icon"/>
+    <link rel="bookmark" href="../skins/img/logo.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../skins/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../skins/css/common.css"/>
+    <link rel="stylesheet" href="../skins/css/header.css"/>
+    <link rel="stylesheet" href="../skins/js/plugins/pagination/pagination.css">
+    <link rel="stylesheet" href="../skins/css/newsList.css">
+</head>
+<body>
+<!--头部start-->
+<header class="header">
+    <div class="header-box">
+        <a href="../../home.html" class="logo" title="亿车科技OA系统首页">
+            <h2>
+                <img src="../../skins/img/oa_logo.png" alt="">
+            </h2>
+        </a>
+        <!--<div class="search">-->
+        <!--<input type="text" placeholder="输入关键字搜索">-->
+        <!--</div>-->
+        <div class="setting">
+            <ul>
+                <li class="menu" id="emailNum">
+                    <a title="邮箱" id="emailMenu" target="_blank" class="message" href="javascript:;"></a>
+                </li>
+                <li class="menu">
+                    <a class="setting" href="#"></a>
+                    <ol class="sub-menu">
+                        <li><a href="#" id="changePassword">修改密码</a></li>
+                        <li><a href="../personInfo/personInfo.html" id="changePerson">个人信息</a></li>
+                    </ol>
+                </li>
+                <li class="menu"><a title="退出" id="logOut" class="log-out" href="#"></a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+<div class="news-banner">
+    <img src="../skins/img/news-list-banner.png" alt="亿车科技">
+</div>
+<section class="container">
+    <div class="crumbs-pannel">
+        <a href="../../home.html">首页</a>>
+        <a href="#" class="current-color">全部</a>
+    </div>
+    <div class="news-content clear-float">
+        <ul class="left-menu pull-left" id="left-menu">
+            <li class="menu-item current-menu" data-type="4">
+                <b class="news-menu-icon all-icon"></b>
+                全部
+            </li>
+            <li class="menu-item" data-type="1">
+                <b class="news-menu-icon notice-icon"></b>
+                公告
+            </li>
+            <li class="menu-item" data-type="0">
+                <b class="news-menu-icon news-icon"></b>
+                新闻
+            </li>
+            <li class="menu-item" data-type="2">
+                <b class="news-menu-icon share-icon"></b>
+                分享
+            </li>
+            <li class="menu-item" data-type="3">
+                <b class="news-menu-icon rule-icon"></b>
+                制度
+            </li>
+        </ul>
+        <div class="news-list pull-right" >
+            <div id="news-list">
+            </div>
+            <!--页码-->
+            <div class="page-number" id="pageNumber"></div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!--修改密码start-->
+<div class="modal fade" id="modifyPassword" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">修改密码</h4>
+            </div>
+            <form role="form" id="modifyPasswordForm" method="post" class="validate">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required">*</span>原密码：</label>
+                                <input id="accountname" name="accountname" type="password" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required">*</span>新密码：</label>
+                                <input id="newpwd" name="newpwd" type="password" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label"><span class="required">*</span>确认密码：</label>
+                                <input id="savepwd" name="savepwd" type="password" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-msg"></div>
+                    <button type="submit" class="btn btn-success" id="btnPwdSave">确定</button>
+                    <button type="reset" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--修改密码end-->
+<!-- Bottom Scripts -->
+<script src="../skins/js/jquery-1.11.1.min.js"></script>
+<!--frame-->
+<script src="../../skins/js/config.js"></script>
+<script src="../skins/js/base.js"></script>
+<script src="../skins/js/jquery.validate.min.js"></script>
+<script src="../skins/js/jquery.md5.js"></script>
+
+<script src="../skins/js/bootstrap.min.js"></script>
+<script src="../skins/js/header.js"></script>
+<script src="../skins/js/plugins/pagination/pagination.js"></script>
+<script src="../../skins/js/layer/layer.js"></script>
+<script src="../news/newsList.js"></script>
+</body>
+</html>
+
+
+
+

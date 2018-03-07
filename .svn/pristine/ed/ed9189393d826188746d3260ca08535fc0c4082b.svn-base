@@ -1,0 +1,424 @@
+<template>
+  <div class="news-list" id="newsList">
+    <div class="banner"></div>
+    <div class="content-box">
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: '/index' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item>{{title}}</el-breadcrumb-item>
+      </el-breadcrumb>
+      <div class="news-content" ref="newsContent">
+        <el-tabs v-model="activeTab" @tab-click="loadList" class="news-list-tab" type="card">
+          <el-tab-pane :name="tab.type" :label="tab.title" v-for="(tab, tabIndex) in tablePanle" :key="tabIndex">
+            <!-- <span slot="label">
+                    <i class="icon" :class="'icon-'+tab.type"></i> {{tab.title}}</span>
+                  </span> -->
+            <div class="search-panel">
+              <el-input class="search-input-list" @blur="searchInputBlur" @focus="searchInputFocus" placeholder="请输入搜索内容, 回车即可哦" @keyup.enter.native="searchArticle" @on-icon-click="searchArticle" icon="search" v-model="search.key"></el-input>
+              <router-link class="write-article" to="/article/write">来一篇</router-link>
+            </div>
+            <template v-if="newsList.length">
+              <ul class="news-box" v-loading.lock="loading" element-loading-text="拼命加载中...">
+                <li v-for="(item, index) in newsList" :key="index">
+                  <div class="news-img" v-if="item.pictureId">
+                    <router-link target="_blank" :to="{ path: '/news/detail', query: {id: item.id}}">
+                      <img :src="setTopImg(item.pictureId)">
+                    </router-link>
+                  </div>
+
+                  <div class="news-detail" :style="{'marginLeft': item.pictureId?'246px':0}">
+                    <h2 class="news-title">
+                      <router-link target="_blank" :to="{ path: '/news/detail', query: {id: item.id}}" v-html="searchResult(item.newsTitle)"></router-link>
+                    </h2>
+                    <div class="news-info">
+                      <span>{{new Date(item.publishDate).toStr()}}</span>
+                      <span style="padding-left: 14px;">{{ item.newsAuthor}}</span>
+                      <div class="news-interact">
+                        <i class="read" style="padding-left: 24px;">{{item.read}}</i>
+                        <i class="thumb">{{item.likes}}</i>
+                        <i class="comments">{{item.commentCount}}</i>
+                      </div>
+                    </div>
+                    <p v-if="item.pictureId" class="news-abstract" v-html="getContent(item.content, 80)"></p>
+                    <p v-else class="news-abstract" v-html="getContent(item.content, 120)"></p>
+                    <router-link target="_blank" class="read-more" :to="{ path: '/news/detail', query: {id: item.id}}">查看全文></router-link>
+                  </div>
+                </li>
+              </ul>
+              <el-pagination layout="prev, pager, next" :page-size="search.pageSize" @current-change="changePage" :total="totalPages">
+              </el-pagination>
+            </template>
+            <p style="margin-top: 130px; font-size: 14px; text-align:center" v-else>
+              <template v-if="search.key">
+                没有搜索到您要的文章，换个关键词吧!
+              </template>
+              <template v-else>
+                该版块当前还没有文章哦，需要您的火力支援!
+              </template>
+            </p>
+          </el-tab-pane>
+        </el-tabs>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style lang="scss">
+#newsList {
+  .banner {
+    background: url('./img/news-list-banner.png') no-repeat center;
+    height: 300px;
+  }
+  .el-pagination {
+    margin-top: 40px;
+  }
+  .news-content {
+    background: #fff;
+    min-height: 500px;
+    padding: 30px 40px;
+  }
+  .news-box {
+    .el-loading-spinner {
+      top: 200px;
+    }
+    .el-loading-spinner .el-loading-text {
+      color: #01cd78;
+    }
+    li {
+      height: 205px;
+      padding-top: 45px;
+      border-bottom: 1px solid #e5e9ec;
+    }
+    .news-img {
+      width: 230px;
+      height: 120px;
+      float: left;
+      margin-right: 16px;
+      img {
+        width: 230px;
+        height: 120px;
+      }
+    }
+    .read-more {
+      color: #01cd78;
+      position: absolute;
+      right: 0;
+      bottom: 3px;
+      background: #fff;
+      padding: 0 10px;
+    }
+    .news-detail {
+      position: relative;
+      .news-title {
+        font-size: 20px;
+        font-weight: normal;
+        color: #37383a;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .news-info {
+        height: 26px;
+        font-size: 12px;
+        padding-top: 8px;
+        color: #afafaf;
+      }
+      .news-abstract {
+        text-indent: 30px;
+        font-size: 12px;
+        color: #808080;
+        line-height: 24px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        margin-top: 22px;
+      }
+      .news-interact {
+        float: right;
+        i {
+          display: inline-block;
+          width: 20px;
+          height: 16px;
+          margin-left: 32px;
+          padding-left: 20px;
+          font-style: normal;
+          background-position: left bottom;
+          background-repeat: no-repeat;
+        }
+        i.read {
+          background-image: url('./img/read.png');
+        }
+        i.thumb {
+          background-image: url('./img/thumb.png');
+        }
+        i.comments {
+          background-image: url('./img/comments.png');
+          margin-right: 26px;
+        }
+      }
+    }
+  }
+  .search-panel {
+    .el-input {
+      width: 628px;
+      z-index: 99;
+      transition: width 0.2s ease;
+    }
+    .el-input.focus {
+      width: 790px;
+      transition: width 0.3s ease;
+    }
+    .el-icon-search {
+      font-size: 20px;
+      color: #a0a0aa;
+      right: 12px;
+      cursor: pointer;
+    }
+    input {
+      width: 100%;
+      height: 46px;
+      padding-left: 20px;
+    }
+    .write-article {
+      text-align: center;
+      width: 142px;
+      height: 46px;
+      line-height: 46px;
+      font-size: 16px;
+      color: #fff;
+      background: #01cd78;
+      border: none;
+      border-radius: 3px; // margin-left: 28px;
+      cursor: pointer;
+      position: absolute;
+      right: 0;
+      top: 0;
+      transform: scale(1);
+      transition: transform 0.5s ease;
+      transform-origin: right;
+    }
+    .write-article.small {
+      transition: transform 0.5s ease;
+      transform: scale(0);
+      transform-origin: center;
+    }
+  }
+  .search-panel i.icon {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    background-image: url('./img/icon.png');
+    background-repeat: no-repeat;
+    position: relative;
+    top: 7px;
+    padding-right: 38px;
+  }
+
+  i.icon.icon-all {
+    background-position: -200px -31px;
+  }
+
+  .is-active i.icon.icon-all {
+    background-position: -200px -6px;
+  }
+
+  i.icon.icon-news {
+    background-position: -32px -33px;
+  }
+
+  .is-active i.icon.icon-news {
+    background-position: -32px -6px;
+  }
+
+  i.icon.icon-notice {
+    background-position: 0 -34px;
+  }
+
+  .is-active i.icon.icon-notice {
+    background-position: 0 -8px;
+  }
+
+  i.icon.icon-share {
+    background-position: -163px -34px;
+  }
+
+  .is-active i.icon.icon-share {
+    background-position: -163px -8px;
+  }
+
+  i.icon.icon-rule {
+    background-position: -130px -34px;
+  }
+
+  .is-active i.icon.icon-rule {
+    background-position: -130px -8px;
+  }
+  .news-list-tab {
+    width: 100%;
+  }
+
+  .news-list-tab .el-tabs__item {
+    display: block;
+    height: 48px;
+    line-height: 48px;
+    border-radius: 6px;
+  }
+
+  .news-list-tab .el-tabs__header {
+    border-bottom: none;
+    width: 280px;
+    float: left;
+  }
+  .news-list-tab .el-tabs__content {
+    margin-left: 310px;
+  }
+  .news-list-tab.el-tabs--card .el-tabs__header .el-tabs__item.is-active {
+    border: none;
+    color: #fff;
+    background-color: #01cd78;
+  }
+  .news-list-tab .el-tabs__nav {
+    width: 200px;
+  }
+}
+</style>
+
+
+<script>
+export default {
+  name: 'newsList',
+  data() {
+    return {
+      newsList: [], //新闻
+      all: [], //全部
+      activeTab: 'all',
+      title: '全部',
+      totalPages: 0, //总条数
+      tablePanle: [],
+      tabComponent: {},
+      loading: false,
+      searchStr: '',
+      search: {
+        pageNum: 1,
+        pageSize: 10,
+        isPublish: 0,
+        key: ''
+      }
+    };
+  },
+  created() {
+    this.getNewsType();
+  },
+  methods: {
+    searchInputFocus() {
+      $('.search-input-list').addClass('focus');
+      $('.write-article').addClass('small');
+    },
+    searchInputBlur() {
+      $('.search-input-list').removeClass('focus');
+      $('.write-article').removeClass('small');
+    },
+    getNewsType() {
+      this.ajax({
+        url: '/ctm/setting/param/list',
+        data: {
+          code: 'portal_type'
+        },
+        success(data, $this) {
+          if (data.code == 'success') {
+            $this.tablePanle = data.content.map(item => {
+              return {
+                type: item.value,
+                title: item.name.split('#')[0]
+              };
+            });
+            $this.tablePanle.unshift({
+              type: 'all',
+              title: '全部'
+            });
+            $this.currentTab();
+          }
+        }
+      });
+    },
+    currentTab() {
+      let type = this.$route.query.type;
+      if (type) {
+        this.loadList(type.toString());
+      } else {
+        this.loadList();
+      }
+    },
+    loadList(tab) {
+      if (typeof tab == 'object') {
+        var { name, label } = tab;
+        if (name != 'all') {
+          this.search.newsType = name;
+        } else {
+          delete this.search.newsType;
+        }
+        this.title = label;
+        this.tabComponent = tab;
+      } else if (typeof tab == 'string') {
+        this.search.newsType = tab;
+        this.title = this.tablePanle[tab].title;
+        this.activeTab = tab;
+      }
+      this.ajax({
+        url: '/news/common/list',
+        data: this.search,
+        success(data, $this) {
+          if (data.code == 'success') {
+            $this.totalPages = data.totals;
+            $this.newsList = data.content;
+            $this.search.pageNum = 1;
+            $this.loading = false;
+          }
+        }
+      });
+    },
+    searchArticle() {
+      this.loading = true;
+      this.loadList();
+      this.searchStr = this.search.key;
+    },
+    changePage(currentPage) {
+      this.search.pageNum = currentPage;
+      this.loadList(this.tabComponent);
+    },
+    setTopImg(pictureId) {
+      return this.domain + '/news/picture/top/' + pictureId + '/download?width=230&height=120';
+    },
+    searchResult(str) {
+      return str.replace(eval("/" + this.searchStr + "/ig"), "<span style='color: red;'>$&</span>");
+    },
+    getContent(value, num) {
+      if (value) {
+        return this.searchResult((value.replace(/<[^<>]+>/g, '')).substring(0, num) + '...');
+      }
+    }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      let $header = $('.el-tabs__header');
+      $(window).on('scroll', () => {
+        let winTop = $(window).scrollTop();
+        let newsContent = $('.news-content')[0];
+        let contentTop = newsContent && newsContent.offsetTop;
+        if (winTop >= 375) {
+          $header.css({
+            position: 'fixed',
+            top: 100
+          });
+        } else {
+          $header.css({
+            position: 'relative',
+            top: 0
+          });
+        }
+      });
+    });
+  }
+};
+</script>

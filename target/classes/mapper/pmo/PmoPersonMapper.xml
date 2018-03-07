@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.pmo.PmoPersonMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.pmo.PmoPerson" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="pro_id" property="proId" jdbcType="VARCHAR" />
+    <result column="pro_code" property="proCode" jdbcType="VARCHAR" />
+    <result column="person_id" property="personId" jdbcType="VARCHAR" />
+    <result column="person_name" property="personName" jdbcType="VARCHAR" />
+    <result column="person_category" property="personCategory" jdbcType="INTEGER" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, pro_id, pro_code, person_id, person_name, person_category, add_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from pmo_person
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from pmo_person
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.pmo.PmoPerson" >
+    insert into pmo_person (id, pro_id, pro_code, 
+      person_id, person_name, person_category, 
+      add_time)
+    values (#{id,jdbcType=VARCHAR}, #{proId,jdbcType=VARCHAR}, #{proCode,jdbcType=VARCHAR}, 
+      #{personId,jdbcType=VARCHAR}, #{personName,jdbcType=VARCHAR}, #{personCategory,jdbcType=INTEGER}, 
+      #{addTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.pmo.PmoPerson" >
+    insert into pmo_person
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="proId != null" >
+        pro_id,
+      </if>
+      <if test="proCode != null" >
+        pro_code,
+      </if>
+      <if test="personId != null" >
+        person_id,
+      </if>
+      <if test="personName != null" >
+        person_name,
+      </if>
+      <if test="personCategory != null" >
+        person_category,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="proId != null" >
+        #{proId,jdbcType=VARCHAR},
+      </if>
+      <if test="proCode != null" >
+        #{proCode,jdbcType=VARCHAR},
+      </if>
+      <if test="personId != null" >
+        #{personId,jdbcType=VARCHAR},
+      </if>
+      <if test="personName != null" >
+        #{personName,jdbcType=VARCHAR},
+      </if>
+      <if test="personCategory != null" >
+        #{personCategory,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.pmo.PmoPerson" >
+    update pmo_person
+    <set >
+      <if test="proId != null" >
+        pro_id = #{proId,jdbcType=VARCHAR},
+      </if>
+      <if test="proCode != null" >
+        pro_code = #{proCode,jdbcType=VARCHAR},
+      </if>
+      <if test="personId != null" >
+        person_id = #{personId,jdbcType=VARCHAR},
+      </if>
+      <if test="personName != null" >
+        person_name = #{personName,jdbcType=VARCHAR},
+      </if>
+      <if test="personCategory != null" >
+        person_category = #{personCategory,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.pmo.PmoPerson" >
+    update pmo_person
+    set pro_id = #{proId,jdbcType=VARCHAR},
+      pro_code = #{proCode,jdbcType=VARCHAR},
+      person_id = #{personId,jdbcType=VARCHAR},
+      person_name = #{personName,jdbcType=VARCHAR},
+      person_category = #{personCategory,jdbcType=INTEGER},
+      add_time = #{addTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectByProjectId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from pmo_person where pro_id =#{projectId}
+
+    <if test="userType != null" >
+      AND person_category = #{userType}
+    </if>
+    order by person_category
+  </select>
+
+  <select id="selectByProectIdAndCategory" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from pmo_person where pro_id =#{projectId} and person_category=#{personCategory} order by person_category
+  </select>
+
+
+  <insert id="addPersonBatch" parameterType="java.util.List">
+    insert into pmo_person (id, pro_id, pro_code,
+    person_id, person_name, person_category,
+    add_time)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.id,jdbcType=VARCHAR}, #{item.proId,jdbcType=VARCHAR}, #{item.proCode,jdbcType=VARCHAR},
+      #{item.personId,jdbcType=VARCHAR}, #{item.personName,jdbcType=VARCHAR}, #{item.personCategory,jdbcType=INTEGER},
+      #{item.addTime,jdbcType=BIGINT})
+    </foreach>
+  </insert>
+
+  <delete id="deleteByProId" parameterType="java.lang.String" >
+    delete from pmo_person
+    where pro_id = #{proId}
+  </delete>
+
+
+
+  <select id="selectByPersonId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from pmo_person
+    where person_id = #{personId} AND pro_id =#{proId} limit 1
+  </select>
+
+</mapper>

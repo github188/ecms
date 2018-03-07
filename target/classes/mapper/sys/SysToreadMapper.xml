@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.sys.SysToreadMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.sys.SysToread" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="ref_id" property="refId" jdbcType="VARCHAR" />
+    <result column="is_read" property="isRead" jdbcType="INTEGER" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, type, title, ref_id, is_read, add_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_toread
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_toread
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.sys.SysToread" >
+    insert into sys_toread (id, user_id, type, 
+      title, ref_id, is_read, 
+      add_time, update_time)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{title,jdbcType=VARCHAR}, #{refId,jdbcType=VARCHAR}, #{isRead,jdbcType=INTEGER}, 
+      #{addTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.sys.SysToread" >
+    insert into sys_toread
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="refId != null" >
+        ref_id,
+      </if>
+      <if test="isRead != null" >
+        is_read,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="refId != null" >
+        #{refId,jdbcType=VARCHAR},
+      </if>
+      <if test="isRead != null" >
+        #{isRead,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.sys.SysToread" >
+    update sys_toread
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="refId != null" >
+        ref_id = #{refId,jdbcType=VARCHAR},
+      </if>
+      <if test="isRead != null" >
+        is_read = #{isRead,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.sys.SysToread" >
+    update sys_toread
+    set user_id = #{userId,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      ref_id = #{refId,jdbcType=VARCHAR},
+      is_read = #{isRead,jdbcType=INTEGER},
+      add_time = #{addTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectListByUser" parameterType="java.lang.String" resultMap = "BaseResultMap">
+    select * from  sys_toread where user_id = #{userId} 
+    <if test="title!=null">
+    	and title like #{title}
+    </if>
+    and is_read = 0 order by add_time desc
+  </select>
+  <select id="selectUserToRead" parameterType="java.lang.String" resultMap = "BaseResultMap">
+    select * from  sys_toread where user_id = #{userId} and ref_id = #{refId}
+  </select>
+</mapper>

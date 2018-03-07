@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.cwa.CwaHolidayRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.cwa.CwaHolidayRecord" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="addnum" property="addnum" jdbcType="DOUBLE" />
+    <result column="subnum" property="subnum" jdbcType="DOUBLE" />
+    <result column="blance" property="blance" jdbcType="DOUBLE" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, date, type, addnum, subnum, blance, add_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from cwa_holiday_record
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from cwa_holiday_record
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.cwa.CwaHolidayRecord" >
+    insert into cwa_holiday_record (id, user_id, date, 
+      type, addnum, subnum, blance, 
+      add_time)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{date,jdbcType=VARCHAR}, 
+      #{type,jdbcType=INTEGER}, #{add,jdbcType=DOUBLE}, #{sub,jdbcType=DOUBLE}, #{blance,jdbcType=DOUBLE}, 
+      #{addTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.cwa.CwaHolidayRecord" >
+    insert into cwa_holiday_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="date != null" >
+        date,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="addnum != null" >
+        addnum,
+      </if>
+      <if test="subnum != null" >
+        subnum,
+      </if>
+      <if test="blance != null" >
+        blance,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="addnum != null" >
+        #{addnum,jdbcType=DOUBLE},
+      </if>
+      <if test="subnum != null" >
+        #{subnum,jdbcType=DOUBLE},
+      </if>
+      <if test="blance != null" >
+        #{blance,jdbcType=DOUBLE},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.cwa.CwaHolidayRecord" >
+    update cwa_holiday_record
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        date = #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="addnum != null" >
+        addnum = #{addnum,jdbcType=DOUBLE},
+      </if>
+      <if test="subnum != null" >
+        subnum = #{subnum,jdbcType=DOUBLE},
+      </if>
+      <if test="blance != null" >
+        blance = #{blance,jdbcType=DOUBLE},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.cwa.CwaHolidayRecord" >
+    update cwa_holiday_record
+    set user_id = #{userId,jdbcType=VARCHAR},
+      date = #{date,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      add = #{add,jdbcType=DOUBLE},
+      sub = #{sub,jdbcType=DOUBLE},
+      blance = #{blance,jdbcType=DOUBLE},
+      add_time = #{addTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="listUseRecordByUserIdAndMonth" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select * from cwa_holiday_record where user_id = #{userId} and date like #{monthkey} order by date desc
+  </select>
+</mapper>

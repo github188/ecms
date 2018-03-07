@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.cwa.CwaHolidayBlanceMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.cwa.CwaHolidayBlance" >
+    <id column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="month" property="month" jdbcType="VARCHAR" />
+    <result column="blance" property="blance" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, month, blance
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from cwa_holiday_blance
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from cwa_holiday_blance
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.cwa.CwaHolidayBlance" >
+    insert into cwa_holiday_blance (user_id, month, blance
+      )
+    values (#{userId,jdbcType=VARCHAR}, #{month,jdbcType=VARCHAR}, #{blance,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.cwa.CwaHolidayBlance" >
+    insert into cwa_holiday_blance
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="month != null" >
+        month,
+      </if>
+      <if test="blance != null" >
+        blance,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="month != null" >
+        #{month,jdbcType=VARCHAR},
+      </if>
+      <if test="blance != null" >
+        #{blance,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.cwa.CwaHolidayBlance" >
+    update cwa_holiday_blance
+    <set >
+      <if test="month != null" >
+        month = #{month,jdbcType=VARCHAR},
+      </if>
+      <if test="blance != null" >
+        blance = #{blance,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.cwa.CwaHolidayBlance" >
+    update cwa_holiday_blance
+    set month = #{month,jdbcType=VARCHAR},
+      blance = #{blance,jdbcType=DOUBLE}
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectBlanceByUserIdAndMonth" parameterType="java.lang.String" resultMap="BaseResultMap" >
+  	select * from cwa_holiday_blance where user_id = #{userId} and month = #{month}
+  </select>
+</mapper>

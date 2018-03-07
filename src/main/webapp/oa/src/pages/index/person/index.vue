@@ -1,0 +1,603 @@
+<template>
+  <div>
+    <v-header></v-header>
+    <div class="content-box">
+      <el-breadcrumb separator="/" style="margin-top:72px;">
+        <el-breadcrumb-item :to="{ path: '/index' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item>个人主页</el-breadcrumb-item>
+      </el-breadcrumb>
+      <div id="personInfo">
+        <div class="person-info" v-loading="!info.id">
+          <div class="avatar">
+            <a href="javascript:;" class="person-avatar">
+              <img style="cursor:pointer" @click="dialogVisible = true " :src="(tempAvatar || getAvatar(info))" alt="">
+              <!-- <el-button type="success" @click="show = true">修改头像</el-button> -->
+              <el-upload accept="image/png,image/jpeg,image/gif" v-if="isSelf" class="upload-demo" :action="upload.url" :on-success="handleSuccess" :show-file-list="false">
+                <el-button type="success">修改头像</el-button>
+              </el-upload>
+            </a>
+
+            <el-dialog v-model="dialogVisible" size="small">
+              <img width="100%" :src="getAvatar(info)" alt="">
+            </el-dialog>
+
+            <p class="person-day">在亿车的第
+              <span>{{info.joindate}}</span>
+            </p>
+
+          </div>
+          <div class="datum">
+            <p class="name">{{info.realname}}
+              <i class="sex" :class="info.sex==1?'boy':'girl'"></i>
+              <span class="post">{{info.post}}</span>
+            </p>
+            <ul class="list">
+              <li class="depName">{{reverseDepart(info.depName)}}</li>
+              <li class="phone">
+                <template v-if="status">
+                  <el-input class="person-info-phone" v-model="info.phone" placeholder="请输入手机号"></el-input>
+                  <a href="javascript:;" @click="save" class="operate-light">保存</a>
+                  <a href="javascript:;" @click="cancel">取消</a>
+                </template>
+
+                <template v-else>
+                  <span class="person-info-value person-info-phone">{{info.phone}}</span>
+                  <a v-if="isSelf" href="javascript:;" @click="edit" class="operate-light">修改</a>
+                </template>
+              </li>
+              <li class="email">{{info.username}}</li>
+              <li class="integral">{{integral.total}}分&nbsp;&nbsp;&nbsp;&nbsp;{{new Date().getFullYear()}}年度第<strong> {{integral.record}} </strong>名<span v-if="integral.percent != 0">, 打败了全公司 <strong>{{integral.percent}}%</strong> 的员工</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footmark">
+          <el-tabs v-model="activeTab" @tab-click="handleClick">
+            <el-tab-pane label="文章" name="first">
+              <span slot="label">文章&nbsp;
+                <span style="color: #01cd78">({{article.totalPages}})</span>
+              </span>
+
+              <ul class="article-list" v-loading="article.loading">
+                <li v-for="(item, index) in articleList" :key="index">
+                  <h2 class="news-title">
+                    <span class="tag" :style="getTypeName(item.typeName).style">{{getTypeName(item.typeName).name}}</span>
+                    <router-link target="_blank" :to="{ path: '/news/detail', query: {id: item.id}}">{{item.newsTitle}}</router-link>
+                  </h2>
+                  <div class="news-info">
+                    <span>{{new Date(item.publishDate).toStr()}}</span>
+                    <div class="news-interact">
+                      <i class="read" style="padding-left: 24px;">{{item.read}}</i>
+                      <i class="thumb">{{item.likes}}</i>
+                      <i class="comments">{{item.commentCount}}</i>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+
+              <p v-if="articleList.length == 0 && !article.loading" class="no-data"></p>
+
+              <el-pagination v-if="articleList.length != 0" layout="prev, pager, next" :page-size="pageSize" @current-change="changeArticlePage" :total="article.totalPages">
+              </el-pagination>
+
+            </el-tab-pane>
+            <el-tab-pane name="second">
+              <span slot="label">回复&nbsp;
+                <span style="color: #01cd78">({{comments.totalPages}})</span>
+              </span>
+
+              <ul class="news-box" v-loading="comments.loading">
+                <li v-for="(item, index) in commentsList" :key="index">
+                  <div class="news-detail">
+                    <h2 class="news-title">
+                      <span class="tag" :style="getTypeName(item.newsTypeName).style">{{getTypeName(item.newsTypeName).name}}</span>
+                      <router-link target="_blank" :to="{ path: '/news/detail', hash: 'to'+ item.id, query: {id: item.newId}}">{{item.newTitle}}</router-link>
+                    </h2>
+                    <div class="news-info">
+                      <span>回复了{{item.parentName || '该文章'}}</span>
+                      <span style="padding-left: 14px;">{{item.addTime | resetTime}}</span>
+                    </div>
+                    <p class="news-abstract" v-html="commentsFilter(item.content)"></p>
+                  </div>
+                </li>
+              </ul>
+              <p v-if="commentsList.length == 0 && !comments.loading" class="no-data"></p>
+              <el-pagination v-if="commentsList.length != 0" layout="prev, pager, next" :page-size="pageSize" @current-change="changeCommentsPage" :total="comments.totalPages">
+              </el-pagination>
+            </el-tab-pane>
+          </el-tabs>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<style lang="scss">
+.content-box {
+  margin-top: 72px;
+}
+#personInfo {
+  .no-data {
+    // height: 180px;
+    // line-height: 180px;
+    text-align: center;
+    height: 160px;
+    width: 190px;
+    margin: 40px auto;
+    background: url('./img/invoice.png') no-repeat center;
+  }
+  .person-info {
+    height: 285px;
+    padding-left: 40px;
+    padding-top: 40px;
+    background: #fff;
+    margin-bottom: 20px;
+  }
+  .avatar {
+    float: left;
+    width: 195px;
+    height: 202px;
+    text-align: center;
+  }
+  .person-avatar {
+    display: block;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    cursor: default;
+    position: relative;
+    img {
+      height: 100%;
+      width: 100%;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      border-radius: 50%;
+    }
+    .upload-demo {
+      position: absolute;
+      bottom: -10px;
+      left: 25px;
+      .el-button {
+        width: 100px;
+      }
+    }
+  }
+  .person-day {
+    margin-top: 25px;
+    font-size: 16px;
+  }
+
+  .person-day span {
+    color: #f37f39;
+    font-weight: bold;
+  }
+  .datum {
+    margin-left: 40px;
+    float: left;
+    height: 200px;
+    .name {
+      font-size: 24px;
+      color: #3e3e3e;
+      margin-bottom: 24px;
+    }
+    .sex {
+      display: inline-block;
+      height: 19px;
+      width: 19px;
+      background: url('./img/icon.png') no-repeat center;
+      margin-left: 2px;
+      margin-right: 20px;
+      position: relative;
+      top: 4px;
+    }
+    .sex.boy {
+      background-position: 0 -159px;
+    }
+    .sex.girl {
+      background-position: 0 -127px;
+    }
+    .post {
+      font-size: 15px;
+      color: #999;
+    }
+    .list li {
+      background: url('./img/icon.png') no-repeat center;
+      height: 20px;
+      line-height: 20px;
+      font-size: 13px;
+      color: #999;
+      padding-left: 30px;
+      margin-bottom: 20px;
+    }
+    .list li.depName {
+      background-position: 2px 4px;
+    }
+    .list li.phone {
+      background-position: 2px -29px;
+    }
+    .list li.email {
+      background-position: 0 -54px;
+    }
+    .list li.integral {
+      background-position: 0 -88px;
+      strong{
+        color: #f07f3d
+      }
+    }
+
+    .operate-light {
+      color: #4177ff;
+      margin-left: 60px;
+      margin-right: 10px;
+    }
+    .person-info-phone {
+      width: 180px;
+      display: inline-block;
+      margin-top: -4px;
+    }
+  }
+  .footmark {
+    background: #fff;
+    min-height: calc(100vh - 457px);
+    .el-tabs__item {
+      padding: 0 40px;
+      height: 57px;
+      line-height: 57px;
+    }
+    .el-tabs__active-bar {
+      background-color: #01cd78;
+    }
+    .el-tabs__item.is-active {
+      color: #333333;
+    }
+    .tag {
+      padding: 0 2px;
+      line-height: 18px;
+      border-radius: 2px;
+      display: inline-block;
+      text-align: center;
+      margin-right: 6px;
+      font-size: 12px;
+      border: 1px solid #fab33c;
+      position: relative;
+      top: -2px;
+      font-weight: normal;
+    }
+    .news-title {
+      font-size: 20px;
+      font-weight: normal;
+      color: #37383a;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .news-abstract {
+      font-size: 12px;
+      color: #808080;
+      line-height: 24px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      margin-top: 22px;
+      word-break: break-all;
+    }
+    .news-box {
+      padding: 0 30px;
+      // min-height: 200px;
+    }
+    .article-list {
+      padding: 0 30px;
+      // min-height: 200px;
+      li {
+        height: 115px;
+        padding-top: 30px;
+        border-bottom: 1px solid #e8e8e8;
+        .news-info {
+          height: 26px;
+          font-size: 12px;
+          padding-top: 8px;
+          color: #afafaf;
+        }
+        .news-interact {
+          float: right;
+          i {
+            display: inline-block;
+            width: 20px;
+            height: 16px;
+            margin-left: 32px;
+            padding-left: 20px;
+            font-style: normal;
+            background-position: left bottom;
+            background-repeat: no-repeat;
+          }
+          i.read {
+            background-image: url('./img/read.png');
+          }
+          i.thumb {
+            background-image: url('./img/thumb.png');
+          }
+          i.comments {
+            background-image: url('./img/comments.png');
+            margin-right: 5px;
+          }
+        }
+      }
+    }
+    .news-box {
+      padding: 0 30px;
+      li {
+        min-height: 180px;
+        padding-top: 30px;
+        border-bottom: 1px solid #e5e9ec;
+      }
+      .news-img {
+        width: 230px;
+        height: 120px;
+        float: left;
+        margin-right: 16px;
+        img {
+          width: 230px;
+          height: 120px;
+        }
+      }
+      .read-more {
+        color: #01cd78;
+        position: absolute;
+        right: 0;
+        bottom: 3px;
+        background: #fff;
+        padding: 0 10px;
+      }
+      .news-detail {
+        position: relative;
+
+        .news-info {
+          height: 26px;
+          font-size: 12px;
+          padding-top: 8px;
+          color: #afafaf;
+        }
+      }
+    }
+    .el-pagination {
+      float: right;
+      margin: 40px 25px;
+    }
+  }
+}
+</style>
+
+<script>
+import Header from '@/pages/index/header';
+import emojiDate from '@/components/emoji/data'
+export default {
+  name: 'personInfo',
+  components: {
+    'v-header': Header
+  },
+  data() {
+    return {
+      info: {},  //个人信息
+      status: false,  //手机号是否编辑状态
+      integral: {},  //个人积分
+      phone: '',
+      dialogVisible: false,  //大图预览
+      tempAvatar: undefined,  //上传后的临时头像
+      show: false, //是否显示图片裁剪
+      upload: {
+        url: ''  //头像上传地址
+      },
+      pageSize: 10,
+      activeTab: 'first',
+      article: {
+        totalPages: 0,
+        pageNum: 1,
+        loading: false
+      },
+      comments: {
+        totalPages: 0,
+        pageNum: 1,
+        loading: false
+      },
+      articleList: [],
+      commentsList: [],
+      isSelf: false,
+      userId: ''
+    };
+  },
+  created() {
+    this.getIntegral();
+    this.getUserInfo();
+  },
+  methods: {
+    getUserInfo() {
+      this.userId = this.$route.params.id;
+      this.ajax({   //获取用户信息
+        url: '/authority/user/' + this.userId + '/detail',
+        success(data, $this) {
+          if (data.code == 'success') {
+            $this.info = data.content;
+            $this.phone = $this.info.phone;
+            if ($this.userId == Utils.getValue('u')) {
+              $this.isSelf = true
+            } else {
+              $this.isSelf = false
+            }
+          }
+          $this.getArticle($this.isSelf);
+          $this.getComments();
+        }
+      });
+      this.upload.url = this.domain + '/authority/user/picture/head/upload';
+    },
+    getIntegral(){
+      this.command('user','UserScore', 'getUserScoreDetails',{userId: this.$route.params.id}).then((data)=>{
+        this.integral = data
+      })
+    },
+    editInfo(info) {
+      let params = info;
+      params.id = Utils.getValue('u');
+      this.ajax({
+        url: '/authority/user',
+        data: params,
+        dataType: 'json',
+        type: 'put',
+        success(data, $this) {
+          if (data.code == 'success') {
+            $this.successTips('操作成功！');
+            $this.status = false;
+            $this.phone = info.phone;
+            $this.getUserInfo();
+          }
+        }
+      });
+    },
+    edit() {
+      this.status = true;
+    },
+    cancel() {
+      this.status = false;
+      this.info.phone = this.phone;
+    },
+    save() {
+      if (!this.info.phone) {
+        this.errorTips('手机号码不能为空!');
+        return;
+      }
+      let reg = /^1[3|4|5|7|8][0-9]{9}$/;
+      if (!reg.test(this.info.phone)) {
+        this.errorTips('手机号码格式不正确!');
+      } else {
+        this.editInfo({
+          phone: this.info.phone
+        });
+      }
+    },
+    getTypeName(typeName) {
+      let name = typeName.split('#')[0]
+      let color = '#' + typeName.split('#')[1]
+      let style = {
+        'border-color': color,
+        color: color,
+      }
+      return { name, color, style }
+    },
+    getArticle(isSelf) {
+      this.article.loading = true;
+      let params = {
+        pageNum: this.article.pageNum,
+        pageSize: this.pageSize,
+        isPublish: 0,
+        userId: this.userId
+      }
+      // if (!isSelf) {
+      //   params.isPublish = 0;
+      // }
+      this.ajax({
+        url: '/news/common/list',
+        data: params,
+        success(data, $this) {
+          if (data.code == 'success') {
+            $this.articleList = data.content
+            $this.article.totalPages = data.totals
+          } else {
+            $this.errorTips(data.message)
+          }
+          $this.article.loading = false;
+        }
+      })
+    },
+    getComments() {
+      this.comments.loading = true
+      this.ajax({
+        url: `news/${this.userId}/comment`,
+        data: {
+          pageNum: this.comments.pageNum,
+          pageSize: this.pageSize,
+          // userId: Utils.getValue('u')
+        },
+        success(data, $this) {
+          if (data.code == 'success') {
+            $this.commentsList = data.content
+            $this.comments.totalPages = data.totals
+          } else {
+            $this.errorTips(data.message)
+          }
+          $this.comments.loading = false
+        }
+      })
+    },
+    changeArticlePage(currentPage) {
+      this.article.pageNum = currentPage
+      this.getArticle()
+    },
+    changeCommentsPage(currentPage) {
+      this.comments.pageNum = currentPage
+      this.getComments()
+    },
+    handleClick(tab) {
+      if (tab.name == 'first') { //文章
+        this.getArticle();
+      } else if (tab.name == 'second') { //回复
+        this.getComments()
+      }
+    },
+    handleSuccess(data, file) {
+      this.tempAvatar = file.url;
+      if (data.code == 'success') {
+        let { picId } = data.content;
+        this.editInfo({
+          headPic: picId
+        });
+      }
+    },
+    commentsFilter(value) {
+      let reg = /\[(.*?)\]/g
+      return value.replace(reg, function (a, b) {
+        let src = emojiDate[b]
+        return (
+          src && (src = require('@/components/emoji/img/' + src + '.gif')),
+          src ? '<img style="position:relative; top: 4px; margin-left: 3px; margin-right: 3px;" title="' + b + '" src="' + src + '" />' : b
+        )
+      })
+    },
+  },
+  filters: {
+    resetTime(dateTimeStamp) {
+      let minute = 1000 * 60
+      let hour = minute * 60
+      let day = hour * 24
+      let month = day * 30
+      let now = new Date().getTime()
+      let diffValue = now - dateTimeStamp
+      if (diffValue < 0) {
+        return '刚刚'
+      }
+      let monthC = diffValue / month
+      let weekC = diffValue / (7 * day)
+      let dayC = diffValue / day
+      let hourC = diffValue / hour
+      let minC = diffValue / minute
+      let result = ''
+      if (weekC == 1) {
+        result = '' + parseInt(weekC) + '周前'
+      } else if (dayC >= 1 && dayC <= 5) {
+        result = '' + parseInt(dayC) + '天前'
+      } else if (hourC >= 1 && hourC <= 24) {
+        result = '' + parseInt(hourC) + '小时前'
+      } else if (minC >= 1 && minC <= 60) {
+        result = '' + parseInt(minC) + '分钟前'
+      } else if (minC < 1) {
+        result = '刚刚'
+      } else {
+        result = new Date(dateTimeStamp).toStr()
+      }
+      return result
+    },
+  },
+};
+
+</script>

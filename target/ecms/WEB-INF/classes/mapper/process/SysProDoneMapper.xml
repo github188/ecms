@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.process.SysProDoneMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.process.SysProDone" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="process_id" property="processId" jdbcType="VARCHAR" />
+    <result column="node_id" property="nodeId" jdbcType="VARCHAR" />
+    <result column="nodename" property="nodeName" jdbcType="VARCHAR" />
+    <result column="handler_id" property="handlerId" jdbcType="VARCHAR" />
+    <result column="realname" property="handlerName" jdbcType="VARCHAR" />
+    <result column="result" property="result" jdbcType="INTEGER" />
+    <result column="opinion" property="opinion" jdbcType="VARCHAR" />
+    <result column="start_time" property="startTime" jdbcType="BIGINT" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, process_id, node_id, handler_id, result, opinion, start_time, add_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_prodone
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_prodone
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.process.SysProDone" >
+    insert into sys_prodone (id, process_id, node_id, 
+      handler_id, result, opinion, 
+      start_time, add_time, update_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{processId,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR}, 
+      #{handlerId,jdbcType=VARCHAR}, #{result,jdbcType=INTEGER}, #{opinion,jdbcType=VARCHAR}, 
+      #{startTime,jdbcType=BIGINT}, #{addTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.process.SysProDone" >
+    insert into sys_prodone
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="processId != null" >
+        process_id,
+      </if>
+      <if test="nodeId != null" >
+        node_id,
+      </if>
+      <if test="handlerId != null" >
+        handler_id,
+      </if>
+      <if test="result != null" >
+        result,
+      </if>
+      <if test="opinion != null" >
+        opinion,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isvalid == null" >
+        isvalid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="processId != null" >
+        #{processId,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeId != null" >
+        #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="handlerId != null" >
+        #{handlerId,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null" >
+        #{result,jdbcType=INTEGER},
+      </if>
+      <if test="opinion != null" >
+        #{opinion,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=BIGINT},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="isvalid == null" >
+        1,
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.process.SysProDone" >
+    update sys_prodone
+    <set >
+      <if test="processId != null" >
+        process_id = #{processId,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeId != null" >
+        node_id = #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="handlerId != null" >
+        handler_id = #{handlerId,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null" >
+        result = #{result,jdbcType=INTEGER},
+      </if>
+      <if test="opinion != null" >
+        opinion = #{opinion,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=BIGINT},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.process.SysProDone" >
+    update sys_prodone
+    set process_id = #{processId,jdbcType=VARCHAR},
+      node_id = #{nodeId,jdbcType=VARCHAR},
+      handler_id = #{handlerId,jdbcType=VARCHAR},
+      result = #{result,jdbcType=INTEGER},
+      opinion = #{opinion,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=BIGINT},
+      add_time = #{addTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <resultMap id="queryResultMap" type="com.ecaray.ecms.entity.process.Vo.ProDoFilter" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="process_id" property="processId" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="realname" property="sponsorsName" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="node_id" property="nodeId" jdbcType="VARCHAR" />
+    <result column="nodesname" property="nodesName" jdbcType="VARCHAR" />
+    <result column="handler_id" property="handlerId" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <select id="selectDoneList" parameterType="com.ecaray.ecms.entity.process.Vo.ProDoFilter" resultMap="queryResultMap" >
+  	select done.*,node.node_name as nodesname,sponsors.realname,process.type,process.title from 
+  	sys_prodone done left join sys_process process on done.process_id = process.id
+  	left join sys_user sponsors on process.user_id = sponsors.id
+  	left join sys_nodes node on done.node_id = node.id
+  	where 1=1
+  	<if test="handlerId != null" >
+     	and  done.handler_id = #{handlerId}
+    </if>
+  	<if test="sponsorsName != null" >
+     	and  sponsors.realname like #{sponsorsName}
+    </if>
+  	<if test="title != null" >
+     	and  process.title like #{title}
+    </if>
+  	<if test="type != null" >
+     	and  process.type = #{type}
+    </if>
+     order by update_time desc
+  </select>
+  <select id="selectDonePerson" parameterType="java.lang.String" resultMap="BaseResultMap" >
+  	select pro.*,user.realname,nodes.node_name as nodename from sys_prodone pro left join sys_user user on pro.handler_id = user.id
+  	left join sys_nodes nodes on pro.node_id = nodes.id
+  	 where 1 = 1
+  	<if test="processId != null">
+  		and pro.process_id = #{processId} 
+  	</if>
+  	<if test="nodeId != null">
+  		and pro.node_id = #{nodeId}
+  	</if>
+  	order by pro.add_time desc
+  </select>
+  <select id="selectNodesPassNum" parameterType="com.ecaray.ecms.entity.process.SysProcess" resultType="java.lang.Integer" >
+	select count(1) from sys_prodone where process_id = #{id} and node_id = #{nodeId} and result = 1
+  </select>
+  <select id="selectNodesRejectNum" parameterType="com.ecaray.ecms.entity.process.SysProcess" resultType="java.lang.Integer" >
+	select count(1) from sys_prodone where process_id = #{id} and node_id = #{nodeId} and result = 0
+  </select>
+  <resultMap id="resultHashMap" type="com.ecaray.ecms.entity.process.Vo.DoneResultVo" >
+  	 <result column="result" property="result" />  
+  	 <result column="num" property="count" />  
+  </resultMap>
+  <select id="selectNodesReultGroup" parameterType="com.ecaray.ecms.entity.process.SysProcess" resultMap="resultHashMap" >
+	select result,count(1) as num from sys_prodone where process_id = #{id} and node_id = #{nodeId} and isvalid = 1  group by result
+  </select>
+   <delete id="deleteCtmSetting" parameterType="java.lang.String" >
+    delete from sys_prodone
+    where process_id = #{processId} and node_id = #{nodeId} and handler_id = #{handlerId}
+  </delete>
+  <update id="setProcessResultIsvalid" parameterType="com.ecaray.ecms.entity.process.SysProcess" >
+    update  sys_prodone set isvalid = 0 where process_id = #{id} 
+  </update>
+</mapper>

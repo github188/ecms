@@ -1,0 +1,55 @@
+<meta charset="UTF-8">
+<link rel="stylesheet" href="project/css/punchClock.css">
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="form-group inblock">
+                    <label class="col-sm-2 control-label">考勤类型：</label>
+                    <select class="form-control" id="affairsType"> </select>
+                </div>
+
+                <div class="form-group inblock" style="margin-left: -25px;">
+                    <label class="col-sm-2 control-label">日期：</label>
+                    <input type="text" class="form-control" id="startDate">
+                </div>
+
+                <div class="form-group inblock" style="margin-left: -45px;">
+                    <label class="col-sm-2 control-label" style="width: 10px;">-</label>
+                    <input type="text" class="form-control" id="endDate">
+                </div>
+
+                <div class="form-group inblock" style="margin-left: -115px; position:relative;">
+                    <label class="col-sm-2 control-label">部门：</label>
+                    <input type="text" class="form-control dep-parentname" name="depParentName" readonly/>
+                    <span title="清除" class="clear-depart" id="clearDepart">&times;</span>
+                    <div id="DepartForSuperiorEditPanel">
+                        <span title="关闭" class="close-tree-sel" id="closeDepartForSuperiorEdit">&times;</span>
+                        <ul id="treeDepartForSuperiorEdit" class="ztree tree-contain-editdep-sel"></ul>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group inblock" style="margin-left: 0;">
+                        <label class="col-sm-2 control-label">申请人：</label>
+                        <input type="text" class="form-control input-key" id="userName">
+                    </div>
+                    <!--<button style="margin-top: 6px;" class="btn btn-orange btn-search">查询</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="button-position">
+        <button class="btn btn-orange btn-search">查询</button>
+    </div>
+</div>
+
+<div class="panel panel-nopadding">
+    <div class="panel-body">
+        <div class="list-top">
+            <h4 class="list-title">审批单列表</h4>
+        </div>
+        <div class="table-responsive" id="clockList"></div>
+    </div>
+</div>
+<script type="text/javascript" src="project/approve.js"></script>

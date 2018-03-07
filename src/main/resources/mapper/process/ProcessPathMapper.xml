@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.process.ProcessPathMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.process.ProcessPathKey" >
+    <id column="process_type" property="processType" jdbcType="INTEGER" />
+    <id column="service" property="service" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectPathByType" parameterType="java.lang.Integer" resultType="java.lang.String">
+  	select service from sys_process_path where process_type = #{processType}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.ecaray.ecms.entity.process.ProcessPathKey" >
+    delete from sys_process_path
+    where process_type = #{processType,jdbcType=INTEGER}
+      and service = #{service,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.process.ProcessPathKey" >
+    insert into sys_process_path (process_type, service)
+    values (#{processType,jdbcType=INTEGER}, #{service,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.process.ProcessPathKey" >
+    insert into sys_process_path
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="processType != null" >
+        process_type,
+      </if>
+      <if test="service != null" >
+        service,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="processType != null" >
+        #{processType,jdbcType=INTEGER},
+      </if>
+      <if test="service != null" >
+        #{service,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

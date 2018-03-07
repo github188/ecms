@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.cwa.CwaUserHolidayMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.cwa.CwaUserHoliday" >
+    <id column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="last_annual" property="lastAnnual" jdbcType="DOUBLE" />
+    <result column="annual" property="annual" jdbcType="DOUBLE" />
+    <result column="last_takeoff" property="lastTakeoff" jdbcType="DOUBLE" />
+    <result column="add_takeoff" property="addTakeoff" jdbcType="DOUBLE" />
+    <result column="sub_takeoff" property="subTakeoff" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, last_annual, annual, last_takeoff, add_takeoff, sub_takeoff
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from cwa_user_holiday
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from cwa_user_holiday
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.cwa.CwaUserHoliday" >
+    insert into cwa_user_holiday (user_id, last_annual, annual, 
+      last_takeoff, add_takeoff, sub_takeoff
+      )
+    values (#{userId,jdbcType=VARCHAR}, #{lastAnnual,jdbcType=DOUBLE}, #{annual,jdbcType=DOUBLE}, 
+      #{lastTakeoff,jdbcType=DOUBLE}, #{addTakeoff,jdbcType=DOUBLE}, #{subTakeoff,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.cwa.CwaUserHoliday" >
+    insert into cwa_user_holiday
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="lastAnnual != null" >
+        last_annual,
+      </if>
+      <if test="annual != null" >
+        annual,
+      </if>
+      <if test="lastTakeoff != null" >
+        last_takeoff,
+      </if>
+      <if test="addTakeoff != null" >
+        add_takeoff,
+      </if>
+      <if test="subTakeoff != null" >
+        sub_takeoff,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastAnnual != null" >
+        #{lastAnnual,jdbcType=DOUBLE},
+      </if>
+      <if test="annual != null" >
+        #{annual,jdbcType=DOUBLE},
+      </if>
+      <if test="lastTakeoff != null" >
+        #{lastTakeoff,jdbcType=DOUBLE},
+      </if>
+      <if test="addTakeoff != null" >
+        #{addTakeoff,jdbcType=DOUBLE},
+      </if>
+      <if test="subTakeoff != null" >
+        #{subTakeoff,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.cwa.CwaUserHoliday" >
+    update cwa_user_holiday
+    <set >
+      <if test="lastAnnual != null" >
+        last_annual = #{lastAnnual,jdbcType=DOUBLE},
+      </if>
+      <if test="annual != null" >
+        annual = #{annual,jdbcType=DOUBLE},
+      </if>
+      <if test="lastTakeoff != null" >
+        last_takeoff = #{lastTakeoff,jdbcType=DOUBLE},
+      </if>
+      <if test="addTakeoff != null" >
+        add_takeoff = #{addTakeoff,jdbcType=DOUBLE},
+      </if>
+      <if test="subTakeoff != null" >
+        sub_takeoff = #{subTakeoff,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.cwa.CwaUserHoliday" >
+    update cwa_user_holiday
+    set last_annual = #{lastAnnual,jdbcType=DOUBLE},
+      annual = #{annual,jdbcType=DOUBLE},
+      last_takeoff = #{lastTakeoff,jdbcType=DOUBLE},
+      add_takeoff = #{addTakeoff,jdbcType=DOUBLE},
+      sub_takeoff = #{subTakeoff,jdbcType=DOUBLE}
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectList" resultMap="BaseResultMap">
+  	select * from cwa_user_holiday
+  </select>
+</mapper>

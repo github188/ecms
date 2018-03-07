@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecaray.ecms.dao.mapper.crm.CrmFollowMapper" >
+  <resultMap id="BaseResultMap" type="com.ecaray.ecms.entity.crm.CrmFollow" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="client_id" property="clientId" jdbcType="VARCHAR" />
+    <result column="opp_id" property="oppId" jdbcType="VARCHAR" />
+    <result column="person_id" property="personId" jdbcType="VARCHAR" />
+    <result column="person_name" property="personName" jdbcType="VARCHAR" />
+    <result column="follow_mode_id" property="followModeId" jdbcType="VARCHAR" />
+    <result column="comments" property="comments" jdbcType="VARCHAR" />
+    <result column="next_plan" property="nextPlan" jdbcType="VARCHAR" />
+    <result column="add_person_id" property="addPersonId" jdbcType="VARCHAR" />
+    <result column="add_person_name" property="addPersonName" jdbcType="VARCHAR" />
+    <result column="follow_time" property="followTime" jdbcType="BIGINT" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, client_id, opp_id, person_id, person_name, follow_mode_id, comments, next_plan, follow_time,
+    add_person_id, add_person_name,follow_time, add_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from crm_follow
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from crm_follow
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecaray.ecms.entity.crm.CrmFollow" >
+    insert into crm_follow (id, client_id, opp_id, 
+      person_id, person_name, follow_mode_id, 
+      comments, next_plan, add_person_id, 
+      add_person_name, follow_time,add_time, update_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{clientId,jdbcType=VARCHAR}, #{oppId,jdbcType=VARCHAR}, 
+      #{personId,jdbcType=VARCHAR}, #{personName,jdbcType=VARCHAR}, #{followModeId,jdbcType=VARCHAR}, 
+      #{comments,jdbcType=VARCHAR}, #{nextPlan,jdbcType=VARCHAR}, #{addPersonId,jdbcType=VARCHAR}, 
+      #{addPersonName,jdbcType=VARCHAR},#{followTime,jdbcType=BIGINT}, #{addTime,jdbcType=BIGINT},
+      #{updateTime,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecaray.ecms.entity.crm.CrmFollow" >
+    insert into crm_follow
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="clientId != null" >
+        client_id,
+      </if>
+      <if test="oppId != null" >
+        opp_id,
+      </if>
+      <if test="personId != null" >
+        person_id,
+      </if>
+      <if test="personName != null" >
+        person_name,
+      </if>
+      <if test="followModeId != null" >
+        follow_mode_id,
+      </if>
+      <if test="comments != null" >
+        comments,
+      </if>
+      <if test="nextPlan != null" >
+        next_plan,
+      </if>
+      <if test="addPersonId != null" >
+        add_person_id,
+      </if>
+      <if test="addPersonName != null" >
+        add_person_name,
+      </if>
+      <if test="followTime != null" >
+        follow_time,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="clientId != null" >
+        #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="oppId != null" >
+        #{oppId,jdbcType=VARCHAR},
+      </if>
+      <if test="personId != null" >
+        #{personId,jdbcType=VARCHAR},
+      </if>
+      <if test="personName != null" >
+        #{personName,jdbcType=VARCHAR},
+      </if>
+      <if test="followModeId != null" >
+        #{followModeId,jdbcType=VARCHAR},
+      </if>
+      <if test="comments != null" >
+        #{comments,jdbcType=VARCHAR},
+      </if>
+      <if test="nextPlan != null" >
+        #{nextPlan,jdbcType=VARCHAR},
+      </if>
+      <if test="addPersonId != null" >
+        #{addPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="addPersonName != null" >
+        #{addPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="followTime != null" >
+        #{followTime,jdbcType=BIGINT},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecaray.ecms.entity.crm.CrmFollow" >
+    update crm_follow
+    <set >
+      <if test="clientId != null" >
+        client_id = #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="oppId != null" >
+        opp_id = #{oppId,jdbcType=VARCHAR},
+      </if>
+      <if test="personId != null" >
+        person_id = #{personId,jdbcType=VARCHAR},
+      </if>
+      <if test="personName != null" >
+        person_name = #{personName,jdbcType=VARCHAR},
+      </if>
+      <if test="followModeId != null" >
+        follow_mode_id = #{followModeId,jdbcType=VARCHAR},
+      </if>
+      <if test="comments != null" >
+        comments = #{comments,jdbcType=VARCHAR},
+      </if>
+      <if test="nextPlan != null" >
+        next_plan = #{nextPlan,jdbcType=VARCHAR},
+      </if>
+      <if test="addPersonId != null" >
+        add_person_id = #{addPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="addPersonName != null" >
+        add_person_name = #{addPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="followTime != null" >
+        follow_time = #{followTime,jdbcType=BIGINT},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+  <update id="updateByPrimaryKey" parameterType="com.ecaray.ecms.entity.crm.CrmFollow" >
+    update crm_follow
+    set client_id = #{clientId,jdbcType=VARCHAR},
+      opp_id = #{oppId,jdbcType=VARCHAR},
+      person_id = #{personId,jdbcType=VARCHAR},
+      person_name = #{personName,jdbcType=VARCHAR},
+      follow_mode_id = #{followModeId,jdbcType=VARCHAR},
+      comments = #{comments,jdbcType=VARCHAR},
+      next_plan = #{nextPlan,jdbcType=VARCHAR},
+      add_person_id = #{addPersonId,jdbcType=VARCHAR},
+      add_person_name = #{addPersonName,jdbcType=VARCHAR},
+      follow_time = #{followTime,jdbcType=BIGINT},
+      add_time = #{addTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+  <resultMap id="BaseResultWithComCountMap" type="com.ecaray.ecms.entity.crm.Vo.CrmFollowVo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="client_id" property="clientId" jdbcType="VARCHAR" />
+    <result column="opp_id" property="oppId" jdbcType="VARCHAR" />
+    <result column="person_id" property="personId" jdbcType="VARCHAR" />
+    <result column="person_name" property="personName" jdbcType="VARCHAR" />
+    <result column="follow_mode_id" property="followModeId" jdbcType="VARCHAR" />
+    <result column="comments" property="comments" jdbcType="VARCHAR" />
+    <result column="next_plan" property="nextPlan" jdbcType="VARCHAR" />
+    <result column="add_person_id" property="addPersonId" jdbcType="VARCHAR" />
+    <result column="add_person_name" property="addPersonName" jdbcType="VARCHAR" />
+    <result column="follow_time" property="followTime" jdbcType="BIGINT" />
+    <result column="add_time" property="addTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="com_count" property="comCount" jdbcType="INTEGER" />
+  </resultMap>
+
+  <select id="selectClientFollows" resultMap="BaseResultWithComCountMap" parameterType="java.lang.String" >
+    SELECT
+    cf.*,j.com_count
+    FROM
+    crm_follow cf
+    LEFT JOIN (
+    SELECT
+    count(1) com_count,
+    follow_id
+    FROM
+    crm_follow_comment cfc
+    GROUP BY
+    cfc.follow_id
+    ) j
+    ON cf.id = j.follow_id
+    WHERE 1=1
+    <if test ="clientId != null">
+      AND cf.client_id =#{clientId}
+    </if>
+    <if test ="oppId != null">
+      AND cf.opp_id =#{oppId}
+    </if>
+    ORDER  BY  cf.add_time asc
+  </select>
+
+
+  <select id="selectFollowById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from crm_follow
+    where  1=1
+    <if test ="followId!=null">
+     AND id =#{followId}
+    </if>
+    ORDER  BY  add_time asc
+  </select>
+	<update id="updateClientLastFollowTime" parameterType="com.ecaray.ecms.entity.crm.CrmFollow">
+		<if test="clientId!=null">
+			update crm_client set last_flow_time = #{updateTime} where id = #{clientId};
+		</if>
+		<if test="oppId!=null">
+			update crm_opp set last_flow_time = #{updateTime} where id = #{oppId};
+		</if>
+	</update>
+</mapper>
